@@ -1,0 +1,16 @@
+[
+{
+  "modid": "hope",
+  "name": "HOPE",
+  "description": "Hope that this client is better then you enemies client.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["LittleDraily"],
+  "credits": "The Forge and FML guys",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

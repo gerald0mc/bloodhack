@@ -1,0 +1,34 @@
+package nl.patrick.HOPE.Module;
+
+import nl.patrick.HOPE.Module.Modules.DiscordRPC;
+
+import java.util.ArrayList;
+
+import static nl.patrick.HOPE.Hope.SETTINGS_MANAGER;
+import static nl.patrick.HOPE.Hope.moduleManager;
+
+public class ModuleManager {
+    private ArrayList<Module> modules = new ArrayList<Module>();
+
+    public ModuleManager() {
+        // modules.add(new Class())
+        modules.add(new DiscordRPC());
+    }
+
+    public ArrayList<Module> getModules() {
+        return modules;
+    }
+
+    public Module getModuleByName(String name) {
+        return modules.stream().filter(module -> module.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
+    }
+    public void loadModules(){
+        SETTINGS_MANAGER.loadSettings();
+
+        for(Module m: moduleManager.getModules()){
+            if((Boolean) m.settings.getSetting("enabled")){
+                m.onEnable();
+            }
+        }
+    }
+}
