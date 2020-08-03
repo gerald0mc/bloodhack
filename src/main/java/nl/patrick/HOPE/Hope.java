@@ -8,13 +8,17 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.InputEvent;
 import nl.patrick.HOPE.Managers.MessageManager;
 import nl.patrick.HOPE.Module.Module;
 import nl.patrick.HOPE.Module.ModuleManager;
 import nl.patrick.HOPE.Managers.SettingsManager;
 import nl.patrick.HOPE.commands.Command;
 import nl.patrick.HOPE.commands.CommandManager;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
+
+import javax.swing.text.JTextComponent;
 
 /**
  * @since 1/8/20202
@@ -46,28 +50,22 @@ public class Hope {
 
     //init (phase 5)
     @Mod.EventHandler
-    public void Init(FMLInitializationEvent event){
+    public void Init(FMLInitializationEvent event) {
         moduleManager.loadModules();
+        CommandManager.init();
+        MinecraftForge.EVENT_BUS.register(new CommandManager());
         MinecraftForge.EVENT_BUS.register(this);
 
+
     }
-    @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public void onChatMessage(ClientChatEvent event) {
-        if (event.getMessage().toLowerCase().startsWith(".")) {
-            event.setCanceled(true);
-            if (event.getMessage().startsWith(".toggle")) {
-                String[] args = event.getMessage().split(" ");
-                for (Module m : moduleManager.getModules()) {
-                    if (m.getName().equalsIgnoreCase(args[1])) {
-                        m.toggle();
-                        if (m.isToggled()) {
-                            MessageManager.sendMessagePrefix(TextFormatting.AQUA + m.getName() + TextFormatting.WHITE + " is now " + TextFormatting.GREEN + "ON");
-                        } else {
-                            MessageManager.sendMessagePrefix(TextFormatting.AQUA + m.getName() + TextFormatting.WHITE + " is now " + TextFormatting.RED + "OFF");
-                        }
-                    }
-                }
+    @SubscribeEvent
+    public void onKeyPress(InputEvent.KeyInputEvent event) {
+        for (Module m: moduleManager.getModules()) {
+            if(Keyboard.isKeyDown(m.getKey())){
+                m.toggle();
+
             }
+            
         }
     }
 }

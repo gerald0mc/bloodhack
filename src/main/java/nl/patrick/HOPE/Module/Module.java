@@ -4,7 +4,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import nl.patrick.HOPE.Hope;
 import nl.patrick.HOPE.Managers.Settings;
+import org.lwjgl.input.Keyboard;
 
 public class Module {
     protected Minecraft mc = Minecraft.getMinecraft();
@@ -20,12 +22,13 @@ public class Module {
         this.category = category;
         toggled = false;
 
-
-
     }
     public void registerSettings() {
         settings.addSetting("enabled", false);
+        settings.addSetting("keybind", String.valueOf(Keyboard.KEY_NONE));
         selfSettings();
+        Hope.SETTINGS_MANAGER.updateSettings();
+
     }
     public void onEnable() {
         MinecraftForge.EVENT_BUS.register(this);
@@ -43,7 +46,9 @@ public class Module {
     }
     public void onUpdate() {}
 
-    public void selfSettings() {}
+    public void selfSettings() {
+
+    }
 
     public void onToggle() {}
     public void toggle() {
@@ -51,15 +56,19 @@ public class Module {
         onToggle();
         if (toggled) {
             onEnable();
-            settings.setSetting("enabled", toggled);
+            settings.setSetting("enabled", true);
+            Hope.SETTINGS_MANAGER.updateSettings();
 
         } else {
             onDisable();
-            settings.setSetting("enabled", toggled);
+            settings.setSetting("enabled", false);
+            Hope.SETTINGS_MANAGER.updateSettings();
 
         }
     }
-
+    public Integer getKey(){
+        return  Integer.parseInt(settings.getSetting("keybind").toString());
+    }
     public String getName() {
         return name;
     }

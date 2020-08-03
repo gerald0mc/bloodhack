@@ -11,10 +11,12 @@ public class Settings {
     }
 
     public void setSetting(String settingName, Object newValue) {
+
         settings.replace(settingName, newValue);
     }
 
     public Object getSetting(String settingName) {
         return settings.get(settingName);
     }
+
 }

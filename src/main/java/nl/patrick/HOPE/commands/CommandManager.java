@@ -1,52 +1,35 @@
 package nl.patrick.HOPE.commands;
 
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.ClientChatEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import nl.patrick.HOPE.Hope;
-import nl.patrick.HOPE.Module.ModuleManager;
-import nl.patrick.HOPE.commands.Commands.ToggleCommand;
+import nl.patrick.HOPE.commands.Command;
+import nl.patrick.HOPE.commands.Commands.bind;
+import nl.patrick.HOPE.commands.Commands.toggle;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
 
 public class CommandManager {
-    public static ArrayList<Command> commands = new ArrayList<Command>();
-    public CommandManager() {
+    public static HashSet<Command> commands = new HashSet<>();
+
+    public static void init(){
         commands.clear();
-        commands.add(new ToggleCommand());
-
-        MinecraftForge.EVENT_BUS.register(this);
+        commands.add(new toggle());
+        commands.add(new bind());
     }
-
-
-        @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void chatEvent(ClientChatEvent event) {
-        String commandPrefix = Hope.prefix;
-        if (event.getMessage().startsWith(commandPrefix)) {
-            boolean commandExists = false;
-            if (event.getMessage().length() > 1) {
-                String firstArg = event.getMessage().replaceFirst(commandPrefix, "").split(" ")[0];
-                // regex by @dominikaaaa from KAMI Blue
-                String[] argsList = event.getMessage().replaceFirst(commandPrefix + firstArg, "").split(" (?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"); // Split by every space if it isn't surrounded by quotes
-                for (Command command : commands) {
-                    for (String alias : command.getAliases()) {
-                        if (alias.equals(firstArg)) {
-                            command.onCommand(argsList);
-                            commandExists = true;
-                            break;
-                        }
-                    }
-                    if (commandExists) {
-                        break;
-                    }
+        String[] args = event.getMessage().split(" ");
+        if(event.getMessage().startsWith(Hope.prefix)) {
+            event.setCanceled(true);
+            for (Command c: commands){
+                if(args[0].equalsIgnoreCase(Hope.prefix + c.getCommand())){
+                    c.onCommand(args);
                 }
-                if (!commandExists) {
-                }
-            } else {
-            }event.setCanceled(true);
+            }
         }
+
     }
 }

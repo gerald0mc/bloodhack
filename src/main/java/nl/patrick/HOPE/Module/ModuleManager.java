@@ -1,6 +1,8 @@
 package nl.patrick.HOPE.Module;
 
+import nl.patrick.HOPE.Module.Modules.Arraylist;
 import nl.patrick.HOPE.Module.Modules.DiscordRPC;
+import nl.patrick.HOPE.Module.Modules.Fullbright;
 
 import java.util.ArrayList;
 
@@ -13,6 +15,8 @@ public class ModuleManager {
     public ModuleManager() {
         // modules.add(new Class())
         modules.add(new DiscordRPC());
+        modules.add(new Fullbright());
+        modules.add(new Arraylist());
     }
 
     public ArrayList<Module> getModules() {
@@ -27,7 +31,7 @@ public class ModuleManager {
 
         for(Module m: moduleManager.getModules()){
             if((Boolean) m.settings.getSetting("enabled")){
-                m.onEnable();
+                m.toggle();
             }
         }
     }
