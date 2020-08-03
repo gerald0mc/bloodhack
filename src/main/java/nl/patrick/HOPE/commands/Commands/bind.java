@@ -21,7 +21,7 @@ public class bind extends Command {
                     if (m.getName().equalsIgnoreCase(args[1])) {
                         Hope.SETTINGS_MANAGER.updateSettings();
                         try {
-                            m.settings.setSetting("keybind", Keyboard.getKeyIndex(args[2].toUpperCase() + ""));
+                            m.settings.setSetting("keybind", String.valueOf(Keyboard.getKeyIndex(args[2].toUpperCase())));
                             MessageManager.sendMessagePrefix(m.getName() + " is now binded to " + args[2].toUpperCase() +"(" + Keyboard.getKeyIndex(args[2].toUpperCase() + "") + ")");
                         } catch (Exception e) {
                             MessageManager.sendMessagePrefix(m.getName() + "something went wrong");
