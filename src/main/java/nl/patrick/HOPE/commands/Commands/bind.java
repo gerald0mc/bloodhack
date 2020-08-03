@@ -14,18 +14,10 @@ public class bind extends Command {
         super("bind", new String[]{"t", "toggle"});
     }
     private boolean watching;
-    private int cachekey;
-    @SubscribeEvent
-    public void inputEvent(InputEvent.KeyInputEvent event) {
-        if(watching){
-            cachekey = Keyboard.getEventKey();
-
-        }
-    }
-
+    Keyboard key;
     @Override
     public void onCommand(String[] args) {
-        if(args.length > 1){
+        if(args.length > 2){
             try{
                 for(Module m: Hope.moduleManager.getModules()) {
                     if (m.getName().equalsIgnoreCase(args[1])) {
@@ -33,8 +25,8 @@ public class bind extends Command {
                         watching = true;
                         MessageManager.sendMessagePrefix("press the key u want to bind");
                         try {
-                            m.settings.setSetting("keybind", String.valueOf(cachekey));
-                            MessageManager.sendMessagePrefix(m.getName() + " is now binded to " + cachekey);
+                            m.settings.setSetting("keybind", Keyboard.getKeyIndex(args[2].toUpperCase() + ""));
+                            MessageManager.sendMessagePrefix(m.getName() + " is now binded to " + Keyboard.getKeyIndex(args[2].toUpperCase() + ""));
                         } catch (Exception e) {
                             MessageManager.sendMessagePrefix(m.getName() + "something went wrong");
 
