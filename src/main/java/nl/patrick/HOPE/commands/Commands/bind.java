@@ -13,8 +13,6 @@ public class bind extends Command {
     public bind() {
         super("bind", new String[]{"t", "toggle"});
     }
-    private boolean watching;
-    Keyboard key;
     @Override
     public void onCommand(String[] args) {
         if(args.length > 2){
@@ -22,11 +20,9 @@ public class bind extends Command {
                 for(Module m: Hope.moduleManager.getModules()) {
                     if (m.getName().equalsIgnoreCase(args[1])) {
                         Hope.SETTINGS_MANAGER.updateSettings();
-                        watching = true;
-                        MessageManager.sendMessagePrefix("press the key u want to bind");
                         try {
                             m.settings.setSetting("keybind", Keyboard.getKeyIndex(args[2].toUpperCase() + ""));
-                            MessageManager.sendMessagePrefix(m.getName() + " is now binded to " + Keyboard.getKeyIndex(args[2].toUpperCase() + ""));
+                            MessageManager.sendMessagePrefix(m.getName() + " is now binded to " + args[2].toUpperCase() +"(" + Keyboard.getKeyIndex(args[2].toUpperCase() + "") + ")");
                         } catch (Exception e) {
                             MessageManager.sendMessagePrefix(m.getName() + "something went wrong");
 
