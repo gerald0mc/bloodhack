@@ -1,4 +1,4 @@
-package nl.patrick.HOPE.Managers;
+package git.obamadev.rewrite.Managers;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;

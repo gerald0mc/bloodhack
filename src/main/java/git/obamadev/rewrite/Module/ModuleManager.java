@@ -1,13 +1,12 @@
-package nl.patrick.HOPE.Module;
+package git.obamadev.rewrite.Module;
 
-import nl.patrick.HOPE.Module.Modules.Arraylist;
-import nl.patrick.HOPE.Module.Modules.DiscordRPC;
-import nl.patrick.HOPE.Module.Modules.Fullbright;
+import git.obamadev.rewrite.Module.Modules.Render.Arraylist;
+import git.obamadev.rewrite.Module.Modules.misc.DiscordRPC;
 
 import java.util.ArrayList;
 
-import static nl.patrick.HOPE.Hope.SETTINGS_MANAGER;
-import static nl.patrick.HOPE.Hope.moduleManager;
+import static git.obamadev.rewrite.ObamaMod.SETTINGS_MANAGER;
+import static git.obamadev.rewrite.ObamaMod.moduleManager;
 
 public class ModuleManager {
     private ArrayList<Module> modules = new ArrayList<Module>();
@@ -15,8 +14,8 @@ public class ModuleManager {
     public ModuleManager() {
         // modules.add(new Class())
         modules.add(new DiscordRPC());
-        modules.add(new Fullbright());
         modules.add(new Arraylist());
+
     }
 
     public ArrayList<Module> getModules() {

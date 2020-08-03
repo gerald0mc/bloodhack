@@ -1,11 +1,11 @@
-package nl.patrick.HOPE.Module;
+package git.obamadev.rewrite.Module;
 
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import nl.patrick.HOPE.Hope;
-import nl.patrick.HOPE.Managers.Settings;
+import git.obamadev.rewrite.ObamaMod;
+import git.obamadev.rewrite.Managers.Settings;
 import org.lwjgl.input.Keyboard;
 
 public class Module {
@@ -27,7 +27,7 @@ public class Module {
         settings.addSetting("enabled", false);
         settings.addSetting("keybind", String.valueOf(Keyboard.KEY_NONE));
         selfSettings();
-        Hope.SETTINGS_MANAGER.updateSettings();
+
 
     }
     public void onEnable() {
@@ -57,13 +57,10 @@ public class Module {
         if (toggled) {
             onEnable();
             settings.setSetting("enabled", true);
-            Hope.SETTINGS_MANAGER.updateSettings();
 
         } else {
             onDisable();
             settings.setSetting("enabled", false);
-            Hope.SETTINGS_MANAGER.updateSettings();
-
         }
     }
     public Integer getKey(){

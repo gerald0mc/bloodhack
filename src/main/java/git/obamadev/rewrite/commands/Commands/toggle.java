@@ -1,10 +1,10 @@
-package nl.patrick.HOPE.commands.Commands;
+package git.obamadev.rewrite.commands.Commands;
 
 import net.minecraft.util.text.TextFormatting;
-import nl.patrick.HOPE.Hope;
-import nl.patrick.HOPE.Managers.MessageManager;
-import nl.patrick.HOPE.Module.Module;
-import nl.patrick.HOPE.commands.Command;
+import git.obamadev.rewrite.ObamaMod;
+import git.obamadev.rewrite.Managers.MessageManager;
+import git.obamadev.rewrite.Module.Module;
+import git.obamadev.rewrite.commands.Command;
 
 public class toggle extends Command {
     public toggle() {
@@ -15,7 +15,7 @@ public class toggle extends Command {
     public void onCommand(String[] args) {
         if(args.length > 1){
             try{
-            for(Module m: Hope.moduleManager.getModules()) {
+            for(Module m: ObamaMod.moduleManager.getModules()) {
                 if (m.getName().equalsIgnoreCase(args[1])) {
                     m.toggle();
                     if (m.isToggled()) {

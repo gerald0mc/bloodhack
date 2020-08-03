@@ -1,13 +1,11 @@
-package nl.patrick.HOPE.commands;
+package git.obamadev.rewrite.commands;
 
 import net.minecraftforge.client.event.ClientChatEvent;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import nl.patrick.HOPE.Hope;
-import nl.patrick.HOPE.commands.Command;
-import nl.patrick.HOPE.commands.Commands.bind;
-import nl.patrick.HOPE.commands.Commands.toggle;
+import git.obamadev.rewrite.ObamaMod;
+import git.obamadev.rewrite.commands.Commands.bind;
+import git.obamadev.rewrite.commands.Commands.toggle;
 
 import java.util.HashSet;
 
@@ -22,10 +20,10 @@ public class CommandManager {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void chatEvent(ClientChatEvent event) {
         String[] args = event.getMessage().split(" ");
-        if(event.getMessage().startsWith(Hope.prefix)) {
+        if(event.getMessage().startsWith(ObamaMod.prefix)) {
             event.setCanceled(true);
             for (Command c: commands){
-                if(args[0].equalsIgnoreCase(Hope.prefix + c.getCommand())){
+                if(args[0].equalsIgnoreCase(ObamaMod.prefix + c.getCommand())){
                     c.onCommand(args);
                 }
             }

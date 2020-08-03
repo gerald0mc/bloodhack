@@ -1,38 +1,31 @@
-package nl.patrick.HOPE;
+package git.obamadev.rewrite;
 
-import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.client.event.ClientChatEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
-import nl.patrick.HOPE.Managers.MessageManager;
-import nl.patrick.HOPE.Module.Module;
-import nl.patrick.HOPE.Module.ModuleManager;
-import nl.patrick.HOPE.Managers.SettingsManager;
-import nl.patrick.HOPE.commands.Command;
-import nl.patrick.HOPE.commands.CommandManager;
+import git.obamadev.rewrite.Module.Module;
+import git.obamadev.rewrite.Module.ModuleManager;
+import git.obamadev.rewrite.Managers.SettingsManager;
+import git.obamadev.rewrite.commands.CommandManager;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
-
-import javax.swing.text.JTextComponent;
 
 /**
  * @since 1/8/20202
  * @author LittleDraily
  **/
 @Mod(
-        name = "HOPE",
-        modid = "hope",
-        version = Hope.currentvers
+        name = ObamaMod.name,
+        modid = "obamahack",
+        version = ObamaMod.currentvers
 )
-public class Hope {
-    public static final String name = "HOPE";
+public class ObamaMod {
+    public static final String name = "ObamaHack";
     public static final String currentvers = "0.1";
-    public static final String discordid = "739219277361709116";
+    public static final String discordid = "710085123814588416";
     public static String prefix = ".";
 
     public static ModuleManager moduleManager = new ModuleManager();

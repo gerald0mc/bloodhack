@@ -1,4 +1,4 @@
-package nl.patrick.HOPE.Module;
+package git.obamadev.rewrite.Module;
 
 public enum Category {
     COMBAT,

@@ -1,4 +1,4 @@
-package nl.patrick.HOPE.commands;
+package git.obamadev.rewrite.commands;
 
 public class Command {
     private String command;

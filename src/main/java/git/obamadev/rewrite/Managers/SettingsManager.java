@@ -1,10 +1,10 @@
-package nl.patrick.HOPE.Managers;
+package git.obamadev.rewrite.Managers;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import nl.patrick.HOPE.Hope;
-import nl.patrick.HOPE.Module.Module;
+import git.obamadev.rewrite.ObamaMod;
+import git.obamadev.rewrite.Module.Module;
 
 import java.io.*;
 import java.util.HashMap;
@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class SettingsManager {
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    File configFile = new File("hopeconf.json");
+    File configFile = new File("obamaconf.json");
 
     public Map<String, Settings> readSettings() {
         Map<String, Settings> settingsArray = new HashMap<>();
@@ -48,7 +48,7 @@ public class SettingsManager {
 
     public void updateSettings() {
         Map<String, Settings> settingsArray = new HashMap<>();
-        for (Module module : Hope.moduleManager.getModules()) {
+        for (Module module : ObamaMod.moduleManager.getModules()) {
             settingsArray.put(module.getName(), module.settings);
         }
         writeSettings(settingsArray);
@@ -56,7 +56,7 @@ public class SettingsManager {
 
     public void loadSettings() {
         Map<String, Settings> settingsArray = readSettings();
-        for (Module module : Hope.moduleManager.getModules()) {
+        for (Module module : ObamaMod.moduleManager.getModules()) {
             String moduleName = module.getName();
             try {
                 if (settingsArray.containsKey(moduleName)) {
