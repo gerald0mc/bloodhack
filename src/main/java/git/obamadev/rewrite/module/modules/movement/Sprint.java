@@ -9,13 +9,11 @@ public class Sprint extends Module {
     }
 
     public void onUpdate() {
-        if (this.isToggled()) {
-            try {
+        try {
                 if (mc.gameSettings.keyBindForward.isKeyDown() && !(mc.player.collidedHorizontally)) {
                     mc.player.setSprinting(true);
                 }
             } catch (Exception ignored) {
-            }
         }
     }
 }
