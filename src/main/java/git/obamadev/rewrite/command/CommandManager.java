@@ -1,11 +1,11 @@
-package git.obamadev.rewrite.commands;
+package git.obamadev.rewrite.command;
 
 import net.minecraftforge.client.event.ClientChatEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import git.obamadev.rewrite.ObamaMod;
-import git.obamadev.rewrite.commands.commands.Bind;
-import git.obamadev.rewrite.commands.commands.Toggle;
+import git.obamadev.rewrite.command.commands.Bind;
+import git.obamadev.rewrite.command.commands.Toggle;
 
 import java.util.HashSet;
 

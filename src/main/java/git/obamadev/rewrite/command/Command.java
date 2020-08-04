@@ -1,4 +1,4 @@
-package git.obamadev.rewrite.commands;
+package git.obamadev.rewrite.command;
 
 public class Command {
     private String command;

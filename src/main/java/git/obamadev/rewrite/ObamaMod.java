@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.gameevent.InputEvent;
 import git.obamadev.rewrite.module.Module;
 import git.obamadev.rewrite.module.ModuleManager;
 import git.obamadev.rewrite.managers.SettingsManager;
-import git.obamadev.rewrite.commands.CommandManager;
+import git.obamadev.rewrite.command.CommandManager;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 

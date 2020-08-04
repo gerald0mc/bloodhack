@@ -1,10 +1,10 @@
-package git.obamadev.rewrite.commands.commands;
+package git.obamadev.rewrite.command.commands;
 
 import net.minecraft.util.text.TextFormatting;
 import git.obamadev.rewrite.ObamaMod;
 import git.obamadev.rewrite.managers.MessageManager;
 import git.obamadev.rewrite.module.Module;
-import git.obamadev.rewrite.commands.Command;
+import git.obamadev.rewrite.command.Command;
 
 public class Toggle extends Command {
     public Toggle() {
