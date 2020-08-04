@@ -1,4 +1,4 @@
-package git.obamadev.rewrite.Module;
+package git.obamadev.rewrite.module;
 
 public enum Category {
     COMBAT,

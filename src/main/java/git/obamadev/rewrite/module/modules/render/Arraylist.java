@@ -1,9 +1,9 @@
-package git.obamadev.rewrite.Module.Modules.Render;
+package git.obamadev.rewrite.module.modules.render;
 
-import git.obamadev.rewrite.Module.Category;
-import git.obamadev.rewrite.Module.Module;
+import git.obamadev.rewrite.module.Category;
+import git.obamadev.rewrite.module.Module;
 import git.obamadev.rewrite.ObamaMod;
-import git.obamadev.rewrite.Utils.Render.ColourUtils;
+import git.obamadev.rewrite.utils.ColourUtils;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -26,6 +26,7 @@ public class Arraylist extends Module {
         color = argb = ColourUtils.toRGBA(red, green, blue, 255);
         return color;
     }
+
     @SubscribeEvent
     public void onRenderGameOverlay(RenderGameOverlayEvent event) {
         if(mc.player != null){

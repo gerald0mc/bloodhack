@@ -1,10 +1,10 @@
-package git.obamadev.rewrite.Managers;
+package git.obamadev.rewrite.managers;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import git.obamadev.rewrite.ObamaMod;
-import git.obamadev.rewrite.Module.Module;
+import git.obamadev.rewrite.module.Module;
 
 import java.io.*;
 import java.util.HashMap;

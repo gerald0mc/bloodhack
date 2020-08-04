@@ -10,7 +10,6 @@ public class Command {
     }
 
     public void onCommand(String[] args){
-
     }
 
     public String getCommand() {

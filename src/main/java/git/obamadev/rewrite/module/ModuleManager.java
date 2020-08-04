@@ -1,7 +1,7 @@
-package git.obamadev.rewrite.Module;
+package git.obamadev.rewrite.module;
 
-import git.obamadev.rewrite.Module.Modules.Render.Arraylist;
-import git.obamadev.rewrite.Module.Modules.misc.DiscordRPC;
+import git.obamadev.rewrite.module.modules.render.Arraylist;
+import git.obamadev.rewrite.module.modules.misc.DiscordRPC;
 
 import java.util.ArrayList;
 
@@ -15,7 +15,6 @@ public class ModuleManager {
         // modules.add(new Class())
         modules.add(new DiscordRPC());
         modules.add(new Arraylist());
-
     }
 
     public ArrayList<Module> getModules() {
@@ -25,11 +24,12 @@ public class ModuleManager {
     public Module getModuleByName(String name) {
         return modules.stream().filter(module -> module.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
     }
+
     public void loadModules(){
         SETTINGS_MANAGER.loadSettings();
 
-        for(Module m: moduleManager.getModules()){
-            if((Boolean) m.settings.getSetting("enabled")){
+        for (Module m: moduleManager.getModules()){
+            if ((Boolean) m.settings.getSetting("enabled")){
                 m.toggle();
             }
         }

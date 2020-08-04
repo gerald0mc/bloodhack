@@ -1,11 +1,10 @@
-package git.obamadev.rewrite.Module;
+package git.obamadev.rewrite.module;
 
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import git.obamadev.rewrite.ObamaMod;
-import git.obamadev.rewrite.Managers.Settings;
+import git.obamadev.rewrite.managers.Settings;
 import org.lwjgl.input.Keyboard;
 
 public class Module {
@@ -16,20 +15,18 @@ public class Module {
     private boolean toggled;
     public Settings settings = new Settings();
 
-
     public Module(String name , Category category){
         this.name = name;
         this.category = category;
         toggled = false;
-
     }
+
     public void registerSettings() {
         settings.addSetting("enabled", false);
         settings.addSetting("keybind", String.valueOf(Keyboard.KEY_NONE));
         selfSettings();
-
-
     }
+
     public void onEnable() {
         MinecraftForge.EVENT_BUS.register(this);
     }
@@ -37,6 +34,7 @@ public class Module {
     public void onDisable() {
         MinecraftForge.EVENT_BUS.unregister(this);
     }
+
     @SubscribeEvent
     public void gameTickEvent(TickEvent event) {
         onUpdate();
@@ -47,7 +45,6 @@ public class Module {
     public void onUpdate() {}
 
     public void selfSettings() {
-
     }
 
     public void onToggle() {}

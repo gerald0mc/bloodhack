@@ -1,21 +1,21 @@
-package git.obamadev.rewrite.commands.Commands;
+package git.obamadev.rewrite.commands.commands;
 
 import net.minecraft.util.text.TextFormatting;
 import git.obamadev.rewrite.ObamaMod;
-import git.obamadev.rewrite.Managers.MessageManager;
-import git.obamadev.rewrite.Module.Module;
+import git.obamadev.rewrite.managers.MessageManager;
+import git.obamadev.rewrite.module.Module;
 import git.obamadev.rewrite.commands.Command;
 
-public class toggle extends Command {
-    public toggle() {
+public class Toggle extends Command {
+    public Toggle() {
         super("Toggle", new String[]{"t", "toggle"});
     }
 
     @Override
     public void onCommand(String[] args) {
-        if(args.length > 1){
-            try{
-            for(Module m: ObamaMod.moduleManager.getModules()) {
+        if (args.length > 1){
+            try {
+            for (Module m: ObamaMod.moduleManager.getModules()) {
                 if (m.getName().equalsIgnoreCase(args[1])) {
                     m.toggle();
                     if (m.isToggled()) {

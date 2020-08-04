@@ -1,4 +1,4 @@
-package git.obamadev.rewrite.Managers;
+package git.obamadev.rewrite.managers;
 
 import club.minnced.discord.rpc.DiscordEventHandlers;
 import club.minnced.discord.rpc.DiscordRPC;
@@ -13,23 +13,25 @@ public class DiscordManager {
         private static String details;
         private static String state;
 
-        public static void start() {
+        public static void startup() {
             final DiscordEventHandlers handlers = new DiscordEventHandlers();
             handlers.disconnected = ((var1, var2) -> System.out.println("Discord RPC disconnected, var1: " + var1 + ", var2: " + var2));
-            rpc.Discord_Initialize(ObamaMod.discordid, handlers, true, "");
+            rpc.Discord_Initialize(ObamaMod.appid, handlers, true, "");
             rp.startTimestamp = System.currentTimeMillis() / 1000L;
-            rp.details = ObamaMod.name +  " " + ObamaMod.currentvers;
-            rp.state = "https://discord.gg/WRFdxV3";
-            rp.largeImageKey = "oabamhack";
-            rp.largeImageText = ObamaMod.name +  " " + ObamaMod.currentvers;
+            rp.details = ObamaMod.name +  " " + ObamaMod.version;
+            rp.state = "discord.gg/XcMd2Us";
+            rp.largeImageKey = "rewrite";
+            rp.largeImageText = ObamaMod.name +  " " + ObamaMod.version;
+            rp.smallImageKey = "default";
+            rp.smallImageText = mc.getSession().getUsername();
 
             rpc.Discord_UpdatePresence(rp);
             new Thread(() -> {
                 while (!Thread.currentThread().isInterrupted()) {
                     try {
                         rpc.Discord_RunCallbacks();
-                        details = ObamaMod.name +  " " + ObamaMod.currentvers;
-                        state = "https://discord.gg/WRFdxV3";
+                        details = ObamaMod.name +  " " + ObamaMod.version;
+                        state = "discord.gg/XcMd2Us";
                     } catch (Exception e2) {
                         e2.printStackTrace();
                     }
@@ -41,7 +43,7 @@ public class DiscordManager {
                 }
             }, "Discord-RPC-Callback-Handler").start();
         }
-        public static void Stop(){
+        public static void shutdown(){
             rpc.Discord_Shutdown();
         }
-    }
+}

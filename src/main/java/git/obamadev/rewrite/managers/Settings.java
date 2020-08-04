@@ -1,4 +1,4 @@
-package git.obamadev.rewrite.Managers;
+package git.obamadev.rewrite.managers;
 
 import git.obamadev.rewrite.ObamaMod;
 
@@ -22,5 +22,4 @@ public class Settings {
         ObamaMod.SETTINGS_MANAGER.loadSettings();
         return settings.get(settingName);
     }
-
 }
