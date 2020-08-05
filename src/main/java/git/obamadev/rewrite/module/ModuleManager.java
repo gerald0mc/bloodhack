@@ -1,5 +1,6 @@
 package git.obamadev.rewrite.module;
 
+import git.obamadev.rewrite.module.modules.chat.ChatSuffix;
 import git.obamadev.rewrite.module.modules.misc.EntityAlert;
 import git.obamadev.rewrite.module.modules.movement.Sprint;
 import git.obamadev.rewrite.module.modules.hud.Arraylist;
@@ -21,6 +22,7 @@ public class ModuleManager {
         modules.add(new Sprint());
         modules.add(new RainRemover());
         modules.add(new EntityAlert());
+        modules.add(new ChatSuffix());
     }
 
     public ArrayList<Module> getModules() {
