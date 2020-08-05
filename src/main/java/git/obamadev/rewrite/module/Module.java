@@ -37,7 +37,9 @@ public class Module {
 
     @SubscribeEvent
     public void gameTickEvent(TickEvent event) {
-        onUpdate();
+        if(this.isToggled()) {
+            onUpdate();
+        }
     }
     public void setSettings(Settings newSettings) {
         settings = newSettings;
