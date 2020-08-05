@@ -1,4 +1,4 @@
-package git.obamadev.rewrite.module.modules.render;
+package git.obamadev.rewrite.module.modules.hud;
 
 import git.obamadev.rewrite.module.Category;
 import git.obamadev.rewrite.module.Module;
@@ -12,9 +12,9 @@ import java.awt.*;
 public class Arraylist extends Module {
 
     public Arraylist(){
-        super("Arraylist", Category.RENDER);
+        super("Arraylist", Category.HUD);
     }
-    public int GenRainbow(){
+    public int GenRainbow() {
         int drgb;
         int color;
         int argb;
@@ -29,17 +29,17 @@ public class Arraylist extends Module {
 
     @SubscribeEvent
     public void onRenderGameOverlay(RenderGameOverlayEvent event) {
-        if(mc.player != null){
-        if(this.isToggled()) {
-            if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
-                float currY = mc.fontRenderer.FONT_HEIGHT + 5;
-                for (Module m : ObamaMod.moduleManager.getModules()) {
-                    if (m.isToggled()) {
-                        mc.fontRenderer.drawStringWithShadow(m.getName(), 5, currY + 1, GenRainbow());
-                        currY += mc.fontRenderer.FONT_HEIGHT;
+        if (mc.player != null) {
+            if (this.isToggled()) {
+                if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
+                    float currY = mc.fontRenderer.FONT_HEIGHT + 5;
+                    for (Module m : ObamaMod.moduleManager.getModules()) {
+                        if (m.isToggled()) {
+                            mc.fontRenderer.drawStringWithShadow(m.getName(), 5, currY + 1, GenRainbow());
+                            currY += mc.fontRenderer.FONT_HEIGHT;
+                        }
                     }
                 }
-            }
             }
         }
     }
