@@ -26,7 +26,7 @@ import org.lwjgl.opengl.Display;
 
 public class ObamaMod {
     public static final String name = "ObamaHack";
-    public static final String version = "b1.0";
+    public static final String version = "b1";
     public static final String appid = "737985708945571861";
     public static String prefix = ".";
 
