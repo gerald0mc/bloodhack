@@ -4,6 +4,7 @@ import com.mojang.realmsclient.gui.ChatFormatting;
 import git.obamadev.rewrite.managers.MessageManager;
 import git.obamadev.rewrite.module.Category;
 import git.obamadev.rewrite.module.Module;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityDonkey;
 import net.minecraft.entity.passive.EntityLlama;
@@ -17,6 +18,7 @@ public class EntityAlert extends Module {
     public void onUpdate() {
         if (this.isToggled()) {
             if (mc.player == null || mc.world == null) return;
+            if (mc.currentScreen instanceof Gui) return; //fixes strange crash loading game with module enabled
 
             for (Entity entity : mc.world.getLoadedEntityList()) {
                 if (entity instanceof EntityDonkey) {
