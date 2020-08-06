@@ -12,7 +12,7 @@ public class ChatSuffix extends Module {
 
     @SubscribeEvent
     public void onChat(ClientChatEvent event) {
-        String suffix = "  (ObamaHack)";
+        String suffix = "  \u1d0f\u0299\u1d00\u1d0d\u1d00\u029c\u1d00\u1d04\u1d0b \u0299\u1d07\u1d1b\u1d00";
         if (event.getMessage().startsWith("/")) return;
         if (event.getMessage().startsWith(".")) return;
         event.setMessage(event.getMessage() + suffix);

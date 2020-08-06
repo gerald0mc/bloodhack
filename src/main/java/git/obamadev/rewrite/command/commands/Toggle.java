@@ -13,7 +13,7 @@ public class Toggle extends Command {
 
     @Override
     public void onCommand(String[] args) {
-        if (args.length > 1){
+        if (args.length > 1) {
             try {
             for (Module m: ObamaMod.moduleManager.getModules()) {
                 if (m.getName().equalsIgnoreCase(args[1])) {

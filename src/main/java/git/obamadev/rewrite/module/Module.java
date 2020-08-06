@@ -10,7 +10,7 @@ import org.lwjgl.input.Keyboard;
 public class Module {
     protected Minecraft mc = Minecraft.getMinecraft();
 
-    private String name, displayName;
+    public String name, displayName;
     private Category category;
     private boolean toggled;
     public Settings settings = new Settings();
@@ -37,7 +37,7 @@ public class Module {
 
     @SubscribeEvent
     public void gameTickEvent(TickEvent event) {
-        if(this.isToggled()) {
+        if (this.isToggled()) {
             onUpdate();
         }
     }
