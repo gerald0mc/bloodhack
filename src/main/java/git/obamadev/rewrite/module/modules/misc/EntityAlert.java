@@ -11,7 +11,7 @@ import net.minecraft.entity.passive.EntityLlama;
 import net.minecraft.entity.passive.EntityMule;
 
 public class EntityAlert extends Module {
-    public EntityAlert(){
+    public EntityAlert() {
         super("EntityAlert", Category.MISC);
     }
 
