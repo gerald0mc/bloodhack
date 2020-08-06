@@ -10,7 +10,7 @@ import org.lwjgl.input.Keyboard;
 public class Module {
     protected Minecraft mc = Minecraft.getMinecraft();
 
-    public String name, displayName;
+    private String name, displayName;
     private Category category;
     private boolean toggled;
     public Settings settings = new Settings();
