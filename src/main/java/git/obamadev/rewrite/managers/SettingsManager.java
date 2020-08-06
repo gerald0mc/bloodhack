@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class SettingsManager {
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    File configFile = new File("obamaconf.json");
+    File configFile = new File("ObamaRewriteConfig.json");
 
     public Map<String, Settings> readSettings() {
         Map<String, Settings> settingsArray = new HashMap<>();

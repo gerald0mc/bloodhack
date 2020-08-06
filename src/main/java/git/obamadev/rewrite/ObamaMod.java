@@ -31,7 +31,7 @@ public class ObamaMod {
     public static String prefix = ".";
 
     public static ModuleManager moduleManager = new ModuleManager();
-    public static final SettingsManager SETTINGS_MANAGER = new SettingsManager();
+    public static final SettingsManager settingsManager = new SettingsManager();
 
     //pre init (phase 3)
     @Mod.EventHandler

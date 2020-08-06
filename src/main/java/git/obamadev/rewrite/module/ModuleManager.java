@@ -10,7 +10,7 @@ import git.obamadev.rewrite.module.modules.render.RainRemover;
 
 import java.util.ArrayList;
 
-import static git.obamadev.rewrite.ObamaMod.SETTINGS_MANAGER;
+import static git.obamadev.rewrite.ObamaMod.settingsManager;
 import static git.obamadev.rewrite.ObamaMod.moduleManager;
 
 public class ModuleManager {
@@ -36,7 +36,7 @@ public class ModuleManager {
     }
 
     public void loadModules() {
-        SETTINGS_MANAGER.loadSettings();
+        settingsManager.loadSettings();
 
         for (Module m: moduleManager.getModules()){
             if ((Boolean) m.settings.getSetting("enabled")){

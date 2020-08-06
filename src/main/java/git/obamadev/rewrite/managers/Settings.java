@@ -9,17 +9,17 @@ public class Settings {
     public Map<String, Object> settings = new HashMap<>();
 
     public Object addSetting(String settingName, Object defaultValue) {
-        ObamaMod.SETTINGS_MANAGER.updateSettings();
+        ObamaMod.settingsManager.updateSettings();
         return settings.put(settingName, defaultValue);
     }
 
     public void setSetting(String settingName, Object newValue) {
         settings.replace(settingName, newValue);
-        ObamaMod.SETTINGS_MANAGER.updateSettings();
+        ObamaMod.settingsManager.updateSettings();
     }
 
     public Object getSetting(String settingName) {
-        ObamaMod.SETTINGS_MANAGER.loadSettings();
+        ObamaMod.settingsManager.loadSettings();
         return settings.get(settingName);
     }
 }

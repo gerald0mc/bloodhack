@@ -12,7 +12,7 @@ public class MessageManager {
     public static void sendRawMessage(String message) {
         player.sendMessage(new TextComponentString(message));
     }
-    public static void sendMessagePrefix(String message){
+    public static void sendMessagePrefix(String message) {
         sendRawMessage(prefix + " " + message);
     }
 }
