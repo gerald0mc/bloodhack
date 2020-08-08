@@ -31,7 +31,7 @@ public class Watermark extends Module {
         if (mc.player != null || mc.world !=null) {
             if (this.isToggled()) {
                 if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
-                    mc.fontRenderer.drawStringWithShadow(ObamaMod.name + " " + ObamaMod.version, 5, 2, GenRainbow());
+                    mc.fontRenderer.drawStringWithShadow(ObamaMod.name + " " + ObamaMod.version, 2, 2, GenRainbow());
                 }
             }
         }

@@ -28,7 +28,7 @@ public class ObamaMod {
     public static final String name = "ObamaHack";
     public static final String version = "b1";
     public static final String appid = "737985708945571861";
-    public static String prefix = ".";
+    public static String prefix = "=";
 
     public static ModuleManager moduleManager = new ModuleManager();
     public static final SettingsManager settingsManager = new SettingsManager();
