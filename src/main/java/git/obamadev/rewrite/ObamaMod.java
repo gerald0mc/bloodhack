@@ -51,7 +51,7 @@ public class ObamaMod {
     @SubscribeEvent
     public void onKeyPress(InputEvent.KeyInputEvent event) {
         for (Module m: moduleManager.getModules()) {
-            if (Keyboard.isKeyDown(m.getKey())){
+            if (Keyboard.isKeyDown(m.getKey())) {
                 m.toggle();
             }
         }
