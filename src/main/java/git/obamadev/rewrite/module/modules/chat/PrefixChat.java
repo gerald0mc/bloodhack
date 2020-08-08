@@ -8,7 +8,7 @@ import net.minecraftforge.fml.common.gameevent.InputEvent;
 import org.lwjgl.input.Keyboard;
 
 public class PrefixChat extends Module {
-    public PrefixChat(){
+    public PrefixChat() {
         super("PrefixChat", Category.CHAT);
     }
 

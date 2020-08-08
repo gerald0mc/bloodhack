@@ -11,7 +11,7 @@ import java.awt.*;
 
 public class Arraylist extends Module {
 
-    public Arraylist(){
+    public Arraylist() {
         super("Arraylist", Category.HUD);
     }
     public int GenRainbow() {

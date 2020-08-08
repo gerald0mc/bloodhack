@@ -1,13 +1,13 @@
 [
 {
-  "modid": "hope",
-  "name": "HOPE",
-  "description": "Hope that this client is better then you enemies client.",
+  "modid": "obamahack",
+  "name": "ObamaHack",
+  "description": "ObamaHack b1",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
-  "authorList": ["LittleDraily"],
+  "authorList": ["LittleDraily", "Ollie"],
   "credits": "The Forge and FML guys",
   "logoFile": "",
   "screenshots": [],

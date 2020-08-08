@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import java.awt.*;
 
 public class Watermark extends Module {
-    public Watermark(){
+    public Watermark() {
         super("Watermark", Category.HUD);
     }
     public int GenRainbow() {

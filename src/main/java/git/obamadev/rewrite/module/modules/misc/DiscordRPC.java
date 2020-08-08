@@ -5,7 +5,7 @@ import git.obamadev.rewrite.module.Category;
 import git.obamadev.rewrite.module.Module;
 
 public class DiscordRPC extends Module {
-    public DiscordRPC(){
+    public DiscordRPC() {
         super("DiscordRPC", Category.MISC);
     }
 
