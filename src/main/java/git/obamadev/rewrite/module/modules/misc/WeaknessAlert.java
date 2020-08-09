@@ -15,7 +15,7 @@ public class WeaknessAlert extends Module {
 
     public void onUpdate() {
         if (this.isToggled()) {
-            if (mc.player != null) {
+            if (mc.world != null && mc.player != null) {
                 if (mc.player.isPotionActive(MobEffects.WEAKNESS) && !hasAnnounced) {
                     hasAnnounced = true;
                     MessageManager.sendMessagePrefix(ChatFormatting.GRAY + "[" + ChatFormatting.LIGHT_PURPLE + "WeaknessDetect" + ChatFormatting.GRAY + "] " + ChatFormatting.WHITE + "Hey" + ChatFormatting.GRAY + ", " + ChatFormatting.AQUA + mc.getSession().getUsername() + ChatFormatting.GRAY + "," + ChatFormatting.WHITE + " unlucky move mate" + ChatFormatting.GRAY + ", " + ChatFormatting.WHITE + "you now have " + ChatFormatting.RED + "weakness");
