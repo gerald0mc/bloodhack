@@ -4,6 +4,7 @@ import git.obamadev.rewrite.module.modules.chat.ChatSuffix;
 import git.obamadev.rewrite.module.modules.chat.PrefixChat;
 import git.obamadev.rewrite.module.modules.hud.Watermark;
 import git.obamadev.rewrite.module.modules.misc.EntityAlert;
+import git.obamadev.rewrite.module.modules.misc.WeaknessAlert;
 import git.obamadev.rewrite.module.modules.movement.Sprint;
 import git.obamadev.rewrite.module.modules.hud.Arraylist;
 import git.obamadev.rewrite.module.modules.misc.DiscordRPC;
@@ -27,6 +28,7 @@ public class ModuleManager {
         modules.add(new ChatSuffix());
         modules.add(new Watermark());
         modules.add(new PrefixChat());
+        modules.add(new WeaknessAlert());
     }
 
     public ArrayList<Module> getModules() {
