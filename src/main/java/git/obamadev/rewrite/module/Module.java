@@ -1,11 +1,13 @@
 package git.obamadev.rewrite.module;
 
+import git.obamadev.rewrite.managers.Setting;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import git.obamadev.rewrite.managers.Settings;
 import org.lwjgl.input.Keyboard;
+
+import static git.obamadev.rewrite.ObamaMod.settingsManager;
 
 public class Module {
     protected Minecraft mc = Minecraft.getMinecraft();
@@ -13,17 +15,18 @@ public class Module {
     private String name, displayName;
     private Category category;
     private boolean toggled;
-    public Settings settings = new Settings();
+    private Integer key;
 
     public Module(String name , Category category){
         this.name = name;
         this.category = category;
         toggled = false;
+        key = Keyboard.KEY_NONE;
+        setup();
     }
 
     public void registerSettings() {
-        settings.addSetting("enabled", false);
-        settings.addSetting("keybind", String.valueOf(Keyboard.KEY_NONE));
+
         selfSettings();
     }
 
@@ -41,30 +44,34 @@ public class Module {
             onUpdate();
         }
     }
-    public void setSettings(Settings newSettings) {
-        settings = newSettings;
-    }
     public void onUpdate() {}
 
     public void selfSettings() {
     }
-
+    public void rSetting(Setting setting){
+        settingsManager.rSetting(setting);
+    }
     public void onToggle() {}
     public void toggle() {
         toggled = !toggled;
         onToggle();
         if (toggled) {
             onEnable();
-            settings.setSetting("enabled", true);
+
 
         } else {
             onDisable();
-            settings.setSetting("enabled", false);
         }
     }
+
     public Integer getKey(){
-        return  Integer.parseInt(settings.getSetting("keybind").toString());
+        return key;
     }
+
+    public void setKey(Integer key) {
+        this.key = key;
+    }
+
     public String getName() {
         return name;
     }

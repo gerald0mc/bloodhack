@@ -1,5 +1,6 @@
 package git.obamadev.rewrite;
 
+import git.obamadev.rewrite.managers.ConfigManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -29,9 +30,9 @@ public class ObamaMod {
     public static final String version = "b1";
     public static final String appid = "737985708945571861";
     public static String prefix = "=";
-
-    public static ModuleManager moduleManager = new ModuleManager();
-    public static final SettingsManager settingsManager = new SettingsManager();
+    public static ConfigManager configManager;
+    public static ModuleManager moduleManager;
+    public static SettingsManager settingsManager;
 
     //pre init (phase 3)
     @Mod.EventHandler
@@ -42,7 +43,9 @@ public class ObamaMod {
     //init (phase 5)
     @Mod.EventHandler
     public void Init(FMLInitializationEvent event) {
-        moduleManager.loadModules();
+        settingsManager = new SettingsManager();
+        moduleManager= new ModuleManager();
+        configManager = new ConfigManager();
         CommandManager.init();
         MinecraftForge.EVENT_BUS.register(new CommandManager());
         MinecraftForge.EVENT_BUS.register(this);

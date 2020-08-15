@@ -1,5 +1,6 @@
 package git.obamadev.rewrite.module.modules.hud;
 
+import git.obamadev.rewrite.managers.Setting;
 import git.obamadev.rewrite.module.Category;
 import git.obamadev.rewrite.module.Module;
 import git.obamadev.rewrite.ObamaMod;
@@ -10,9 +11,10 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import java.awt.*;
 
 public class Arraylist extends Module {
-
+    Setting rainbow;
     public Arraylist() {
         super("Arraylist", Category.HUD);
+
     }
     public int GenRainbow() {
         int drgb;

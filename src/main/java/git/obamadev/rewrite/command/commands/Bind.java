@@ -18,7 +18,7 @@ public class Bind extends Command {
                 for (Module m: ObamaMod.moduleManager.getModules()) {
                     if (m.getName().equalsIgnoreCase(args[1])) {
                         try {
-                            m.settings.setSetting("keybind", String.valueOf(Keyboard.getKeyIndex(args[2].toUpperCase())));
+                            m.setKey(Keyboard.getKeyIndex(args[2].toUpperCase()));
                             MessageManager.sendMessagePrefix(ChatFormatting.AQUA + m.getName() + ChatFormatting.WHITE + " is now binded to " + ChatFormatting.RED + args[2].toUpperCase() + ChatFormatting.GRAY + " (" + ChatFormatting.WHITE + Keyboard.getKeyIndex(args[2].toUpperCase() + "") + ChatFormatting.GRAY + ")");
                         } catch (Exception e) {
                             MessageManager.sendMessagePrefix(ChatFormatting.RED + m.getName() + ChatFormatting.WHITE + " Something went wrong :(");

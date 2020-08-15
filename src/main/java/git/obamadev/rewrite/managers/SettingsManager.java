@@ -7,67 +7,61 @@ import git.obamadev.rewrite.ObamaMod;
 import git.obamadev.rewrite.module.Module;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ *  Made by HeroCode
+ *  it's free to use
+ *  but you have to credit me
+ *
+ *  @author HeroCode
+ */
 public class SettingsManager {
-    Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    File configFile = new File("ObamaRewriteConfig.json");
 
-    public Map<String, Settings> readSettings() {
-        Map<String, Settings> settingsArray = new HashMap<>();
-        if (configFile.exists() && configFile.isFile()) {
-            try {
-                settingsArray = gson.fromJson(new FileReader(configFile), new TypeToken<Map<String, Settings>>(){}.getType());
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-        } else {
-            try {
-                FileWriter fw = new FileWriter(configFile);
-                gson.toJson(settingsArray, fw);
-                fw.flush();
-                fw.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return settingsArray;
+    private ArrayList<Setting> settings;
+
+    public SettingsManager(){
+        this.settings = new ArrayList<>();
     }
 
-    public void writeSettings(Map<String, Settings> settingsArray) {
-        try {
-            FileWriter fw = new FileWriter(configFile);
-            gson.toJson(settingsArray, fw);
-            fw.flush();
-            fw.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void rSetting(Setting in){
+        this.settings.add(in);
     }
 
-    public void updateSettings() {
-        Map<String, Settings> settingsArray = new HashMap<>();
-        for (Module module : ObamaMod.moduleManager.getModules()) {
-            settingsArray.put(module.getName(), module.settings);
-        }
-        writeSettings(settingsArray);
+    public ArrayList<Setting> getSettings(){
+        return this.settings;
     }
 
-    public void loadSettings() {
-        Map<String, Settings> settingsArray = readSettings();
-        for (Module module : ObamaMod.moduleManager.getModules()) {
-            String moduleName = module.getName();
-            try {
-                if (settingsArray.containsKey(moduleName)) {
-                    module.setSettings(settingsArray.get(moduleName));
-                } else {
-                    module.registerSettings();
-                }
-            } catch (NullPointerException npe) {
-                module.registerSettings();
+    public ArrayList<Setting> getSettingsByMod(Module mod){
+        ArrayList<Setting> out = new ArrayList<>();
+        for(Setting s : getSettings()){
+            if(s.getParentMod().equals(mod)){
+                out.add(s);
             }
         }
-        updateSettings();
+
+        return out;
+    }
+
+    public Setting getSettingByDisplayName(String name){
+        for(Setting set : getSettings()){
+            if(set.getDisplayName().equalsIgnoreCase(name)){
+                return set;
+            }
+        }
+        System.err.println("[Osiris+] Error Setting NOT found: '" + name +"'!");
+        return null;
+    }
+
+    public Setting getSettingByID(String id){
+        for(Setting s : getSettings()){
+            if(s.getId().equalsIgnoreCase(id)){
+                return s;
+            }
+        }
+        System.err.println("[Osiris+] Error Setting NOT found: '" + id +"'!");
+        return null;
     }
 }
