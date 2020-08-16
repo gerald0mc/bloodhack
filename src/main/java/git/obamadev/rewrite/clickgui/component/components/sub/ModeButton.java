@@ -7,7 +7,6 @@ import org.lwjgl.opengl.GL11;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 
-//Your Imports
 import git.obamadev.rewrite.clickgui.component.Component;
 import git.obamadev.rewrite.clickgui.component.components.Button;
 import git.obamadev.rewrite.managers.Setting;
@@ -58,10 +57,10 @@ public class ModeButton extends Component {
 	
 	@Override
 	public void mouseClicked(int mouseX, int mouseY, int button) {
-		if(isMouseOnButton(mouseX, mouseY) && button == 0 && this.parent.open) {
+		if (isMouseOnButton(mouseX, mouseY) && button == 0 && this.parent.open) {
 			int maxIndex = set.getOptions().size();
 
-			if(modeIndex + 1 > maxIndex)
+			if (modeIndex + 1 > maxIndex)
 				modeIndex = 0;
 			else
 				modeIndex++;
@@ -72,7 +71,7 @@ public class ModeButton extends Component {
 	}
 	
 	public boolean isMouseOnButton(int x, int y) {
-		if(x > this.x && x < this.x + 88 && y > this.y && y < this.y + 12) {
+		if (x > this.x && x < this.x + 88 && y > this.y && y < this.y + 12) {
 			return true;
 		}
 		return false;

@@ -26,7 +26,6 @@ public class Module {
     }
 
     public void registerSettings() {
-
         selfSettings();
     }
 

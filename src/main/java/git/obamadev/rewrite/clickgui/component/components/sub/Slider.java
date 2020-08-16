@@ -9,7 +9,6 @@ import org.lwjgl.opengl.GL11;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 
-//Your Imports
 import git.obamadev.rewrite.clickgui.component.Component;
 import git.obamadev.rewrite.clickgui.component.components.Button;
 import git.obamadev.rewrite.managers.Setting;
@@ -88,10 +87,10 @@ public class Slider extends Component {
 	
 	@Override
 	public void mouseClicked(int mouseX, int mouseY, int button) {
-		if(isMouseOnButtonD(mouseX, mouseY) && button == 0 && this.parent.open) {
+		if (isMouseOnButtonD(mouseX, mouseY) && button == 0 && this.parent.open) {
 			dragging = true;
 		}
-		if(isMouseOnButtonI(mouseX, mouseY) && button == 0 && this.parent.open) {
+		if (isMouseOnButtonI(mouseX, mouseY) && button == 0 && this.parent.open) {
 			dragging = true;
 		}
 	}
@@ -103,7 +102,7 @@ public class Slider extends Component {
 	
 	public boolean isMouseOnButtonD(int x, int y) {
 		ObamaMod.configManager.SaveAll();
-		if(x > this.x && x < this.x + (parent.parent.getWidth() / 2 + 1) && y > this.y && y < this.y + 12) {
+		if (x > this.x && x < this.x + (parent.parent.getWidth() / 2 + 1) && y > this.y && y < this.y + 12) {
 			return true;
 		}
 		return false;
@@ -111,7 +110,7 @@ public class Slider extends Component {
 	
 	public boolean isMouseOnButtonI(int x, int y) {
 		ObamaMod.configManager.SaveAll();
-		if(x > this.x + parent.parent.getWidth() / 2 && x < this.x + parent.parent.getWidth() && y > this.y && y < this.y + 12) {
+		if (x > this.x + parent.parent.getWidth() / 2 && x < this.x + parent.parent.getWidth() && y > this.y && y < this.y + 12) {
 			return true;
 		}
 		return false;

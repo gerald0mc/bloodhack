@@ -9,7 +9,6 @@ import net.minecraft.client.gui.Gui;
 
 import git.obamadev.rewrite.clickgui.component.Component;
 import git.obamadev.rewrite.clickgui.component.components.Button;
-import git.obamadev.rewrite.managers.Setting;
 
 public class Keybind extends Component {
 
@@ -51,14 +50,14 @@ public class Keybind extends Component {
 	
 	@Override
 	public void mouseClicked(int mouseX, int mouseY, int button) {
-		if(isMouseOnButton(mouseX, mouseY) && button == 0 && this.parent.open) {
+		if (isMouseOnButton(mouseX, mouseY) && button == 0 && this.parent.open) {
 			this.binding = !this.binding;
 		}
 	}
 	
 	@Override
 	public void keyTyped(char typedChar, int key) {
-		if(this.binding) {
+		if (this.binding) {
 			this.parent.mod.setKey(key);
 			this.binding = false;
 			ObamaMod.configManager.SaveAll();
@@ -66,7 +65,7 @@ public class Keybind extends Component {
 	}
 	
 	public boolean isMouseOnButton(int x, int y) {
-		if(x > this.x && x < this.x + 88 && y > this.y && y < this.y + 12) {
+		if (x > this.x && x < this.x + 88 && y > this.y && y < this.y + 12) {
 			return true;
 		}
 		return false;

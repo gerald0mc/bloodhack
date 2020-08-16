@@ -14,10 +14,7 @@ import org.lwjgl.opengl.GL11;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 
-//Your Imports
-
 import static git.obamadev.rewrite.ObamaMod.settingsManager;
-
 
 public class Button extends Component {
 
@@ -37,17 +34,17 @@ public class Button extends Component {
 		this.open = false;
 		height = 12;
 		int opY = offset + 12;
-		if(settingsManager.getSettingsByMod(mod) != null) {
-			for(Setting s : settingsManager.getSettingsByMod(mod)){
-				if(s.isCombo()){
+		if (settingsManager.getSettingsByMod(mod) != null) {
+			for (Setting s : settingsManager.getSettingsByMod(mod)){
+				if (s.isCombo()){
 					this.subcomponents.add(new ModeButton(s, this, mod, opY));
 					opY += 12;
 				}
-				if(s.isSlider()){
+				if (s.isSlider()){
 					this.subcomponents.add(new Slider(s, this, opY));
 					opY += 12;
 				}
-				if(s.isCheck()){
+				if (s.isCheck()){
 					this.subcomponents.add(new Checkbox(s, this, opY));
 					opY += 12;
 				}
@@ -73,12 +70,12 @@ public class Button extends Component {
 		GL11.glPushMatrix();
 		GL11.glScalef(0.5f,0.5f, 0.5f);
 		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(this.mod.getName(), (parent.getX() + 2) * 2, (parent.getY() + offset + 2) * 2 + 4, this.mod.isToggled() ? 0x999999 : -1);
-		if(this.subcomponents.size() > 2)
+		if (this.subcomponents.size() > 2)
 		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(this.open ? "-" : "+", (parent.getX() + parent.getWidth() - 10) * 2, (parent.getY() + offset + 2) * 2 + 4, -1);
 		GL11.glPopMatrix();
-		if(this.open) {
-			if(!this.subcomponents.isEmpty()) {
-				for(Component comp : this.subcomponents) {
+		if (this.open) {
+			if (!this.subcomponents.isEmpty()) {
+				for (Component comp : this.subcomponents) {
 					comp.renderComponent();
 				}
 				Gui.drawRect(parent.getX() + 2, parent.getY() + this.offset + 12, parent.getX() + 3, parent.getY() + this.offset + ((this.subcomponents.size() + 1) * 12), ClickGui.color);
@@ -88,7 +85,7 @@ public class Button extends Component {
 	
 	@Override
 	public int getHeight() {
-		if(this.open) {
+		if (this.open) {
 			return (12 * (this.subcomponents.size() + 1));
 		}
 		return 12;
@@ -97,8 +94,8 @@ public class Button extends Component {
 	@Override
 	public void updateComponent(int mouseX, int mouseY) {
 		this.isHovered = isMouseOnButton(mouseX, mouseY);
-		if(!this.subcomponents.isEmpty()) {
-			for(Component comp : this.subcomponents) {
+		if (!this.subcomponents.isEmpty()) {
+			for (Component comp : this.subcomponents) {
 				comp.updateComponent(mouseX, mouseY);
 			}
 		}
@@ -106,34 +103,34 @@ public class Button extends Component {
 	
 	@Override
 	public void mouseClicked(int mouseX, int mouseY, int button) {
-		if(isMouseOnButton(mouseX, mouseY) && button == 0) {
+		if (isMouseOnButton(mouseX, mouseY) && button == 0) {
 			this.mod.toggle();
 		}
-		if(isMouseOnButton(mouseX, mouseY) && button == 1) {
+		if (isMouseOnButton(mouseX, mouseY) && button == 1) {
 			this.open = !this.open;
 			this.parent.refresh();
 		}
-		for(Component comp : this.subcomponents) {
+		for (Component comp : this.subcomponents) {
 			comp.mouseClicked(mouseX, mouseY, button);
 		}
 	}
 	
 	@Override
 	public void mouseReleased(int mouseX, int mouseY, int mouseButton) {
-		for(Component comp : this.subcomponents) {
+		for (Component comp : this.subcomponents) {
 			comp.mouseReleased(mouseX, mouseY, mouseButton);
 		}
 	}
 	
 	@Override
 	public void keyTyped(char typedChar, int key) {
-		for(Component comp : this.subcomponents) {
+		for (Component comp : this.subcomponents) {
 			comp.keyTyped(typedChar, key);
 		}
 	}
 	
 	public boolean isMouseOnButton(int x, int y) {
-		if(x > parent.getX() && x < parent.getX() + parent.getWidth() && y > this.parent.getY() + this.offset && y < this.parent.getY() + 12 + this.offset) {
+		if (x > parent.getX() && x < parent.getX() + parent.getWidth() && y > this.parent.getY() + this.offset && y < this.parent.getY() + 12 + this.offset) {
 			return true;
 		}
 		return false;

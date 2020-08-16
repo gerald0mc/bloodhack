@@ -2,10 +2,9 @@ package git.obamadev.rewrite.module;
 
 public enum Category {
     COMBAT,
+    MISC,
     MOVEMENT,
     RENDER,
-    PLAYER,
-    HUD,
     CHAT,
-    MISC
+    HUD
 }

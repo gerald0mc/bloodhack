@@ -2,6 +2,8 @@ package git.obamadev.rewrite.module;
 
 import git.obamadev.rewrite.module.modules.chat.ChatSuffix;
 import git.obamadev.rewrite.module.modules.chat.PrefixChat;
+import git.obamadev.rewrite.module.modules.combat.AutoCrystal;
+import git.obamadev.rewrite.module.modules.combat.AutoTotem;
 import git.obamadev.rewrite.module.modules.hud.ClickGUI;
 import git.obamadev.rewrite.module.modules.hud.Stats;
 import git.obamadev.rewrite.module.modules.hud.Watermark;
@@ -13,9 +15,6 @@ import git.obamadev.rewrite.module.modules.misc.DiscordRPC;
 import git.obamadev.rewrite.module.modules.render.RainRemover;
 
 import java.util.ArrayList;
-
-import static git.obamadev.rewrite.ObamaMod.settingsManager;
-import static git.obamadev.rewrite.ObamaMod.moduleManager;
 
 public class ModuleManager {
     private ArrayList<Module> modules = new ArrayList<Module>();
@@ -33,6 +32,8 @@ public class ModuleManager {
         modules.add(new WeaknessAlert());
         modules.add(new ClickGUI());
         modules.add(new Stats());
+        modules.add(new AutoCrystal());
+        modules.add(new AutoTotem());
     }
 
     public ArrayList<Module> getModules() {
@@ -42,5 +43,4 @@ public class ModuleManager {
     public Module getModuleByName(String name) {
         return modules.stream().filter(module -> module.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
     }
-
 }

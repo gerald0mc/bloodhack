@@ -1,15 +1,8 @@
 package git.obamadev.rewrite.managers;
 
-import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import git.obamadev.rewrite.ObamaMod;
 import git.obamadev.rewrite.module.Module;
 
-import java.io.*;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  *  Made by HeroCode
@@ -41,7 +34,6 @@ public class SettingsManager {
                 out.add(s);
             }
         }
-
         return out;
     }
 
@@ -51,7 +43,7 @@ public class SettingsManager {
                 return set;
             }
         }
-        System.err.println("[Osiris+] Error Setting NOT found: '" + name +"'!");
+        System.err.println("[ObamaHack] Error Setting NOT found: '" + name +"'!");
         return null;
     }
 
@@ -61,7 +53,7 @@ public class SettingsManager {
                 return s;
             }
         }
-        System.err.println("[Osiris+] Error Setting NOT found: '" + id +"'!");
+        System.err.println("[ObamaHack] Error Setting NOT found: '" + id +"'!");
         return null;
     }
 }

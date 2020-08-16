@@ -8,8 +8,6 @@ import git.obamadev.rewrite.clickgui.component.Frame;
 import git.obamadev.rewrite.module.Category;
 import net.minecraft.client.gui.GuiScreen;
 
-
-
 public class ClickGui extends GuiScreen {
 
 	public static ArrayList<Frame> frames;
@@ -18,7 +16,7 @@ public class ClickGui extends GuiScreen {
 	public ClickGui() {
 		this.frames = new ArrayList<Frame>();
 		int frameX = 5;
-		for(Category category : Category.values()) {
+		for (Category category : Category.values()) {
 			Frame frame = new Frame(category);
 			frame.setX(frameX);
 			frames.add(frame);
@@ -33,10 +31,10 @@ public class ClickGui extends GuiScreen {
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		this.drawDefaultBackground();
-		for(Frame frame : frames) {
+		for (Frame frame : frames) {
 			frame.renderFrame(this.fontRenderer);
 			frame.updatePosition(mouseX, mouseY);
-			for(Component comp : frame.getComponents()) {
+			for (Component comp : frame.getComponents()) {
 				comp.updateComponent(mouseX, mouseY);
 			}
 		}
@@ -44,18 +42,18 @@ public class ClickGui extends GuiScreen {
 	
 	@Override
     protected void mouseClicked(final int mouseX, final int mouseY, final int mouseButton) throws IOException {
-		for(Frame frame : frames) {
-			if(frame.isWithinHeader(mouseX, mouseY) && mouseButton == 0) {
+		for (Frame frame : frames) {
+			if (frame.isWithinHeader(mouseX, mouseY) && mouseButton == 0) {
 				frame.setDrag(true);
 				frame.dragX = mouseX - frame.getX();
 				frame.dragY = mouseY - frame.getY();
 			}
-			if(frame.isWithinHeader(mouseX, mouseY) && mouseButton == 1) {
+			if (frame.isWithinHeader(mouseX, mouseY) && mouseButton == 1) {
 				frame.setOpen(!frame.isOpen());
 			}
-			if(frame.isOpen()) {
-				if(!frame.getComponents().isEmpty()) {
-					for(Component component : frame.getComponents()) {
+			if (frame.isOpen()) {
+				if (!frame.getComponents().isEmpty()) {
+					for (Component component : frame.getComponents()) {
 						component.mouseClicked(mouseX, mouseY, mouseButton);
 					}
 				}
@@ -65,10 +63,10 @@ public class ClickGui extends GuiScreen {
 	
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) {
-		for(Frame frame : frames) {
-			if(frame.isOpen() && keyCode != 1) {
-				if(!frame.getComponents().isEmpty()) {
-					for(Component component : frame.getComponents()) {
+		for (Frame frame : frames) {
+			if (frame.isOpen() && keyCode != 1) {
+				if (!frame.getComponents().isEmpty()) {
+					for (Component component : frame.getComponents()) {
 						component.keyTyped(typedChar, keyCode);
 					}
 				}
@@ -82,13 +80,13 @@ public class ClickGui extends GuiScreen {
 	
 	@Override
     protected void mouseReleased(int mouseX, int mouseY, int state) {
-		for(Frame frame : frames) {
+		for (Frame frame : frames) {
 			frame.setDrag(false);
 		}
-		for(Frame frame : frames) {
-			if(frame.isOpen()) {
-				if(!frame.getComponents().isEmpty()) {
-					for(Component component : frame.getComponents()) {
+		for (Frame frame : frames) {
+			if (frame.isOpen()) {
+				if (!frame.getComponents().isEmpty()) {
+					for (Component component : frame.getComponents()) {
 						component.mouseReleased(mouseX, mouseY, state);
 					}
 				}
@@ -98,6 +96,6 @@ public class ClickGui extends GuiScreen {
 	
 	@Override
 	public boolean doesGuiPauseGame() {
-		return true;
+		return false;
 	}
 }
