@@ -1,4 +1,4 @@
-#ObamaHack
+ObamaHack
  ***
  A Minecraft Utility Mod for 1.12.2. Designed around Anarchy Servers.
  Feel free to make PR's if you want.
