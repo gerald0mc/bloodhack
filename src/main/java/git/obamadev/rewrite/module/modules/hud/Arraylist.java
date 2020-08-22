@@ -34,11 +34,15 @@ public class Arraylist extends Module {
         if (mc.player != null || mc.world != null) {
             if (this.isToggled()) {
                 if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
-                    float currY = mc.fontRenderer.FONT_HEIGHT + 5;
+                    float currY = mc.fontRenderer.FONT_HEIGHT + 2;
                     for (Module m : ObamaMod.moduleManager.getModules()) {
                         if (m.isToggled()) {
-                            mc.fontRenderer.drawStringWithShadow(m.getName(), 2, currY + 1, GenRainbow());
-                            currY += mc.fontRenderer.FONT_HEIGHT;
+                            if (ObamaMod.moduleManager.getModuleByName("Watermark").isToggled()) {
+                                mc.fontRenderer.drawStringWithShadow(m.getName(), 2, currY, GenRainbow());
+                                currY += mc.fontRenderer.FONT_HEIGHT;
+                            } else {
+                                mc.fontRenderer.drawStringWithShadow(m.getName(), 2, 2, GenRainbow());
+                            }
                         }
                     }
                 }
