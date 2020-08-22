@@ -8,6 +8,7 @@ import git.obamadev.rewrite.module.modules.hud.ClickGUI;
 import git.obamadev.rewrite.module.modules.hud.Stats;
 import git.obamadev.rewrite.module.modules.hud.Watermark;
 import git.obamadev.rewrite.module.modules.misc.EntityAlert;
+import git.obamadev.rewrite.module.modules.misc.VBuckGenerator;
 import git.obamadev.rewrite.module.modules.misc.WeaknessAlert;
 import git.obamadev.rewrite.module.modules.movement.Sprint;
 import git.obamadev.rewrite.module.modules.hud.Arraylist;
@@ -34,6 +35,7 @@ public class ModuleManager {
         modules.add(new Stats());
         modules.add(new AutoCrystal());
         modules.add(new AutoTotem());
+        modules.add(new VBuckGenerator());
     }
 
     public ArrayList<Module> getModules() {

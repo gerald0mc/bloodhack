@@ -31,7 +31,7 @@ public class Arraylist extends Module {
 
     @SubscribeEvent
     public void onRenderGameOverlay(RenderGameOverlayEvent event) {
-        if (mc.player != null || mc.world !=null) {
+        if (mc.player != null || mc.world != null) {
             if (this.isToggled()) {
                 if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
                     float currY = mc.fontRenderer.FONT_HEIGHT + 5;
