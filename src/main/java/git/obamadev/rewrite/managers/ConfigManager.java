@@ -1,12 +1,9 @@
 package git.obamadev.rewrite.managers;
 
-import git.obamadev.rewrite.ObamaMod;
 import git.obamadev.rewrite.clickgui.ClickGui;
 import git.obamadev.rewrite.clickgui.component.Frame;
 import git.obamadev.rewrite.module.Module;
-import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
-import scala.Int;
 
 import java.awt.*;
 import java.io.*;
@@ -18,38 +15,35 @@ import static git.obamadev.rewrite.ObamaMod.moduleManager;
 import static git.obamadev.rewrite.ObamaMod.settingsManager;
 
 public class ConfigManager {
-    Minecraft mc = Minecraft.getMinecraft();
-    public File Osiris;
+    public File ObamaHack;
     public File Settings;
 
     public ConfigManager() {
-        this.Osiris = new File("ObamaHack");
-        if (!this.Osiris.exists()) {
-            this.Osiris.mkdirs();
+        this.ObamaHack = new File("ObamaHack");
+        if (!this.ObamaHack.exists()) {
+            this.ObamaHack.mkdirs();
         }
 
-        this.Settings = new File("Obamahack" + File.separator + "Settings");
+        this.Settings = new File("ObamaHack" + File.separator + "Settings");
         if (!this.Settings.exists()) {
             this.Settings.mkdirs();
         }
-
         loadMods();
         loadSettingsList();
         loadBinds();
         loadFramePos();
     }
-    public void SaveAll(){
+
+    public void SaveAll() {
         saveBinds();
         saveMods();
         saveSettingsList();
         saveGUI();
     }
 
-
-
     public void saveBinds() {
         try {
-            File file = new File(this.Osiris.getAbsolutePath(), "Binds.txt");
+            File file = new File(this.ObamaHack.getAbsolutePath(), "Binds.txt");
             BufferedWriter out = new BufferedWriter(new FileWriter(file));
             Iterator var3 = moduleManager.getModules().iterator();
 
@@ -58,93 +52,85 @@ public class ConfigManager {
                 out.write(module.getName() + ":" + Keyboard.getKeyName(module.getKey()));
                 out.write("\r\n");
             }
-
             out.close();
         } catch (Exception var5) {
         }
-
     }
+
     public void saveGUI() {
         try {
-            File file = new File(this.Osiris.getAbsolutePath(), "framepos.txt");
+            File file = new File(this.ObamaHack.getAbsolutePath(), "FramePositions.txt");
             BufferedWriter out = new BufferedWriter(new FileWriter(file));
             for(Frame frame:ClickGui.frames){
-                out.write(frame.category + ":y:" + frame.getX());
+                out.write(frame.category + ":x:" + frame.getX());
                 out.write("\r\n");
                 out.write(frame.category + ":y:" + frame.getY());
                 out.write("\r\n");
-
             }
-
             out.close();
         } catch (Exception var5) {
         }
-
     }
+
     public void loadFramePos() {
         try {
-            File file = new File(this.Osiris.getAbsolutePath(), "framepos.txt");
+            File file = new File(this.ObamaHack.getAbsolutePath(), "FramePositions.txt");
             FileInputStream fstream = new FileInputStream(file.getAbsolutePath());
             DataInputStream in = new DataInputStream(fstream);
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
 
             String line;
-            while((line = br.readLine()) != null) {
+            while ((line = br.readLine()) != null) {
                 String curLine = line.trim();
                 String name = curLine.split(":")[0];
                 String xory = curLine.split(":")[1];
                 String pos = curLine.split(":")[2];
-                for(Frame frame:ClickGui.frames) {
-                    if(frame.category.equals(name)){
-                        if(xory.contains("x")){
+                for (Frame frame:ClickGui.frames) {
+                    if (frame.category.equals(name)){
+                        if (xory.contains("x")) {
                             frame.setX(Integer.parseInt(xory));
                         }
-                        if(xory.contains("y")){
+                        if (xory.contains("y")) {
                             frame.setY(Integer.parseInt(xory));
                         }
                     }
                 }
-
                 }
-
             br.close();
         } catch (Exception var11) {
             var11.printStackTrace();
             //saveBinds();
         }
-
     }
+
     public void loadBinds() {
         try {
-            File file = new File(this.Osiris.getAbsolutePath(), "Binds.txt");
+            File file = new File(this.ObamaHack.getAbsolutePath(), "Binds.txt");
             FileInputStream fstream = new FileInputStream(file.getAbsolutePath());
             DataInputStream in = new DataInputStream(fstream);
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
 
             String line;
-            while((line = br.readLine()) != null) {
+            while ((line = br.readLine()) != null) {
                 String curLine = line.trim();
                 String name = curLine.split(":")[0];
                 String bind = curLine.split(":")[1];
-                for(Module m : moduleManager.getModules()) {
+                for (Module m : moduleManager.getModules()) {
                     if (m != null && m.getName().equalsIgnoreCase(name)) {
                         m.setKey(Keyboard.getKeyIndex(bind));
                     }
                 }
             }
-
             br.close();
         } catch (Exception var11) {
             var11.printStackTrace();
             //saveBinds();
         }
-
     }
-
 
     public void saveMods() {
         try {
-            File file = new File(this.Osiris.getAbsolutePath(), "EnabledModules.txt");
+            File file = new File(this.ObamaHack.getAbsolutePath(), "EnabledModules.txt");
             BufferedWriter out = new BufferedWriter(new FileWriter(file));
             Iterator var3 = moduleManager.getModules().iterator();
 
@@ -155,39 +141,32 @@ public class ConfigManager {
                     out.write("\r\n");
                 }
             }
-
             out.close();
         } catch (Exception var5) {
         }
-
     }
-
-
-
-
 
     public void writeCrash(String alah) {
         try {
             SimpleDateFormat format = new SimpleDateFormat("dd_MM_yyyy-HH_mm_ss");
             Date date = new Date();
-            File file = new File(this.Osiris.getAbsolutePath(), "crashlog-".concat(format.format(date)).concat(".bruh"));
+            File file = new File(this.ObamaHack.getAbsolutePath(), "crashlog-".concat(format.format(date)).concat(".bruh"));
             BufferedWriter outWrite = new BufferedWriter(new FileWriter(file));
             outWrite.write(alah);
             outWrite.close();
         } catch (Exception var6) {
         }
-
     }
 
     public void loadMods() {
         try {
-            File file = new File(this.Osiris.getAbsolutePath(), "EnabledModules.txt");
+            File file = new File(this.ObamaHack.getAbsolutePath(), "EnabledModules.txt");
             FileInputStream fstream = new FileInputStream(file.getAbsolutePath());
             DataInputStream in = new DataInputStream(fstream);
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
 
             String line;
-            while((line = br.readLine()) != null) {
+            while ((line = br.readLine()) != null) {
                 Iterator var6 = moduleManager.getModules().iterator();
 
                 while(var6.hasNext()) {
@@ -197,13 +176,11 @@ public class ConfigManager {
                     }
                 }
             }
-
             br.close();
         } catch (Exception var8) {
             var8.printStackTrace();
             //this.saveMods();
         }
-
     }
 
     public void saveSettingsList() {
@@ -216,13 +193,12 @@ public class ConfigManager {
             out = new BufferedWriter(new FileWriter(file));
             var3 =settingsManager.getSettings().iterator();
 
-            while(var3.hasNext()) {
+            while (var3.hasNext()) {
                 i = (Setting)var3.next();
                 if (i.isSlider()) {
                     out.write(i.getId() + ":" + i.getValDouble() + ":" + i.getParentMod().getName() + "\r\n");
                 }
             }
-
             out.close();
         } catch (Exception var7) {
         }
@@ -232,13 +208,12 @@ public class ConfigManager {
             out = new BufferedWriter(new FileWriter(file));
             var3 = settingsManager.getSettings().iterator();
 
-            while(var3.hasNext()) {
+            while (var3.hasNext()) {
                 i = (Setting)var3.next();
                 if (i.isCheck()) {
                     out.write(i.getId() + ":" + i.getValBoolean() + ":" + i.getParentMod().getName() + "\r\n");
                 }
             }
-
             out.close();
         } catch (Exception var6) {
         }
@@ -248,13 +223,12 @@ public class ConfigManager {
             out = new BufferedWriter(new FileWriter(file));
             var3 = settingsManager.getSettings().iterator();
 
-            while(var3.hasNext()) {
+            while (var3.hasNext()) {
                 i = (Setting)var3.next();
                 if (i.isCombo()) {
                     out.write(i.getId() + ":" + i.getValString() + ":" + i.getParentMod().getName() + "\r\n");
                 }
             }
-
             out.close();
         } catch (Exception var5) {
         }
@@ -264,17 +238,15 @@ public class ConfigManager {
             out = new BufferedWriter(new FileWriter(file));
             var3 = settingsManager.getSettings().iterator();
 
-            while(var3.hasNext()) {
+            while (var3.hasNext()) {
                 i = (Setting)var3.next();
                 if (i.isColorPicker()) {
                     out.write(i.getId() + ":" + i.getValColor().getRGB() + ":" + i.getParentMod().getName() + "\r\n");
                 }
             }
-
             out.close();
         } catch (Exception var7) {
         }
-
     }
 
     public void loadSettingsList() {
@@ -295,19 +267,18 @@ public class ConfigManager {
             in = new DataInputStream(fstream);
             br = new BufferedReader(new InputStreamReader(in));
 
-            while((line = br.readLine()) != null) {
+            while ((line = br.readLine()) != null) {
                 curLine = line.trim();
                 name = curLine.split(":")[0];
                 isOn = curLine.split(":")[1];
                 m = curLine.split(":")[2];
-                for(Module mm : moduleManager.getModules()) {
+                for (Module mm : moduleManager.getModules()) {
                     if (mm != null && mm.getName().equalsIgnoreCase(m)) {
                         mod = settingsManager.getSettingByID(name);
                         mod.setValDouble(Double.parseDouble(isOn));
                     }
                 }
             }
-
             br.close();
         } catch (Exception var13) {
             var13.printStackTrace();
@@ -320,19 +291,18 @@ public class ConfigManager {
             in = new DataInputStream(fstream);
             br = new BufferedReader(new InputStreamReader(in));
 
-            while((line = br.readLine()) != null) {
+            while ((line = br.readLine()) != null) {
                 curLine = line.trim();
                 name = curLine.split(":")[0];
                 color = Integer.parseInt(curLine.split(":")[1]);
                 m = curLine.split(":")[2];
-                for(Module mm : moduleManager.getModules()) {
+                for (Module mm : moduleManager.getModules()) {
                     if (mm != null && mm.getName().equalsIgnoreCase(m)) {
                         mod = settingsManager.getSettingByID(name);
                         mod.setValColor(new Color(color));
                     }
                 }
             }
-
             br.close();
         } catch (Exception var13) {
             var13.printStackTrace();
@@ -345,12 +315,12 @@ public class ConfigManager {
             in = new DataInputStream(fstream);
             br = new BufferedReader(new InputStreamReader(in));
 
-            while((line = br.readLine()) != null) {
+            while ((line = br.readLine()) != null) {
                 curLine = line.trim();
                 name = curLine.split(":")[0];
                 isOn = curLine.split(":")[1];
                 m = curLine.split(":")[2];
-                for(Module mm : moduleManager.getModules()) {
+                for (Module mm : moduleManager.getModules()) {
                     if (mm != null && mm.getName().equalsIgnoreCase(m)) {
                         mod = settingsManager.getSettingByID(name);
                         mod.setValBoolean(Boolean.parseBoolean(isOn));
@@ -370,19 +340,18 @@ public class ConfigManager {
             in = new DataInputStream(fstream);
             br = new BufferedReader(new InputStreamReader(in));
 
-            while((line = br.readLine()) != null) {
+            while ((line = br.readLine()) != null) {
                 curLine = line.trim();
                 name = curLine.split(":")[0];
                 isOn = curLine.split(":")[1];
                 m = curLine.split(":")[2];
-                for(Module mm : moduleManager.getModules()) {
+                for (Module mm : moduleManager.getModules()) {
                     if (mm != null && mm.getName().equalsIgnoreCase(m)) {
                         mod = settingsManager.getSettingByID(name);
                         mod.setValString(isOn);
                     }
                 }
             }
-
             br.close();
         } catch (Exception var11) {
             var11.printStackTrace();
