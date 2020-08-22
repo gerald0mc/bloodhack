@@ -11,7 +11,7 @@ public class ClickGUI extends Module {
 
     @Override
     public void onEnable() {
-        if (mc.player != null) {
+        if (mc.player != null && mc.world != null) {
             mc.displayGuiScreen(new ClickGui());
             toggle();
         }

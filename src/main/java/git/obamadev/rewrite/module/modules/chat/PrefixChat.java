@@ -1,5 +1,6 @@
 package git.obamadev.rewrite.module.modules.chat;
 
+import git.obamadev.rewrite.ObamaMod;
 import git.obamadev.rewrite.module.Category;
 import git.obamadev.rewrite.module.Module;
 import net.minecraft.client.gui.GuiChat;
@@ -15,7 +16,7 @@ public class PrefixChat extends Module {
     @SubscribeEvent
     public void onKeyPress(InputEvent.KeyInputEvent event) {
         if (mc.currentScreen == null && Keyboard.isKeyDown(Keyboard.KEY_EQUALS)) {
-            mc.displayGuiScreen(new GuiChat ("="));
+            mc.displayGuiScreen(new GuiChat (ObamaMod.prefix));
         }
     }
 }

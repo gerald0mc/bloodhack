@@ -6,3 +6,7 @@ ObamaHack
  Credit
  ***
  [086](https://github.com/zeroeightysix) for [EntityUtil](https://github.com/obamadevelopment/custombase/blob/master/src/main/java/git/obamadev/rewrite/utils/EntityUtil.java)
+ 
+ [HeroCode](https://github.com/osirisplus/client) for the [Config Base & Settings](https://github.com/obamadevelopment/custombase/tree/master/src/main/java/git/obamadev/rewrite/managers)
+ 
+ [HeroCode]() for the [ClickGUI](https://github.com/obamadevelopment/custombase/tree/master/src/main/java/git/obamadev/rewrite/clickgui)

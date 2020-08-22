@@ -1,5 +1,6 @@
 package git.obamadev.rewrite.module.modules.chat;
 
+import git.obamadev.rewrite.ObamaMod;
 import git.obamadev.rewrite.module.Category;
 import git.obamadev.rewrite.module.Module;
 import net.minecraftforge.client.event.ClientChatEvent;
@@ -14,7 +15,7 @@ public class ChatSuffix extends Module {
     public void onChat(ClientChatEvent event) {
         String suffix = "  \u1d0f\u0299\u1d00\u1d0d\u1d00\u029c\u1d00\u1d04\u1d0b \u0299\u1d07\u1d1b\u1d00";
         if (event.getMessage().startsWith("/")) return; //commands
-        if (event.getMessage().startsWith("=")) return; //client suffix
+        if (event.getMessage().startsWith(ObamaMod.prefix)) return; //client suffix
         event.setMessage(event.getMessage() + suffix);
     }
 }
