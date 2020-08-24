@@ -10,6 +10,7 @@ import git.obamadev.rewrite.module.modules.hud.Watermark;
 import git.obamadev.rewrite.module.modules.misc.EntityAlert;
 import git.obamadev.rewrite.module.modules.misc.VBuckGenerator;
 import git.obamadev.rewrite.module.modules.misc.WeaknessAlert;
+import git.obamadev.rewrite.module.modules.movement.HoleTP;
 import git.obamadev.rewrite.module.modules.movement.Sprint;
 import git.obamadev.rewrite.module.modules.hud.Arraylist;
 import git.obamadev.rewrite.module.modules.misc.DiscordRPC;
@@ -36,6 +37,7 @@ public class ModuleManager {
         modules.add(new AutoCrystal());
         modules.add(new AutoTotem());
         modules.add(new VBuckGenerator());
+        modules.add(new HoleTP());
     }
 
     public ArrayList<Module> getModules() {
