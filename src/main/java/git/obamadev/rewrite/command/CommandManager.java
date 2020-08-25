@@ -1,11 +1,11 @@
 package git.obamadev.rewrite.command;
 
-import net.minecraftforge.client.event.ClientChatEvent;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import git.obamadev.rewrite.ObamaMod;
 import git.obamadev.rewrite.command.commands.Bind;
 import git.obamadev.rewrite.command.commands.Toggle;
+import net.minecraftforge.client.event.ClientChatEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.HashSet;
 
@@ -23,8 +23,8 @@ public class CommandManager {
         String[] args = event.getMessage().split(" ");
         if (event.getMessage().startsWith(ObamaMod.prefix)) {
             event.setCanceled(true);
-            for (Command c: commands){
-                if (args[0].equalsIgnoreCase(ObamaMod.prefix + c.getCommand())){
+            for (Command c : commands) {
+                if (args[0].equalsIgnoreCase(ObamaMod.prefix + c.getCommand())) {
                     c.onCommand(args);
                 }
             }

@@ -47,8 +47,8 @@ public class ConfigManager {
             BufferedWriter out = new BufferedWriter(new FileWriter(file));
             Iterator var3 = moduleManager.getModules().iterator();
 
-            while(var3.hasNext()) {
-                Module module = (Module)var3.next();
+            while (var3.hasNext()) {
+                Module module = (Module) var3.next();
                 out.write(module.getName() + ":" + Keyboard.getKeyName(module.getKey()));
                 out.write("\r\n");
             }
@@ -61,7 +61,7 @@ public class ConfigManager {
         try {
             File file = new File(this.ObamaHack.getAbsolutePath(), "FramePositions.txt");
             BufferedWriter out = new BufferedWriter(new FileWriter(file));
-            for(Frame frame:ClickGui.frames){
+            for (Frame frame : ClickGui.frames) {
                 out.write(frame.category + ":x:" + frame.getX());
                 out.write("\r\n");
                 out.write(frame.category + ":y:" + frame.getY());
@@ -85,8 +85,8 @@ public class ConfigManager {
                 String name = curLine.split(":")[0];
                 String xory = curLine.split(":")[1];
                 String pos = curLine.split(":")[2];
-                for (Frame frame:ClickGui.frames) {
-                    if (frame.category.equals(name)){
+                for (Frame frame : ClickGui.frames) {
+                    if (frame.category.equals(name)) {
                         if (xory.contains("x")) {
                             frame.setX(Integer.parseInt(xory));
                         }
@@ -95,7 +95,7 @@ public class ConfigManager {
                         }
                     }
                 }
-                }
+            }
             br.close();
         } catch (Exception var11) {
             var11.printStackTrace();
@@ -134,8 +134,8 @@ public class ConfigManager {
             BufferedWriter out = new BufferedWriter(new FileWriter(file));
             Iterator var3 = moduleManager.getModules().iterator();
 
-            while(var3.hasNext()) {
-                Module module = (Module)var3.next();
+            while (var3.hasNext()) {
+                Module module = (Module) var3.next();
                 if (module.isToggled()) {
                     out.write(module.getName());
                     out.write("\r\n");
@@ -169,8 +169,8 @@ public class ConfigManager {
             while ((line = br.readLine()) != null) {
                 Iterator var6 = moduleManager.getModules().iterator();
 
-                while(var6.hasNext()) {
-                    Module m = (Module)var6.next();
+                while (var6.hasNext()) {
+                    Module m = (Module) var6.next();
                     if (m.getName().equals(line)) {
                         m.toggle();
                     }
@@ -191,10 +191,10 @@ public class ConfigManager {
         try {
             file = new File(Settings.getAbsolutePath(), "Number.txt");
             out = new BufferedWriter(new FileWriter(file));
-            var3 =settingsManager.getSettings().iterator();
+            var3 = settingsManager.getSettings().iterator();
 
             while (var3.hasNext()) {
-                i = (Setting)var3.next();
+                i = (Setting) var3.next();
                 if (i.isSlider()) {
                     out.write(i.getId() + ":" + i.getValDouble() + ":" + i.getParentMod().getName() + "\r\n");
                 }
@@ -209,7 +209,7 @@ public class ConfigManager {
             var3 = settingsManager.getSettings().iterator();
 
             while (var3.hasNext()) {
-                i = (Setting)var3.next();
+                i = (Setting) var3.next();
                 if (i.isCheck()) {
                     out.write(i.getId() + ":" + i.getValBoolean() + ":" + i.getParentMod().getName() + "\r\n");
                 }
@@ -224,7 +224,7 @@ public class ConfigManager {
             var3 = settingsManager.getSettings().iterator();
 
             while (var3.hasNext()) {
-                i = (Setting)var3.next();
+                i = (Setting) var3.next();
                 if (i.isCombo()) {
                     out.write(i.getId() + ":" + i.getValString() + ":" + i.getParentMod().getName() + "\r\n");
                 }
@@ -239,7 +239,7 @@ public class ConfigManager {
             var3 = settingsManager.getSettings().iterator();
 
             while (var3.hasNext()) {
-                i = (Setting)var3.next();
+                i = (Setting) var3.next();
                 if (i.isColorPicker()) {
                     out.write(i.getId() + ":" + i.getValColor().getRGB() + ":" + i.getParentMod().getName() + "\r\n");
                 }

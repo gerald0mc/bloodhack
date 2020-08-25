@@ -12,17 +12,16 @@ import java.awt.*;
 import java.util.Calendar;
 
 public class Welcomer extends Module {
+    Setting x;
+    Setting y;
     public Welcomer() {
         super("Welcomer", Category.HUD);
     }
 
-    Setting x;
-    Setting y;
-
     @Override
     public void setup() {
         ObamaMod.settingsManager.rSetting(x = new Setting("X Position", this, 2, 0.0, 1000, false, "WelcomerX"));
-        ObamaMod.settingsManager.rSetting(y= new Setting("Y Position", this, 350, 0.0, 1000, false, "WelcomerY"));
+        ObamaMod.settingsManager.rSetting(y = new Setting("Y Position", this, 350, 0.0, 1000, false, "WelcomerY"));
     }
 
     public int GenRainbow() {

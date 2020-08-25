@@ -6,11 +6,11 @@ import java.awt.*;
 import java.util.ArrayList;
 
 /**
- *  Made by HeroCode
- *  it's free to use
- *  but you have to credit me
+ * Made by HeroCode
+ * it's free to use
+ * but you have to credit me
  *
- *  @author HeroCode
+ * @author HeroCode
  */
 public class Setting {
 
@@ -109,19 +109,19 @@ public class Setting {
         this.bval = in;
     }
 
-    public double getValDouble(){
+    public double getValDouble() {
         if (this.onlyint) {
-            this.dval = (int)dval;
+            this.dval = (int) dval;
         }
         return this.dval;
     }
 
-    public int getValInt() {
-        return (int)getValDouble();
-    }
-
     public void setValDouble(double in) {
         this.dval = in;
+    }
+
+    public int getValInt() {
+        return (int) getValDouble();
     }
 
     public double getMin() {
@@ -167,9 +167,11 @@ public class Setting {
     public int getColorRed() {
         return color.getRed();
     }
+
     public int getColorGreen() {
         return color.getGreen();
     }
+
     public int getColorBlue() {
         return color.getBlue();
     }

@@ -5,11 +5,11 @@ import git.obamadev.rewrite.module.Module;
 import java.util.ArrayList;
 
 /**
- *  Made by HeroCode
- *  it's free to use
- *  but you have to credit me
+ * Made by HeroCode
+ * it's free to use
+ * but you have to credit me
  *
- *  @author HeroCode
+ * @author HeroCode
  */
 public class SettingsManager {
 
@@ -43,7 +43,7 @@ public class SettingsManager {
                 return set;
             }
         }
-        System.err.println("[ObamaHack] Error Setting NOT found: '" + name +"'!");
+        System.err.println("[ObamaHack] Error Setting NOT found: '" + name + "'!");
         return null;
     }
 
@@ -53,7 +53,7 @@ public class SettingsManager {
                 return s;
             }
         }
-        System.err.println("[ObamaHack] Error Setting NOT found: '" + id +"'!");
+        System.err.println("[ObamaHack] Error Setting NOT found: '" + id + "'!");
         return null;
     }
 }
