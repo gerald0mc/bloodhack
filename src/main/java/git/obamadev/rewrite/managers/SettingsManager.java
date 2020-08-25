@@ -15,31 +15,31 @@ public class SettingsManager {
 
     private ArrayList<Setting> settings;
 
-    public SettingsManager(){
+    public SettingsManager() {
         this.settings = new ArrayList<>();
     }
 
-    public void rSetting(Setting in){
+    public void rSetting(Setting in) {
         this.settings.add(in);
     }
 
-    public ArrayList<Setting> getSettings(){
+    public ArrayList<Setting> getSettings() {
         return this.settings;
     }
 
-    public ArrayList<Setting> getSettingsByMod(Module mod){
+    public ArrayList<Setting> getSettingsByMod(Module mod) {
         ArrayList<Setting> out = new ArrayList<>();
-        for(Setting s : getSettings()){
-            if(s.getParentMod().equals(mod)){
+        for (Setting s : getSettings()) {
+            if (s.getParentMod().equals(mod)) {
                 out.add(s);
             }
         }
         return out;
     }
 
-    public Setting getSettingByDisplayName(String name){
-        for(Setting set : getSettings()){
-            if(set.getDisplayName().equalsIgnoreCase(name)){
+    public Setting getSettingByDisplayName(String name) {
+        for (Setting set : getSettings()) {
+            if (set.getDisplayName().equalsIgnoreCase(name)) {
                 return set;
             }
         }
@@ -47,9 +47,9 @@ public class SettingsManager {
         return null;
     }
 
-    public Setting getSettingByID(String id){
-        for(Setting s : getSettings()){
-            if(s.getId().equalsIgnoreCase(id)){
+    public Setting getSettingByID(String id) {
+        for (Setting s : getSettings()) {
+            if (s.getId().equalsIgnoreCase(id)) {
                 return s;
             }
         }

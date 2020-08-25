@@ -57,6 +57,7 @@ public class DiscordManager {
     }
 
     public static void shutdown() {
+        System.out.println("[ObamaHack] Discord RPC Shutting Down!");
         rpc.Discord_Shutdown();
     }
 }
