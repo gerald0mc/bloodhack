@@ -16,7 +16,7 @@ public class PrefixChat extends Module {
     @SubscribeEvent
     public void onKeyPress(InputEvent.KeyInputEvent event) {
         if (mc.currentScreen == null && Keyboard.isKeyDown(Keyboard.KEY_EQUALS)) {
-            mc.displayGuiScreen(new GuiChat (ObamaMod.prefix));
+            mc.displayGuiScreen(new GuiChat(ObamaMod.prefix));
         }
     }
 }

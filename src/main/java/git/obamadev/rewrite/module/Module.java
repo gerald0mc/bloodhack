@@ -17,7 +17,7 @@ public class Module {
     private boolean toggled;
     private Integer key;
 
-    public Module(String name , Category category){
+    public Module(String name , Category category) {
         this.name = name;
         this.category = category;
         toggled = false;
@@ -43,21 +43,22 @@ public class Module {
             onUpdate();
         }
     }
+
     public void onUpdate() {}
 
-    public void selfSettings() {
-    }
-    public void rSetting(Setting setting){
+    public void selfSettings() {}
+
+    public void rSetting(Setting setting) {
         settingsManager.rSetting(setting);
     }
+
     public void onToggle() {}
+
     public void toggle() {
         toggled = !toggled;
         onToggle();
         if (toggled) {
             onEnable();
-
-
         } else {
             onDisable();
         }
@@ -74,23 +75,30 @@ public class Module {
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
+
     public Category getCategory() {
         return category;
     }
+
     public void setCategory(Category category) {
         this.category = category;
     }
+
     public boolean isToggled() {
         return toggled;
     }
+
     public String getDisplayName() {
         return displayName == null ? name : displayName;
     }
+
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
+
     public void setup() {}
 }

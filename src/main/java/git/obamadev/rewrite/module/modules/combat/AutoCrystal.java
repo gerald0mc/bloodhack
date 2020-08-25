@@ -288,7 +288,7 @@ public class AutoCrystal extends Module {
     }
 
     private static void resetRotation() {
-            AutoCrystal.yaw = AutoCrystal.mc.player.rotationYaw;
-            AutoCrystal.pitch = AutoCrystal.mc.player.rotationPitch;
+        AutoCrystal.yaw = AutoCrystal.mc.player.rotationYaw;
+        AutoCrystal.pitch = AutoCrystal.mc.player.rotationPitch;
     }
 }
