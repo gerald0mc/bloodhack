@@ -10,9 +10,7 @@ public class DiscordRPC extends Module {
     }
 
     @Override
-    public void onEnable() {
-        DiscordManager.startup();
-    }
+    public void onEnable() { DiscordManager.startup(); }
 
     @Override
     public void onDisable() {

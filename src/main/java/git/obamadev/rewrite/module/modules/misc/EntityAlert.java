@@ -12,12 +12,13 @@ import net.minecraft.entity.passive.EntityMule;
 import net.minecraft.init.SoundEvents;
 
 public class EntityAlert extends Module {
-    private int donkeyDelay;
-    private int llamaDelay;
-    private int muleDelay;
     public EntityAlert() {
         super("EntityAlert", Category.MISC);
     }
+
+    private int donkeyDelay;
+    private int llamaDelay;
+    private int muleDelay;
 
     public void onUpdate() {
         if (this.isToggled()) {

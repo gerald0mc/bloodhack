@@ -6,13 +6,14 @@ import git.obamadev.rewrite.module.Category;
 import git.obamadev.rewrite.module.Module;
 
 public class VBuckGenerator extends Module {
+    public VBuckGenerator() {
+        super("VBuckGenerator", Category.MISC);
+    }
+
     Setting ammount;
     Setting green;
     Setting blue;
     Setting space;
-    public VBuckGenerator() {
-        super("VBuckGenerator", Category.MISC);
-    }
 
     @Override
     public void setup() {

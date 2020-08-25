@@ -30,89 +30,35 @@ import java.util.stream.Collectors;
 
 public class AutoCrystal extends Module {
     private static Minecraft mc = Minecraft.getMinecraft();
-    private static boolean togglePitch = false;
-    private static double yaw;
-    private static double pitch;
-    private static boolean isSpoofingAngles;
-    public boolean isActive = false;
-    Setting place;
-    Setting explode;
-    Setting range;
-    Setting delay;
+
+    public AutoCrystal() {
+        super("AutoCrystal", Category.COMBAT);
+    }
+
     private BlockPos render;
     private Entity renderEnt;
     private long systemTime = -1;
+    private static boolean togglePitch = false;
     private boolean switchCooldown = false;
     private boolean isAttacking = false;
     private int oldSlot = -1;
     private int newSlot;
+    private static double yaw;
+    private static double pitch;
+    public boolean isActive = false;
     private long placeSystemTime;
     private long breakSystemTime;
     private long chatSystemTime;
     private long multiPlaceSystemTime;
     private long antiStuckSystemTime;
+
     private int placements;
-    public AutoCrystal() {
-        super("AutoCrystal", Category.COMBAT);
-    }
+    private static boolean isSpoofingAngles;
 
-    public static BlockPos getPlayerPos() {
-        return new BlockPos(Math.floor(AutoCrystal.mc.player.posX), Math.floor(AutoCrystal.mc.player.posY), Math.floor(AutoCrystal.mc.player.posZ));
-    }
-
-    public static float calculateDamage(final double posX, final double posY, final double posZ, final Entity entity) {
-        final float doubleExplosionSize = 12.0f;
-        final double distancedsize = entity.getDistance(posX, posY, posZ) / doubleExplosionSize;
-        final Vec3d vec3d = new Vec3d(posX, posY, posZ);
-        final double blockDensity = entity.world.getBlockDensity(vec3d, entity.getEntityBoundingBox());
-        final double v = (1.0 - distancedsize) * blockDensity;
-        final float damage = (float) (int) ((v * v + v) / 2.0 * 7.0 * doubleExplosionSize + 1.0);
-        double finald = 1.0;
-        if (entity instanceof EntityLivingBase) {
-            finald = getBlastReduction((EntityLivingBase) entity, getDamageMultiplied(damage), new Explosion((World) AutoCrystal.mc.world, (Entity) null, posX, posY, posZ, 6.0f, false, true));
-        }
-        return (float) finald;
-    }
-
-    public static float getBlastReduction(final EntityLivingBase entity, float damage, final Explosion explosion) {
-        if (entity instanceof EntityPlayer) {
-            final EntityPlayer ep = (EntityPlayer) entity;
-            final DamageSource ds = DamageSource.causeExplosionDamage(explosion);
-            damage = CombatRules.getDamageAfterAbsorb(damage, (float) ep.getTotalArmorValue(), (float) ep.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).getAttributeValue());
-            final int k = EnchantmentHelper.getEnchantmentModifierDamage(ep.getArmorInventoryList(), ds);
-            final float f = MathHelper.clamp((float) k, 0.0f, 20.0f);
-            damage *= 1.0f - f / 25.0f;
-            if (entity.isPotionActive(Potion.getPotionById(11))) {
-                damage -= damage / 4.0f;
-            }
-            return damage;
-        }
-        damage = CombatRules.getDamageAfterAbsorb(damage, (float) entity.getTotalArmorValue(), (float) entity.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).getAttributeValue());
-        return damage;
-    }
-
-    private static float getDamageMultiplied(final float damage) {
-        final int diff = AutoCrystal.mc.world.getDifficulty().getDifficultyId();
-        return damage * ((diff == 0) ? 0.0f : ((diff == 2) ? 1.0f : ((diff == 1) ? 0.5f : 1.5f)));
-    }
-
-    public static float calculateDamage(final EntityEnderCrystal crystal, final Entity entity) {
-        return calculateDamage(crystal.posX, crystal.posY, crystal.posZ, entity);
-    }
-
-    public static boolean canBlockBeSeen(final BlockPos blockPos) {
-        return AutoCrystal.mc.world.rayTraceBlocks(new Vec3d(AutoCrystal.mc.player.posX, AutoCrystal.mc.player.posY + AutoCrystal.mc.player.getEyeHeight(), AutoCrystal.mc.player.posZ), new Vec3d((double) blockPos.getX(), (double) blockPos.getY(), (double) blockPos.getZ()), false, true, false) == null;
-    }
-
-    private static void setYawAndPitch(final float yaw1, final float pitch1) {
-        AutoCrystal.yaw = yaw1;
-        AutoCrystal.pitch = pitch1;
-    }
-
-    private static void resetRotation() {
-        AutoCrystal.yaw = AutoCrystal.mc.player.rotationYaw;
-        AutoCrystal.pitch = AutoCrystal.mc.player.rotationPitch;
-    }
+    Setting place;
+    Setting explode;
+    Setting range;
+    Setting delay;
 
     @Override
     public void setup() {
@@ -173,7 +119,7 @@ public class AutoCrystal extends Module {
                 if (((EntityLivingBase) entity2).getHealth() <= 0.0f) {
                     continue;
                 }
-                if (AutoCrystal.mc.player.getDistanceSq(entity2) > 5 * 5) {
+                if (AutoCrystal.mc.player.getDistanceSq(entity2) > 5 * 5 ) {
                     continue;
                 }
                 for (final BlockPos blockPos : blocks) {
@@ -192,11 +138,11 @@ public class AutoCrystal extends Module {
                         continue;
                     }
                     final double self = calculateDamage(blockPos.getX() + 0.5, blockPos.getY() + 1, blockPos.getZ() + 0.5, (Entity) AutoCrystal.mc.player);
-                    if (AutoCrystal.mc.player.getHealth() + AutoCrystal.mc.player.getAbsorptionAmount() - self <= 7.0) {
-                        continue;
-                    }
-                    if (self > d) {
-                        continue;
+                        if (AutoCrystal.mc.player.getHealth() + AutoCrystal.mc.player.getAbsorptionAmount() - self <= 7.0) {
+                            continue;
+                        }
+                        if (self > d) {
+                            continue;
                     }
                     damage = d;
                     finalPos = blockPos;
@@ -217,9 +163,9 @@ public class AutoCrystal extends Module {
 
         if (true) {
             if (!offhand && AutoCrystal.mc.player.inventory.currentItem != crystalSlot) {
-                AutoCrystal.mc.player.inventory.currentItem = crystalSlot;
-                resetRotation();
-                this.switchCooldown = true;
+                    AutoCrystal.mc.player.inventory.currentItem = crystalSlot;
+                    resetRotation();
+                    this.switchCooldown = true;
                 return;
             }
             this.lookAtPacket(finalPos.getX() + 0.5, finalPos.getY() - 0.5, finalPos.getZ() + 0.5, (EntityPlayer) AutoCrystal.mc.player);
@@ -241,14 +187,14 @@ public class AutoCrystal extends Module {
                 this.placeSystemTime = System.nanoTime() / 1000000L;
             }
         }
-        if (AutoCrystal.togglePitch) {
-            final EntityPlayerSP player = AutoCrystal.mc.player;
-            player.rotationPitch += (float) 4.0E-4;
-            AutoCrystal.togglePitch = false;
-        } else {
-            final EntityPlayerSP player2 = AutoCrystal.mc.player;
-            player2.rotationPitch -= (float) 4.0E-4;
-            AutoCrystal.togglePitch = true;
+            if (AutoCrystal.togglePitch) {
+                final EntityPlayerSP player = AutoCrystal.mc.player;
+                player.rotationPitch += (float) 4.0E-4;
+                AutoCrystal.togglePitch = false;
+            } else {
+                final EntityPlayerSP player2 = AutoCrystal.mc.player;
+                player2.rotationPitch -= (float) 4.0E-4;
+                AutoCrystal.togglePitch = true;
         }
     }
 
@@ -261,6 +207,10 @@ public class AutoCrystal extends Module {
         final BlockPos boost = blockPos.add(0, 1, 0);
         final BlockPos boost2 = blockPos.add(0, 2, 0);
         return (AutoCrystal.mc.world.getBlockState(blockPos).getBlock() == Blocks.BEDROCK || AutoCrystal.mc.world.getBlockState(blockPos).getBlock() == Blocks.OBSIDIAN) && AutoCrystal.mc.world.getBlockState(boost).getBlock() == Blocks.AIR && AutoCrystal.mc.world.getBlockState(boost2).getBlock() == Blocks.AIR && AutoCrystal.mc.world.getEntitiesWithinAABB((Class) Entity.class, new AxisAlignedBB(boost)).isEmpty() && AutoCrystal.mc.world.getEntitiesWithinAABB((Class) Entity.class, new AxisAlignedBB(boost2)).isEmpty();
+    }
+
+    public static BlockPos getPlayerPos() {
+        return new BlockPos(Math.floor(AutoCrystal.mc.player.posX), Math.floor(AutoCrystal.mc.player.posY), Math.floor(AutoCrystal.mc.player.posZ));
     }
 
     private List<BlockPos> findCrystalBlocks() {
@@ -286,5 +236,59 @@ public class AutoCrystal extends Module {
             }
         }
         return circleblocks;
+    }
+
+    public static float calculateDamage(final double posX, final double posY, final double posZ, final Entity entity) {
+        final float doubleExplosionSize = 12.0f;
+        final double distancedsize = entity.getDistance(posX, posY, posZ) / doubleExplosionSize;
+        final Vec3d vec3d = new Vec3d(posX, posY, posZ);
+        final double blockDensity = entity.world.getBlockDensity(vec3d, entity.getEntityBoundingBox());
+        final double v = (1.0 - distancedsize) * blockDensity;
+        final float damage = (float) (int) ((v * v + v) / 2.0 * 7.0 * doubleExplosionSize + 1.0);
+        double finald = 1.0;
+        if (entity instanceof EntityLivingBase) {
+            finald = getBlastReduction((EntityLivingBase) entity, getDamageMultiplied(damage), new Explosion((World) AutoCrystal.mc.world, (Entity) null, posX, posY, posZ, 6.0f, false, true));
+        }
+        return (float) finald;
+    }
+
+    public static float getBlastReduction(final EntityLivingBase entity, float damage, final Explosion explosion) {
+        if (entity instanceof EntityPlayer) {
+            final EntityPlayer ep = (EntityPlayer) entity;
+            final DamageSource ds = DamageSource.causeExplosionDamage(explosion);
+            damage = CombatRules.getDamageAfterAbsorb(damage, (float) ep.getTotalArmorValue(), (float) ep.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).getAttributeValue());
+            final int k = EnchantmentHelper.getEnchantmentModifierDamage(ep.getArmorInventoryList(), ds);
+            final float f = MathHelper.clamp((float) k, 0.0f, 20.0f);
+            damage *= 1.0f - f / 25.0f;
+            if (entity.isPotionActive(Potion.getPotionById(11))) {
+                damage -= damage / 4.0f;
+            }
+            return damage;
+        }
+        damage = CombatRules.getDamageAfterAbsorb(damage, (float) entity.getTotalArmorValue(), (float) entity.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).getAttributeValue());
+        return damage;
+    }
+
+    private static float getDamageMultiplied(final float damage) {
+        final int diff = AutoCrystal.mc.world.getDifficulty().getDifficultyId();
+        return damage * ((diff == 0) ? 0.0f : ((diff == 2) ? 1.0f : ((diff == 1) ? 0.5f : 1.5f)));
+    }
+
+    public static float calculateDamage(final EntityEnderCrystal crystal, final Entity entity) {
+        return calculateDamage(crystal.posX, crystal.posY, crystal.posZ, entity);
+    }
+
+    public static boolean canBlockBeSeen(final BlockPos blockPos) {
+        return AutoCrystal.mc.world.rayTraceBlocks(new Vec3d(AutoCrystal.mc.player.posX, AutoCrystal.mc.player.posY + AutoCrystal.mc.player.getEyeHeight(), AutoCrystal.mc.player.posZ), new Vec3d((double) blockPos.getX(), (double) blockPos.getY(), (double) blockPos.getZ()), false, true, false) == null;
+    }
+
+    private static void setYawAndPitch(final float yaw1, final float pitch1) {
+        AutoCrystal.yaw = yaw1;
+        AutoCrystal.pitch = pitch1;
+    }
+
+    private static void resetRotation() {
+        AutoCrystal.yaw = AutoCrystal.mc.player.rotationYaw;
+        AutoCrystal.pitch = AutoCrystal.mc.player.rotationPitch;
     }
 }

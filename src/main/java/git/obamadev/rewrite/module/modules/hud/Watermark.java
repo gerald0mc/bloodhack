@@ -13,7 +13,6 @@ public class Watermark extends Module {
     public Watermark() {
         super("Watermark", Category.HUD);
     }
-
     public int GenRainbow() {
         int drgb;
         int color;
