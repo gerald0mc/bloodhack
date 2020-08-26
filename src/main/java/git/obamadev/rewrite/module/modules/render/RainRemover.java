@@ -10,10 +10,8 @@ public class RainRemover extends Module {
 
     public void onUpdate() {
         if (mc.world == null) return;
-        if (this.isToggled()) {
-            if (mc.world.isRaining()) {
-                mc.world.setRainStrength(0);
-            }
+        if (mc.world.isRaining()) {
+            mc.world.setRainStrength(0);
         }
     }
 }

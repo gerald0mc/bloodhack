@@ -13,6 +13,7 @@ public class Watermark extends Module {
     public Watermark() {
         super("Watermark", Category.HUD);
     }
+
     public int GenRainbow() {
         int drgb;
         int color;
@@ -28,11 +29,9 @@ public class Watermark extends Module {
 
     @SubscribeEvent
     public void onRenderGameOverlay(RenderGameOverlayEvent event) {
-        if (mc.player != null || mc.world != null) {
-            if (this.isToggled()) {
-                if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
-                    mc.fontRenderer.drawStringWithShadow(ObamaMod.name + " " + ObamaMod.version, 2, 2, GenRainbow());
-                }
+        if (mc.player != null && mc.world != null) {
+            if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
+                mc.fontRenderer.drawStringWithShadow(ObamaMod.name + " " + ObamaMod.version, 2, 2, GenRainbow());
             }
         }
     }

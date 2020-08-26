@@ -53,11 +53,9 @@ public class Welcomer extends Module {
 
     @SubscribeEvent
     public void onRenderGameOverlay(RenderGameOverlayEvent event) {
-        if (mc.player != null || mc.world != null) {
-            if (this.isToggled()) {
-                if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
-                    mc.fontRenderer.drawStringWithShadow(WelcomeMessages() + mc.getSession().getUsername(), x.getValInt(), y.getValInt(), GenRainbow());
-                }
+        if (mc.player != null && mc.world != null) {
+            if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
+                mc.fontRenderer.drawStringWithShadow(WelcomeMessages() + mc.getSession().getUsername(), x.getValInt(), y.getValInt(), GenRainbow());
             }
         }
     }

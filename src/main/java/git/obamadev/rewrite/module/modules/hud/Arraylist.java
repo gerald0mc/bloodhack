@@ -11,11 +11,10 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import java.awt.*;
 
 public class Arraylist extends Module {
-    Setting rainbow;
     public Arraylist() {
         super("Arraylist", Category.HUD);
-
     }
+
     public int GenRainbow() {
         int drgb;
         int color;
@@ -31,15 +30,13 @@ public class Arraylist extends Module {
 
     @SubscribeEvent
     public void onRenderGameOverlay(RenderGameOverlayEvent event) {
-        if (mc.player != null || mc.world != null) {
-            if (this.isToggled()) {
-                if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
-                    float currY = mc.fontRenderer.FONT_HEIGHT + 2;
-                    for (Module m : ObamaMod.moduleManager.getModules()) {
-                        if (m.isToggled()) {
-                            mc.fontRenderer.drawStringWithShadow(m.getName(), 2, currY, GenRainbow());
-                            currY += mc.fontRenderer.FONT_HEIGHT;
-                        }
+        if (mc.player != null && mc.world != null) {
+            if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
+                float currY = mc.fontRenderer.FONT_HEIGHT + 2;
+                for (Module m : ObamaMod.moduleManager.getModules()) {
+                    if (m.isToggled()) {
+                        mc.fontRenderer.drawStringWithShadow(m.getName(), 2, currY, GenRainbow());
+                        currY += mc.fontRenderer.FONT_HEIGHT;
                     }
                 }
             }

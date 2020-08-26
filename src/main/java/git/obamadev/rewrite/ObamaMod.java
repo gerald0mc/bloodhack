@@ -44,7 +44,7 @@ public class ObamaMod {
     @Mod.EventHandler
     public void Init(FMLInitializationEvent event) {
         settingsManager = new SettingsManager();
-        moduleManager= new ModuleManager();
+        moduleManager = new ModuleManager();
         configManager = new ConfigManager();
         CommandManager.init();
         MinecraftForge.EVENT_BUS.register(new CommandManager());
