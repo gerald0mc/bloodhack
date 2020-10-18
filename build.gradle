@@ -15,8 +15,8 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
 version = 'b1'
-group = 'git.obamadev.rewrite' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'obamahack'
+group = 'Bloods' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = 'BloodHack'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
