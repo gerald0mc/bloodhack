@@ -1,0 +1,16 @@
+[
+{
+  "modid": "obamahack",
+  "name": "ObamaHack",
+  "description": "ObamaHack b1",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["LittleDraily", "Ollie"],
+  "credits": "The Forge and FML guys",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
