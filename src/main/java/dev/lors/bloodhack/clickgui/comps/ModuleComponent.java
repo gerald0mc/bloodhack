@@ -45,6 +45,7 @@ public class ModuleComponent extends Component {
             RenderUtil.drawRect(x, y + offsetY, x + width, y + height, clickGUI.rainbow.value ? ColourUtils.genRainbow() : color);
         }
         fr.drawStringWithShadow(module.getName(), x + 5, y + 16, -1);
+        GL11.glPopMatrix();
         if (expanded) {
             int count = offsetY;
             for (Component item : components) {
@@ -72,7 +73,6 @@ public class ModuleComponent extends Component {
             offset = count - offsetY;
         } else
             offset = 0;
-        GL11.glPopMatrix();
         super.render(mouseX, mouseY);
     }
 

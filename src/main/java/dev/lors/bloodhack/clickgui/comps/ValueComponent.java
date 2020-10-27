@@ -6,6 +6,7 @@ import dev.lors.bloodhack.utils.ColourUtils;
 import dev.lors.bloodhack.utils.RenderUtil;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
@@ -34,10 +35,10 @@ public class ValueComponent extends Component {
     public void render(int mouseX, int mouseY) {
         int bgColor = clickGUI.rainbow.value ? 0xcc000000 : ColourUtils.toRGBA(clickGUI.br.value, clickGUI.bg.value, clickGUI.bb.value, clickGUI.ba.value);
         int color = ColourUtils.toRGBA(clickGUI.r.value, clickGUI.g.value, clickGUI.b.value, clickGUI.a.value);
-        GL11.glPushMatrix();
-        RenderUtil.drawSexyRect(x, y + offsetY, x + width, y + height, bgColor, bgColor);
+        RenderUtil.drawSexyRect(x, y + offsetY, x + width, y + height, clickGUI.rainbow.value ? ColourUtils.genRainbow() : bgColor, bgColor);
         if (value.value instanceof Boolean)
-            Gui.drawRect(x, y + offsetY, x + width, y + height, ((((Boolean) value.value)) ? clickGUI.rainbow.value ? ColourUtils.genRainbow() : bgColor : color));
+            if(((Boolean) value.value))
+            Gui.drawRect(x, y + offsetY, x + width, y + height, clickGUI.rainbow.value ? ColourUtils.genRainbow() : color);
         if (value.value instanceof Enum)
             Gui.drawRect(x, y + offsetY, x + width, y + height, clickGUI.rainbow.value ? ColourUtils.genRainbow() : color);
         if (hasFlag(FLAG_SLIDER))
@@ -49,7 +50,7 @@ public class ValueComponent extends Component {
             }
             int[] col = ColourUtils.toRGBAArray(ColourUtils.genRainbow());
             int finalCol = ColourUtils.toRGBA(col[0], col[1], col[2], 0x70);
-            Gui.drawRect(x, y + offsetY, x + width, y + height, clickGUI.rainbow.value ? finalCol : 0x22FFFFFF);
+            RenderUtil.drawRect(x, y + offsetY, x + width, y + height, clickGUI.rainbow.value ? finalCol : color);
         }
         if (value.value instanceof String)
             fr.drawStringWithShadow(listening ? typeCache + "_" : value.getMeta(), x + 5, y + 16, -1);
@@ -58,13 +59,11 @@ public class ValueComponent extends Component {
         if (expanded)
             for (Component item : components)
                 item.render(mouseX, mouseY);
-        GL11.glPopMatrix();
         super.render(mouseX, mouseY);
     }
 
     public void drawSlider(int color, int bgColor) {
         float scale = calculateXPos(value);
-        RenderUtil.drawSexyRect(x, y + offsetY, x + width, y + height, bgColor, bgColor);
         Gui.drawRect(x, y + offsetY, (int) (x + (scale > width ? width : scale)), y + height, clickGUI.rainbow.value ? ColourUtils.genRainbow() : color);
     }
 
@@ -143,7 +142,8 @@ public class ValueComponent extends Component {
                 value.setValue(((float) Math.round(10.0f * result) / 10.0f));
             } else if (this.value.getValue() instanceof Integer) {
                 value.setValue(((Integer) this.value.min + (int) ((float) difference * percent)));
-            }
+            } else if (this.value.getValue() instanceof Long)
+                value.setValue(((Long) this.value.min + (long) ((float) difference * percent)));
             if (this.value.value instanceof Integer) {
                 if (((Number) this.value.value).intValue() <= ((Number) this.value.min).intValue())
                     this.value.value = this.value.min;
@@ -160,6 +160,12 @@ public class ValueComponent extends Component {
                 if (((Number) this.value.value).doubleValue() <= ((Number) this.value.min).doubleValue())
                     this.value.value = this.value.min;
                 if (((Number) this.value.value).doubleValue() >= ((Number) this.value.max).doubleValue())
+                    this.value.value = this.value.max;
+            }
+            if (this.value.value instanceof Long) {
+                if (((Number) this.value.value).longValue() <= ((Number) this.value.min).longValue())
+                    this.value.value = this.value.min;
+                if (((Number) this.value.value).longValue() >= ((Number) this.value.max).longValue())
                     this.value.value = this.value.max;
             }
         }

@@ -23,13 +23,12 @@ public class ValueComponentKeybind extends Component {
     public void render(int mouseX, int mouseY) {
         int bgColor = clickGUI.rainbow.value ? 0xcc000000 : ColourUtils.toRGBA(clickGUI.br.value, clickGUI.bg.value, clickGUI.bb.value, clickGUI.ba.value);
         int color = ColourUtils.toRGBA(clickGUI.r.value, clickGUI.g.value, clickGUI.b.value, clickGUI.a.value);
-        GL11.glPushMatrix();
-        RenderUtil.drawSexyRect(x, y + offsetY, x + width, y + height, bgColor, bgColor);
+        RenderUtil.drawSexyRect(x, y + offsetY, x + width, y + height, clickGUI.rainbow.value ? ColourUtils.genRainbow() : bgColor, bgColor);
         Gui.drawRect(x, y + offsetY, x + width, y + height, clickGUI.rainbow.value ? ColourUtils.genRainbow() : color);
         if (mouseX > x && mouseX < x + width && mouseY > y + offsetY && mouseY < y + height) {
             int[] col = ColourUtils.toRGBAArray(ColourUtils.genRainbow());
             int finalCol = ColourUtils.toRGBA(col[0], col[1], col[2], 0x70);
-            Gui.drawRect(x, y + offsetY, x + width, y + height, clickGUI.rainbow.value ? finalCol : 0x22FFFFFF);
+            Gui.drawRect(x, y + offsetY, x + width, y + height, clickGUI.rainbow.value ? finalCol : color);
         }
         //if(value.value instanceof Boolean)
         //    fr.drawStringWithShadow(value.name, x+5, y+16, -1);
@@ -38,7 +37,6 @@ public class ValueComponentKeybind extends Component {
         if (expanded)
             for (Component item : components)
                 item.render(mouseX, mouseY);
-        GL11.glPopMatrix();
         super.render(mouseX, mouseY);
     }
 
