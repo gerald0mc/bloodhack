@@ -1,0 +1,9 @@
+{
+  "required": true,
+  "compatibilityLevel": "JAVA_8",
+  "package": "dev.lors.bloodhack.mixin.client",
+  "refmap": "mixins.bloodhack.refmap.json",
+  "client": [
+    "MixinMinecraft"
+  ]
+}
