@@ -1,5 +1,7 @@
 package dev.lors.bloodhack.command;
 
+import dev.lors.bloodhack.command.commands.Save;
+import dev.lors.bloodhack.managers.MessageManager;
 import net.minecraftforge.client.event.ClientChatEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -16,6 +18,7 @@ public class CommandManager {
         commands.clear();
         commands.add(new Toggle());
         commands.add(new Bind());
+        commands.add(new Save());
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
@@ -23,11 +26,17 @@ public class CommandManager {
         String[] args = event.getMessage().split(" ");
         if (event.getMessage().startsWith(BloodHack.prefix)) {
             event.setCanceled(true);
+            boolean commandExists = false;
             for (Command c: commands){
                 if (args[0].equalsIgnoreCase(BloodHack.prefix + c.getCommand())){
                     c.onCommand(args);
+                    commandExists = true;
                 }
             }
+            if(!commandExists)
+                for(Command c:commands){
+                    MessageManager.sendMessagePrefix(c.getCommand() + ": " + c.usage);
+                }
         }
     }
 }
