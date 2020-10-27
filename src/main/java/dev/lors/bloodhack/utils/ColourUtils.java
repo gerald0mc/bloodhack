@@ -162,6 +162,19 @@ public class ColourUtils {
         return colorList;
     }
 
+    public static int genRainbow() {
+        int drgb;
+        int color;
+        int argb;
+        float[] hue = new float[]{(float) (System.currentTimeMillis() % 11520L) / 11520.0f};
+        int rgb = Color.HSBtoRGB(hue[0], 1.0f, 1.0f);
+        int red = rgb >> 16 & 255;
+        int green = rgb >> 8 & 255;
+        int blue = rgb & 255;
+        color = argb = ColourUtils.toRGBA(red, green, blue, 255);
+        return color;
+    }
+
     /**
      * SubClass of ColorUtils. In order to lookup color name
      *
@@ -297,17 +310,6 @@ public class ColourUtils {
     public static final int changeAlpha(int origColor, int userInputedAlpha) {
         origColor = origColor & 0x00ffffff; //drop the previous alpha value
         return (userInputedAlpha << 24) | origColor; //add the one the user inputted
-    }
-
-    public static int GenRainbow() {
-        int color;
-        float[] hue = new float[]{(float) (System.currentTimeMillis() % 11520L) / 11520.0f};
-        int rgb = Color.HSBtoRGB(hue[0], 1.0f, 1.0f);
-        int red = rgb >> 16 & 255;
-        int green = rgb >> 8 & 255;
-        int blue = rgb & 255;
-        color = toRGBA(red, green, blue, 255);
-        return color;
     }
 
 }
