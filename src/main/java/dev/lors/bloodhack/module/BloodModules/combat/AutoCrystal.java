@@ -91,7 +91,7 @@ public class AutoCrystal extends Module {
     }
 
     private static float getDamageMultiplied(final float damage) {
-        final int diff = AutoCrystal.mc.world.getDifficulty().getDifficultyId();
+        final int diff = AutoCrystal.mc.world.getDifficulty().getId();
         return damage * ((diff == 0) ? 0.0f : ((diff == 2) ? 1.0f : ((diff == 1) ? 0.5f : 1.5f)));
     }
 

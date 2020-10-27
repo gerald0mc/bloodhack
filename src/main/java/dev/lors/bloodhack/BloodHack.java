@@ -31,7 +31,7 @@ import org.lwjgl.opengl.Display;
 
 public class BloodHack {
     public static final String name = "Blood Hack";
-    public static final String version = "b1";
+    public static final String version = "b1.1";
     public static final String appid = "764915024422240296";
     public static final EventBus EVENT_BUS = new EventManager();
     public static String prefix = "*";

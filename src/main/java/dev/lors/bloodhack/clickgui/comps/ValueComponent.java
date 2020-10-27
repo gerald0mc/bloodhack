@@ -48,9 +48,9 @@ public class ValueComponent extends Component {
                 ScaledResolution sr = new ScaledResolution(mc);
                 fr.drawStringWithShadow("Description: " + value.desc, 0, sr.getScaledHeight() - fr.FONT_HEIGHT, -1);
             }
-            int[] col = ColourUtils.toRGBAArray(ColourUtils.genRainbow());
-            int finalCol = ColourUtils.toRGBA(col[0], col[1], col[2], 0x70);
-            RenderUtil.drawRect(x, y + offsetY, x + width, y + height, clickGUI.rainbow.value ? finalCol : color);
+            int[] col = ColourUtils.toRGBAArray(clickGUI.rainbow.value ? ColourUtils.genRainbow() : color);
+            int finalCol = ColourUtils.toRGBA(col[0], col[1], col[2], col[3]-10);
+            RenderUtil.drawRect(x, y + offsetY, x + width, y + height, finalCol);
         }
         if (value.value instanceof String)
             fr.drawStringWithShadow(listening ? typeCache + "_" : value.getMeta(), x + 5, y + 16, -1);

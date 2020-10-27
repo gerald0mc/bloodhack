@@ -1,4 +1,4 @@
-package dev.lors.bloodhack.Capes;
+package dev.lors.bloodhack.capes;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
