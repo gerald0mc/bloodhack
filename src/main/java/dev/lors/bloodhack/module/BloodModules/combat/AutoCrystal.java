@@ -1,6 +1,6 @@
 package dev.lors.bloodhack.module.BloodModules.combat;
 
-import dev.lors.bloodhack.managers.Setting;
+import dev.lors.bloodhack.managers.Value;
 import dev.lors.bloodhack.module.Category;
 import dev.lors.bloodhack.module.Module;
 import dev.lors.bloodhack.utils.EntityUtil;
@@ -55,17 +55,13 @@ public class AutoCrystal extends Module {
     private int placements;
     private static boolean isSpoofingAngles;
 
-    Setting place;
-    Setting explode;
-    Setting range;
-    Setting delay;
+    Value<Boolean> place = new Value<Boolean>("Place", true);
+    Value<Integer> range = new Value<Integer>("Range", 5, 0, 10);
+    Value<Integer> delay = new Value<Integer>("Delay", 2, 0, 20);
+
 
     @Override
     public void setup() {
-        rSetting(range = new Setting("Range", this, 5, 0, 10, true, "CARange"));
-        rSetting(place = new Setting("Place", this, true, "CAPlace"));
-        rSetting(delay = new Setting("Delay", this, 2, 0, 20, true, "CADelay"));
-
         this.placeSystemTime = -1L;
         this.breakSystemTime = -1L;
         this.chatSystemTime = -1L;
@@ -180,7 +176,7 @@ public class AutoCrystal extends Module {
                 this.switchCooldown = false;
                 return;
             }
-            if (System.nanoTime() / 1000000L - this.placeSystemTime >= delay.getValInt()) {
+            if (System.nanoTime() / 1000000L - this.placeSystemTime >= delay.value) {
                 AutoCrystal.mc.player.connection.sendPacket((Packet) new CPacketPlayerTryUseItemOnBlock(finalPos, f, offhand ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND, 0.0f, 0.0f, 0.0f));
                 ++this.placements;
                 this.antiStuckSystemTime = System.nanoTime() / 1000000L;
@@ -215,7 +211,7 @@ public class AutoCrystal extends Module {
 
     private List<BlockPos> findCrystalBlocks() {
         NonNullList positions = NonNullList.create();
-        positions.addAll((Collection) this.getSphere(AutoCrystal.getPlayerPos(), range.getValInt(), range.getValInt(), false, true, 0).stream().filter(this::canPlaceCrystal).collect(Collectors.toList()));
+        positions.addAll((Collection) this.getSphere(AutoCrystal.getPlayerPos(), range.value, range.value, false, true, 0).stream().filter(this::canPlaceCrystal).collect(Collectors.toList()));
         return (List<BlockPos>) positions;
     }
 

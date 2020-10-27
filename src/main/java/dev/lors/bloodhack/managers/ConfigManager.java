@@ -1,18 +1,24 @@
 package dev.lors.bloodhack.managers;
 
 
-import dev.lors.bloodhack.clickgui.ClickGui;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import dev.lors.bloodhack.module.Module;
+import dev.lors.bloodhack.util.EnumConverter;
 import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
 import java.io.*;
+import java.nio.file.Files;
+import java.security.Key;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.stream.Collectors;
 
 import static dev.lors.bloodhack.BloodHack.moduleManager;
-import static dev.lors.bloodhack.BloodHack.settingsManager;
 
 
 public class ConfigManager {
@@ -29,335 +35,81 @@ public class ConfigManager {
         if (!this.Settings.exists()) {
             this.Settings.mkdirs();
         }
-        loadMods();
-        loadSettingsList();
-        loadBinds();
-        loadFramePos();
+        load();
     }
 
-    public void SaveAll() {
-        saveBinds();
-        saveMods();
-        saveSettingsList();
-        saveGUI();
-    }
-
-    public void saveBinds() {
+    public void save() {
         try {
-            File file = new File(this.BloodHack.getAbsolutePath(), "Binds.txt");
-            BufferedWriter out = new BufferedWriter(new FileWriter(file));
-            Iterator var3 = moduleManager.getModules().iterator();
-
-            while(var3.hasNext()) {
-                Module module = (Module)var3.next();
-                out.write(module.getName() + ":" + Keyboard.getKeyName(module.getKey()));
-                out.write("\r\n");
-            }
-            out.close();
-        } catch (Exception var5) {
-        }
-    }
-
-
-    public void saveGUI() {
-        try {
-            File file = new File(this.BloodHack.getAbsolutePath(), "FramePositions.txt");
-            BufferedWriter out = new BufferedWriter(new FileWriter(file));
-            /*for(Frame frame: ClickGui.frames){
-                out.write(frame.category + ":x:" + frame.getX());
-                out.write("\r\n");
-                out.write(frame.category + ":y:" + frame.getY());
-                out.write("\r\n");
-            }*/
-            out.close();
-        } catch (Exception var5) {
-        }
-    }
-
-    public void loadFramePos() {
-        try {
-            File file = new File(this.BloodHack.getAbsolutePath(), "FramePositions.txt");
-            FileInputStream fstream = new FileInputStream(file.getAbsolutePath());
-            DataInputStream in = new DataInputStream(fstream);
-            BufferedReader br = new BufferedReader(new InputStreamReader(in));
-
-            String line;
-            while ((line = br.readLine()) != null) {
-                String curLine = line.trim();
-                String name = curLine.split(":")[0];
-                String xory = curLine.split(":")[1];
-                String pos = curLine.split(":")[2];
-                /*for (Frame frame:ClickGui.frames) {
-                    if (frame.category.equals(name)){
-                        if (xory.contains("x")) {
-                            frame.setX(Integer.parseInt(xory));
-                        }
-                        if (xory.contains("y")) {
-                            frame.setY(Integer.parseInt(xory));
-                        }
-                    }
-                }*/
+            for (Module module : moduleManager.getModules()) {
+                File moduleFile = new File(BloodHack.getAbsolutePath(), "Settings/" + module.getCategory() + "/" + module.getName()  + ".json");
+                moduleFile.getParentFile().mkdirs();
+                if(!moduleFile.exists())
+                moduleFile.createNewFile();
+                JsonObject object = new JsonObject();
+                object.addProperty("bind", Keyboard.getKeyName(module.getKey()));
+                object.addProperty("enabled", module.isToggled());
+                for (Value value : module.values) {
+                    if(value.value instanceof Boolean)
+                        object.addProperty(value.name, (Boolean)value.value);
+                    if(value.value instanceof Number)
+                        object.addProperty(value.name, (Number)value.value);
+                    if(value.value instanceof String)
+                        object.addProperty(value.name, (String)value.value);
+                    if(value.value instanceof Enum)
+                        object.addProperty(value.name, ((Enum)value.value).name());
                 }
-            br.close();
-        } catch (Exception var11) {
-            var11.printStackTrace();
-            saveBinds();
+                FileWriter fileWriter = new FileWriter(moduleFile);
+                fileWriter.write(object.toString());
+                fileWriter.flush();
+                fileWriter.close();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            this.save();
         }
     }
 
-    public void loadBinds() {
+    public void load() {
         try {
-            File file = new File(this.BloodHack.getAbsolutePath(), "Binds.txt");
-            FileInputStream fstream = new FileInputStream(file.getAbsolutePath());
-            DataInputStream in = new DataInputStream(fstream);
-            BufferedReader br = new BufferedReader(new InputStreamReader(in));
-
-            String line;
-            while ((line = br.readLine()) != null) {
-                String curLine = line.trim();
-                String name = curLine.split(":")[0];
-                String bind = curLine.split(":")[1];
-                for (Module m : moduleManager.getModules()) {
-                    if (m != null && m.getName().equalsIgnoreCase(name)) {
-                        m.setKey(Keyboard.getKeyIndex(bind));
+            for (Module module : moduleManager.getModules()) {
+                File moduleFile = new File(BloodHack.getAbsolutePath(), "Settings/" + module.getCategory() + "/" + module.getName() + ".json");
+                moduleFile.getParentFile().mkdirs();
+                if(!moduleFile.exists())
+                moduleFile.createNewFile();
+                String content = Files.readAllLines(moduleFile.toPath()).stream().collect(Collectors.joining());
+                JsonObject object = new JsonParser().parse(content).getAsJsonObject();
+                int bind = Keyboard.getKeyIndex(object.get("bind").getAsString());
+                module.setKey(bind);
+                module.toggled = object.get("enabled").getAsBoolean();
+                for (Value value : module.values) {
+                    JsonElement element = object.get(value.name);
+                    if(value.value instanceof Boolean)
+                        value.value = element.getAsBoolean();
+                    if(value.value instanceof Number) {
+                        if(value.value instanceof Integer)
+                            value.value = element.getAsNumber().intValue();
+                        if(value.value instanceof Double)
+                            value.value = element.getAsNumber().doubleValue();
+                        if(value.value instanceof Float)
+                            value.value = element.getAsNumber().floatValue();
+                        if(value.value instanceof Long)
+                            value.value = element.getAsNumber().longValue();
+                        if(value.value instanceof Byte)
+                            value.value = element.getAsNumber().byteValue();
+                        if(value.value instanceof Short)
+                            value.value = element.getAsNumber().shortValue();
+                    }
+                    if(value.value instanceof String)
+                        value.value = element.getAsString();
+                    if(value.value instanceof Enum) {
+                        EnumConverter converter = new EnumConverter(((Enum)value.getValue()).getClass());
+                        value.value = converter.doBackward(element);
                     }
                 }
             }
-            br.close();
-        } catch (Exception var11) {
-            var11.printStackTrace();
-            saveBinds();
-        }
-    }
-
-    public void saveMods() {
-        try {
-            File file = new File(this.BloodHack.getAbsolutePath(), "EnabledModules.txt");
-            BufferedWriter out = new BufferedWriter(new FileWriter(file));
-            Iterator var3 = moduleManager.getModules().iterator();
-
-            while(var3.hasNext()) {
-                Module module = (Module)var3.next();
-                if (module.isToggled()) {
-                    out.write(module.getName());
-                    out.write("\r\n");
-                }
-            }
-            out.close();
-        } catch (Exception var5) {
-        }
-    }
-
-    public void writeCrash(String alah) {
-        try {
-            SimpleDateFormat format = new SimpleDateFormat("dd_MM_yyyy-HH_mm_ss");
-            Date date = new Date();
-            File file = new File(this.BloodHack.getAbsolutePath(), "crashlog-".concat(format.format(date)).concat(".bruh"));
-            BufferedWriter outWrite = new BufferedWriter(new FileWriter(file));
-            outWrite.write(alah);
-            outWrite.close();
-        } catch (Exception var6) {
-        }
-    }
-
-    public void loadMods() {
-        try {
-            File file = new File(this.BloodHack.getAbsolutePath(), "EnabledModules.txt");
-            FileInputStream fstream = new FileInputStream(file.getAbsolutePath());
-            DataInputStream in = new DataInputStream(fstream);
-            BufferedReader br = new BufferedReader(new InputStreamReader(in));
-
-            String line;
-            while ((line = br.readLine()) != null) {
-                Iterator var6 = moduleManager.getModules().iterator();
-
-                while(var6.hasNext()) {
-                    Module m = (Module)var6.next();
-                    if (m.getName().equals(line)) {
-                        m.toggle();
-                    }
-                }
-            }
-            br.close();
-        } catch (Exception var8) {
-            var8.printStackTrace();
-            this.saveMods();
-        }
-    }
-
-    public void saveSettingsList() {
-        File file;
-        BufferedWriter out;
-        Iterator var3;
-        Setting i;
-        try {
-            file = new File(Settings.getAbsolutePath(), "Number.txt");
-            out = new BufferedWriter(new FileWriter(file));
-            var3 = settingsManager.getSettings().iterator();
-
-            while (var3.hasNext()) {
-                i = (Setting)var3.next();
-                if (i.isSlider()) {
-                    out.write(i.getId() + ":" + i.getValDouble() + ":" + i.getParentMod().getName() + "\r\n");
-                }
-            }
-            out.close();
-        } catch (Exception var7) {
-        }
-
-        try {
-            file = new File(Settings.getAbsolutePath(), "Boolean.txt");
-            out = new BufferedWriter(new FileWriter(file));
-            var3 = settingsManager.getSettings().iterator();
-
-            while (var3.hasNext()) {
-                i = (Setting)var3.next();
-                if (i.isCheck()) {
-                    out.write(i.getId() + ":" + i.getValBoolean() + ":" + i.getParentMod().getName() + "\r\n");
-                }
-            }
-            out.close();
-        } catch (Exception var6) {
-        }
-
-        try {
-            file = new File(Settings.getAbsolutePath(), "String.txt");
-            out = new BufferedWriter(new FileWriter(file));
-            var3 = settingsManager.getSettings().iterator();
-
-            while (var3.hasNext()) {
-                i = (Setting)var3.next();
-                if (i.isCombo()) {
-                    out.write(i.getId() + ":" + i.getValString() + ":" + i.getParentMod().getName() + "\r\n");
-                }
-            }
-            out.close();
-        } catch (Exception var5) {
-        }
-
-        try {
-            file = new File(Settings.getAbsolutePath(), "Color.txt");
-            out = new BufferedWriter(new FileWriter(file));
-            var3 = settingsManager.getSettings().iterator();
-
-            while (var3.hasNext()) {
-                i = (Setting)var3.next();
-                if (i.isColorPicker()) {
-                    out.write(i.getId() + ":" + i.getValColor().getRGB() + ":" + i.getParentMod().getName() + "\r\n");
-                }
-            }
-            out.close();
-        } catch (Exception var7) {
-        }
-    }
-
-    public void loadSettingsList() {
-        File file;
-        FileInputStream fstream;
-        DataInputStream in;
-        BufferedReader br;
-        String line;
-        String curLine;
-        String name;
-        String isOn;
-        String m;
-        Setting mod;
-        int color;
-        try {
-            file = new File(Settings.getAbsolutePath(), "Number.txt");
-            fstream = new FileInputStream(file.getAbsolutePath());
-            in = new DataInputStream(fstream);
-            br = new BufferedReader(new InputStreamReader(in));
-
-            while ((line = br.readLine()) != null) {
-                curLine = line.trim();
-                name = curLine.split(":")[0];
-                isOn = curLine.split(":")[1];
-                m = curLine.split(":")[2];
-                for (Module mm : moduleManager.getModules()) {
-                    if (mm != null && mm.getName().equalsIgnoreCase(m)) {
-                        mod = settingsManager.getSettingByID(name);
-                        mod.setValDouble(Double.parseDouble(isOn));
-                    }
-                }
-            }
-            br.close();
-        } catch (Exception var13) {
-            var13.printStackTrace();
-            saveSettingsList();
-        }
-
-        try {
-            file = new File(Settings.getAbsolutePath(), "Color.txt");
-            fstream = new FileInputStream(file.getAbsolutePath());
-            in = new DataInputStream(fstream);
-            br = new BufferedReader(new InputStreamReader(in));
-
-            while ((line = br.readLine()) != null) {
-                curLine = line.trim();
-                name = curLine.split(":")[0];
-                color = Integer.parseInt(curLine.split(":")[1]);
-                m = curLine.split(":")[2];
-                for (Module mm : moduleManager.getModules()) {
-                    if (mm != null && mm.getName().equalsIgnoreCase(m)) {
-                        mod = settingsManager.getSettingByID(name);
-                        mod.setValColor(new Color(color));
-                    }
-                }
-            }
-            br.close();
-        } catch (Exception var13) {
-            var13.printStackTrace();
-            saveSettingsList();
-        }
-
-        try {
-            file = new File(Settings.getAbsolutePath(), "Boolean.txt");
-            fstream = new FileInputStream(file.getAbsolutePath());
-            in = new DataInputStream(fstream);
-            br = new BufferedReader(new InputStreamReader(in));
-
-            while ((line = br.readLine()) != null) {
-                curLine = line.trim();
-                name = curLine.split(":")[0];
-                isOn = curLine.split(":")[1];
-                m = curLine.split(":")[2];
-                for (Module mm : moduleManager.getModules()) {
-                    if (mm != null && mm.getName().equalsIgnoreCase(m)) {
-                        mod = settingsManager.getSettingByID(name);
-                        mod.setValBoolean(Boolean.parseBoolean(isOn));
-                    }
-                }
-            }
-
-            br.close();
-        } catch (Exception var12) {
-            var12.printStackTrace();
-            saveSettingsList();
-        }
-
-        try {
-            file = new File(Settings.getAbsolutePath(), "String.txt");
-            fstream = new FileInputStream(file.getAbsolutePath());
-            in = new DataInputStream(fstream);
-            br = new BufferedReader(new InputStreamReader(in));
-
-            while ((line = br.readLine()) != null) {
-                curLine = line.trim();
-                name = curLine.split(":")[0];
-                isOn = curLine.split(":")[1];
-                m = curLine.split(":")[2];
-                for (Module mm : moduleManager.getModules()) {
-                    if (mm != null && mm.getName().equalsIgnoreCase(m)) {
-                        mod = settingsManager.getSettingByID(name);
-                        mod.setValString(isOn);
-                    }
-                }
-            }
-            br.close();
-        } catch (Exception var11) {
-            var11.printStackTrace();
-            saveSettingsList();
+        }catch (Exception e){
+            e.printStackTrace();
+            save();
         }
     }
 }

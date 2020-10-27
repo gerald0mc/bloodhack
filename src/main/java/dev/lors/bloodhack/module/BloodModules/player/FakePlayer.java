@@ -1,24 +1,30 @@
 package dev.lors.bloodhack.module.BloodModules.player;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.mojang.authlib.GameProfile;
-import dev.lors.bloodhack.managers.Setting;
+import com.mojang.authlib.properties.Property;
+import com.mojang.util.UUIDTypeAdapter;
+import dev.lors.bloodhack.managers.Value;
 import dev.lors.bloodhack.module.Category;
 import dev.lors.bloodhack.module.Module;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 
+import javax.net.ssl.HttpsURLConnection;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.UUID;
 
 public class FakePlayer extends Module {
-    public Setting name;
+
+    Value<String> name = new Value<String>("Name", "", "Popbob");
 
     public FakePlayer() {
         super("FakePlayer", Category.PLAYER);
-
-        ArrayList<String> list = new ArrayList<>();
-        list.add("popbob");
-        list.add("Fit");
-
-        rSetting(name = new Setting("Name", this, "popbob", list, "name"));
     }
 
     private EntityOtherPlayerMP _fakePlayer;
@@ -34,22 +40,9 @@ public class FakePlayer extends Module {
             this.toggle();
             return;
         }
-
-        String s = "";
-
-        switch (name.getValString()) {
-            case "popbob":
-                s = "popbob";
-                break;
-            case "Fit":
-                s = "Fit";
-                break;
-        }
-
-        _fakePlayer = new EntityOtherPlayerMP(mc.world, new GameProfile(mc.player.getUniqueID(), s));
-
-        mc.world.addEntityToWorld(_fakePlayer.getEntityId(), _fakePlayer);
-        _fakePlayer.attemptTeleport(mc.player.posX, mc.player.posY, mc.player.posZ); // moves fake player to your current position
+            _fakePlayer = new EntityOtherPlayerMP(mc.world, new GameProfile(mc.player.getUniqueID(), name.value));
+            mc.world.addEntityToWorld(_fakePlayer.getEntityId(), _fakePlayer);
+            _fakePlayer.attemptTeleport(mc.player.posX, mc.player.posY, mc.player.posZ); // moves fake player to your current position
     }
 
     @Override
@@ -59,4 +52,5 @@ public class FakePlayer extends Module {
             mc.world.removeEntity(_fakePlayer);
         }
     }
+
 }

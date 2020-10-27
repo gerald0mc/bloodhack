@@ -1,6 +1,7 @@
 package dev.lors.bloodhack.module;
 
 import com.google.common.util.concurrent.FakeTimeLimiter;
+import dev.lors.bloodhack.managers.Value;
 import dev.lors.bloodhack.module.BloodModules.chat.*;
 import dev.lors.bloodhack.module.BloodModules.combat.*;
 import dev.lors.bloodhack.module.BloodModules.hud.*;
@@ -9,12 +10,14 @@ import dev.lors.bloodhack.module.BloodModules.movement.*;
 import dev.lors.bloodhack.module.BloodModules.player.FakePlayer;
 import dev.lors.bloodhack.module.BloodModules.render.*;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ModuleManager {
     private ArrayList<Module> modules = new ArrayList<Module>();
 
-    public ModuleManager() {
+    public ModuleManager() throws IllegalAccessException {
         // modules.add(new Class())
 
         ///Combat
@@ -63,7 +66,18 @@ public class ModuleManager {
 
         ///Testing area, move up if module works
 
-
+        for(Module module:modules){
+            for (Field field : module.getClass().getDeclaredFields()) {
+                if (Value.class.isAssignableFrom(field.getType())) {
+                    if (!field.isAccessible()) {
+                        field.setAccessible(true);
+                    }
+                    final Value val = (Value) field.get(module);
+                    val.module = module;
+                    module.values.add(val);
+                }
+            }
+        }
 
     }
 
@@ -73,5 +87,13 @@ public class ModuleManager {
 
     public Module getModuleByName(String name) {
         return modules.stream().filter(module -> module.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
+    }
+
+    public List<Module> getModulesByCategory(Category category){
+        List<Module> list = new ArrayList<>();
+        for(Module module:modules)
+            if(module.getCategory().equals(category))
+                list.add(module);
+        return list;
     }
 }

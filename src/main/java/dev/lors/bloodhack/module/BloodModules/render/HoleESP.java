@@ -6,10 +6,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import dev.lors.bloodhack.BloodHack;
 import dev.lors.bloodhack.event.events.RenderEvent;
-import dev.lors.bloodhack.managers.Setting;
+import dev.lors.bloodhack.managers.Value;
 import dev.lors.bloodhack.module.Category;
 import dev.lors.bloodhack.module.Module;
+import dev.lors.bloodhack.utils.BlockUtils;
 import dev.lors.bloodhack.utils.BloodHackTessellator;
+import dev.lors.bloodhack.utils.CrystalUtil;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.block.Block;
@@ -22,11 +24,11 @@ public class HoleESP extends Module {
         super("HoleESP-[NOT WORKING]", Category.RENDER);
     }
 
-    Setting rangeS;
-    Setting r;
-    Setting g;
-    Setting b;
-    Setting a;
+    Value<Integer> rangeS = new Value<Integer> ("Range", 7, 0, 9);
+    Value<Integer> r = new Value<Integer> ("Red", 255, 0, 255);
+    Value<Integer> g = new Value<Integer> ("Green", 255, 0, 255);
+    Value<Integer> b = new Value<Integer> ("Blue", 255, 0, 255);
+    Value<Integer> a = new Value<Integer> ("Alpha", 255, 0, 255);
 
     private final BlockPos[] surroundOffset = {
             new BlockPos(0, -1, 0), // down
@@ -39,14 +41,6 @@ public class HoleESP extends Module {
     private ConcurrentHashMap<BlockPos, Boolean> safeHoles;
 
     @Override
-    public void setup() {
-        rSetting(rangeS = new Setting("Range", this, 7, 0, 9, true, "range"));
-        rSetting(r = new Setting("Red", this, 255, 0, 255, true, "red"));
-        rSetting(g = new Setting("Green", this, 255, 0, 255, true, "green"));
-        rSetting(b = new Setting("Blue", this, 255, 0, 255, true, "blue"));
-    }
-
-    @Override
     public void onUpdate() {
         if(mc.player == null && mc.world == null) return;
         try {
@@ -56,9 +50,9 @@ public class HoleESP extends Module {
                 safeHoles.clear();
             }
 
-            int range = (int) Math.ceil(rangeS.getValDouble());
+            int range = (int) Math.ceil(rangeS.value);
 
-            List<BlockPos> blockPosList = getSphere(getPlayerPos(), range, range, false, true, 0);
+            List<BlockPos> blockPosList = CrystalUtil.getSphere(getPlayerPos(), range, range, false, true, 0);
 
             for (BlockPos pos : blockPosList) {
 
@@ -111,33 +105,14 @@ public class HoleESP extends Module {
             BloodHackTessellator.prepare("lines");
 
             safeHoles.forEach((blockPos, isBedrock) -> {
-                BloodHackTessellator.draw_cube_line(blockPos, (int)r.getValDouble(), (int)g.getValDouble(), (int)b.getValDouble(), (int)a.getValDouble(), "all");
+                BloodHackTessellator.draw_cube_line(blockPos, (int)r.value, (int)g.value, (int)b.value, (int)a.value, "all");
             });
         } catch(Exception ignored) {
 
         }
     }
 
-    public List<BlockPos> getSphere(BlockPos loc, float r, int h, boolean hollow, boolean sphere, int plus_y) {
-        List<BlockPos> circleblocks = new ArrayList<>();
-        int cx = loc.getX();
-        int cy = loc.getY();
-        int cz = loc.getZ();
-        for (int x = cx - (int) r; x <= cx + r; x++) {
-            for (int z = cz - (int) r; z <= cz + r; z++) {
-                for (int y = (sphere ? cy - (int) r : cy); y < (sphere ? cy + r : cy + h); y++) {
-                    double dist = (cx - x) * (cx - x) + (cz - z) * (cz - z) + (sphere ? (cy - y) * (cy - y) : 0);
-                    if (dist < r * r && !(hollow && dist < (r - 1) * (r - 1))) {
-                        BlockPos l = new BlockPos(x, y + plus_y, z);
-                        circleblocks.add(l);
-                    }
-                }
-            }
-        }
-        return circleblocks;
-    }
-
     public BlockPos getPlayerPos() {
-        return new BlockPos(Math.floor(Minecraft.getMinecraft().player.posX), Math.floor(Minecraft.getMinecraft().player.posY), Math.floor(Minecraft.getMinecraft().player.posZ));
+        return mc.player.getPosition();
     }
 }

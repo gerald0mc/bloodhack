@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import dev.lors.bloodhack.BloodHack;
 import dev.lors.bloodhack.event.events.EventEntityRemoved;
 import dev.lors.bloodhack.event.events.PacketEvent;
-import dev.lors.bloodhack.managers.Setting;
+import dev.lors.bloodhack.managers.Value;
 import dev.lors.bloodhack.module.Category;
 import dev.lors.bloodhack.module.Module;
 
@@ -43,55 +43,28 @@ public class BetterAC extends Module {
         super("BetterAutoCrystal", Category.COMBAT);
     }
 
-    Setting placeCA;
-    Setting breakCA;
-    Setting placeDelay;
-    Setting breakAttempts;
-    Setting antiWeakness;
-    Setting breakRange;
-    Setting placeRange;
-    Setting wallRange;
-    Setting breakDelay;
-    Setting minDamagePlace;
-    Setting minDamageBreak;
-    Setting selfDamage;
-    Setting antiSui;
-    Setting autoSwitch;
-    Setting antiStuck;
-    Setting newServ;
-    Setting faceplace;
-    Setting faceplaceHealth;
-    Setting render;
-    Setting r;
-    Setting g;
-    Setting b;
+    Value<Boolean> placeCA = new Value("Place", true);
+    Value<Boolean> breakCA = new Value("Break", true);
+    Value<Boolean> autoSwitch = new Value("Auto-Switch", true);
+    Value<Boolean> antiWeakness = new Value("Anti-Weakness");
+    Value<Boolean> antiSui = new Value("Anti-Suicide", true);
+    Value<Boolean> antiStuck = new Value("Anti-Stuck", true);
+    Value<Boolean> newServ = new Value("1.13+ Mode", false);
+    Value<Boolean> faceplace = new Value("FacePlace Mode", false);
 
-    @Override
-    public void setup() {
-        rSetting(placeCA = new Setting("Place", this, true, "place"));
-        rSetting(breakCA = new Setting("Break", this, true, "break"));
-        rSetting(autoSwitch = new Setting("Auto-Switch", this, true, "autoswitch"));
-        rSetting(antiWeakness = new Setting("Anti-Weakness", this, false, "antiweakness"));
-        rSetting(antiSui = new Setting("Anti-Suicide", this, true, "antisui"));
-        rSetting(antiStuck = new Setting("Anti-Stuck", this, true, "antistuck"));
-        rSetting(newServ = new Setting("1.13+ Mode", this, false, "newServ"));
-        rSetting(faceplace = new Setting("FacePlace Mode", this, false, "faceplace"));
-
-        rSetting(placeRange = new Setting("Place Range", this, 6, 1, 7, true, "placerange"));
-        rSetting(placeDelay = new Setting("Place Delay", this, 0, 0, 7, true, "caplacedelay"));
-        rSetting(breakRange = new Setting("Break Range", this, 8, 1, 7, true, "breakrange"));
-        rSetting(breakDelay = new Setting("Break Delay", this, 1, 0, 7, true, "cabreakdelay"));
-        rSetting(wallRange = new Setting("Wall Range", this, 6, 1, 6, true, "wallrange"));
-        rSetting(minDamagePlace = new Setting("Min Damage Place", this, 8, 0, 7, true, "dmgplace"));
-        rSetting(minDamageBreak = new Setting("Min Damage Break", this, 6, 0, 7, true, "dmgbreak"));
-        rSetting(selfDamage = new Setting("Max Self Damage", this, 6, 0, 20, true, "dmgself"));
-        rSetting(breakAttempts = new Setting("Break Attempts", this, 2, 1, 6, true, "breakattempts"));
-        rSetting(faceplaceHealth = new Setting("Faceplace Min Health", this, 8, 0, 36, true, "faceplaceHealth"));
-        rSetting(r = new Setting("Red", this, 255, 0, 255, true, "r"));
-        rSetting(g = new Setting("Green", this, 255, 0, 255, true, "g"));
-        rSetting(b = new Setting("Blue", this, 255, 0, 255, true, "b"));
-
-    }
+    Value<Integer> placeRange = new Value("Place Range", 6, 1, 7);
+    Value<Integer> placeDelay = new Value("Place Delay", 0, 0, 7);
+    Value<Integer> breakRange = new Value("Break Range", 8, 1, 7);
+    Value<Integer> breakDelay = new Value("Break Delay", 1, 0, 7);
+    Value<Integer> wallRange = new Value("Wall Range", 6, 1, 6);
+    Value<Integer> minDamagePlace = new Value("Min Damage Place", 8, 0, 7);
+    Value<Integer> minDamageBreak = new Value("Min Damage Break", 6, 0, 7);
+    Value<Integer> selfDamage = new Value("Max Self Damage", 6, 0, 20);
+    Value<Integer> breakAttempts = new Value("Break Attempts", 2, 1, 6);
+    Value<Integer> faceplaceHealth = new Value("Faceplace Min Health", 8, 0, 36);
+    Value<Integer> r = new Value("Red", 255, 0, 255);
+    Value<Integer> g = new Value("Green", 255, 0, 255);
+    Value<Integer> b = new Value("Blue", 255, 0, 255);
 
     private final ConcurrentHashMap<EntityEnderCrystal, Integer> attackedCrystals = new ConcurrentHashMap<>();
 
@@ -125,8 +98,8 @@ public class BetterAC extends Module {
     @Override
     public void onEnable() {
         MinecraftForge.EVENT_BUS.register(this);
-        placeTimeout = placeDelay.getValInt();
-        breakTimeout = breakDelay.getValInt();
+        placeTimeout = placeDelay.value;
+        breakTimeout = breakDelay.value;
         placeTimeoutFlag = false;
         isRotating = false;
         autoEzTarget = null;
@@ -187,11 +160,11 @@ public class BetterAC extends Module {
             return;
         }
 
-        if (placeCA.getValBoolean() && placeDelayCounter > placeTimeout) {
+        if (placeCA.value && placeDelayCounter > placeTimeout) {
             place_crystal();
         }
 
-        if (breakCA.getValBoolean() && breakDelayCounter > breakTimeout) {
+        if (breakCA.value && breakDelayCounter > breakTimeout) {
             break_crystal();
         }
 
@@ -216,7 +189,7 @@ public class BetterAC extends Module {
         double best_damage = 0;
 
         double minimum_damage;
-        double maximum_damage_self = this.selfDamage.getValDouble();
+        double maximum_damage_self = this.selfDamage.value;
 
         double best_distance = 0;
 
@@ -227,13 +200,13 @@ public class BetterAC extends Module {
                 if (!(c instanceof EntityEnderCrystal)) continue;
 
                 EntityEnderCrystal crystal = (EntityEnderCrystal) c;
-                if (mc.player.getDistance(crystal) > (!mc.player.canEntityBeSeen(crystal) ? this.wallRange.getValInt() : this.breakRange.getValInt())) {
+                if (mc.player.getDistance(crystal) > (!mc.player.canEntityBeSeen(crystal) ? this.wallRange.value : this.breakRange.value)) {
                     continue;
                 }
 
                 if (crystal.isDead) continue;
 
-                if (attackedCrystals.containsKey(crystal) && attackedCrystals.get(crystal) > 5 && antiStuck.getValBoolean()) continue;
+                if (attackedCrystals.containsKey(crystal) && attackedCrystals.get(crystal) > 5 && antiStuck.value) continue;
 
                 for (Entity player : mc.world.playerEntities) {
 
@@ -248,10 +221,10 @@ public class BetterAC extends Module {
                     if (target.isDead || target.getHealth() <= 0) continue;
 
                     boolean no_place = false;
-                    if ((target.getHealth() < faceplaceHealth.getValInt() && faceplace.getValBoolean() && !no_place) || !no_place) {
+                    if ((target.getHealth() < faceplaceHealth.value && faceplace.value && !no_place) || !no_place) {
                         minimum_damage = 2;
                     } else {
-                        minimum_damage = this.minDamageBreak.getValInt();
+                        minimum_damage = this.minDamageBreak.value;
                     }
 
                     final double target_damage = CrystalUtil.calculateDamage(crystal, target);
@@ -260,7 +233,7 @@ public class BetterAC extends Module {
 
                     final double self_damage = CrystalUtil.calculateDamage(crystal, mc.player);
 
-                    if (self_damage > maximum_damage_self || (antiSui.getValBoolean() && (mc.player.getHealth() + mc.player.getAbsorptionAmount()) - self_damage <= 0.5)) continue;
+                    if (self_damage > maximum_damage_self || (antiSui.value && (mc.player.getHealth() + mc.player.getAbsorptionAmount()) - self_damage <= 0.5)) continue;
 
                     if (target_damage > best_damage) {
                         autoEzTarget = target;
@@ -298,11 +271,11 @@ public class BetterAC extends Module {
         List<Pair<Double, BlockPos>> damage_blocks = new ArrayList<>();
         double best_damage = 0;
         double minimum_damage;
-        double maximum_damage_self = this.selfDamage.getValDouble();
+        double maximum_damage_self = this.selfDamage.value;
 
         BlockPos best_block = null;
 
-        List<BlockPos> blocks = CrystalUtil.possiblePlacePositions((float) placeRange.getValInt(), newServ.getValBoolean(), true);
+        List<BlockPos> blocks = CrystalUtil.possiblePlacePositions((float) placeRange.value, newServ.value, true);
 
         for (Entity player : mc.world.playerEntities) {
 
@@ -318,7 +291,7 @@ public class BetterAC extends Module {
                     continue;
                 }
 
-                if (!BlockUtils.canSeeBlock(block) && mc.player.getDistance(block.getX(), block.getY(), block.getZ()) > wallRange.getValInt()) {
+                if (!BlockUtils.canSeeBlock(block) && mc.player.getDistance(block.getX(), block.getY(), block.getZ()) > wallRange.value) {
                     continue;
                 }
 
@@ -326,11 +299,11 @@ public class BetterAC extends Module {
 
                 if (target.isDead || target.getHealth() <= 0) continue;
 
-                boolean no_place = faceplace.getValBoolean() && mc.player.getHeldItemMainhand().getItem() == Items.DIAMOND_SWORD;
-                if ((target.getHealth() < faceplaceHealth.getValInt() && faceplace.getValBoolean() && !no_place) || !no_place) {
+                boolean no_place = faceplace.value && mc.player.getHeldItemMainhand().getItem() == Items.DIAMOND_SWORD;
+                if ((target.getHealth() < faceplaceHealth.value && faceplace.value && !no_place) || !no_place) {
                     minimum_damage = 2;
                 } else {
-                    minimum_damage = this.minDamagePlace.getValInt();
+                    minimum_damage = this.minDamagePlace.value;
                 }
 
                 final double target_damage = CrystalUtil.calculateDamage((double) block.getX() + 0.5, (double) block.getY() + 1, (double) block.getZ() + 0.5, target);
@@ -339,7 +312,7 @@ public class BetterAC extends Module {
 
                 final double self_damage = CrystalUtil.calculateDamage((double) block.getX() + 0.5, (double) block.getY() + 1, (double) block.getZ() + 0.5, mc.player);
 
-                if (self_damage > maximum_damage_self || (antiSui.getValBoolean() && (mc.player.getHealth() + mc.player.getAbsorptionAmount()) - self_damage <= 0.5)) continue;
+                if (self_damage > maximum_damage_self || (antiSui.value && (mc.player.getHealth() + mc.player.getAbsorptionAmount()) - self_damage <= 0.5)) continue;
 
                 /** if (attempt_chain.get_value(true) && chain_step > 0) {
                  damage_blocks.add(new BadlionPair<>(best_damage, best_block));
@@ -413,7 +386,7 @@ public class BetterAC extends Module {
 
         boolean offhand_check = false;
         if (mc.player.getHeldItemOffhand().getItem() != Items.END_CRYSTAL) {
-            if (mc.player.getHeldItemMainhand().getItem() != Items.END_CRYSTAL && autoSwitch.getValBoolean()) {
+            if (mc.player.getHeldItemMainhand().getItem() != Items.END_CRYSTAL && autoSwitch.value) {
                 if (find_crystals_hotbar() == -1) return;
                 mc.player.inventory.currentItem = find_crystals_hotbar();
                 return;
@@ -446,7 +419,7 @@ public class BetterAC extends Module {
             return;
         }
 
-        if (antiWeakness.getValBoolean() && mc.player.isPotionActive(MobEffects.WEAKNESS)) {
+        if (antiWeakness.value && mc.player.isPotionActive(MobEffects.WEAKNESS)) {
 
             boolean should_weakness = true;
 
@@ -488,7 +461,7 @@ public class BetterAC extends Module {
 
         didAnything = true;
 
-        for (int i = 0; i < breakAttempts.getValInt(); i++) {
+        for (int i = 0; i < breakAttempts.value; i++) {
             EntityUtil.attackEntity(crystal, false);
         }
         addAttackedCrystal(crystal);
@@ -525,7 +498,7 @@ public class BetterAC extends Module {
 
     //@Override
     //public void render(RenderEvent event) {
-    //if(render.getValBoolean()) {
+    //if(render.value) {
     //if (renderBlockInit == null) return;
 
     //outline = false;
@@ -548,7 +521,7 @@ public class BetterAC extends Module {
             BloodHackTessellator.draw_cube(BloodHackTessellator.get_buffer_build(),
                     render_block.getX(), render_block.getY(), render_block.getZ(),
                     1, h, 1,
-                    r.getValInt(), g.getValInt(), b.getValInt(), 255,
+                    r.value, g.value, b.value, 255,
                     "all"
             );
             BloodHackTessellator.release();
@@ -559,7 +532,7 @@ public class BetterAC extends Module {
             BloodHackTessellator.draw_cube_line(BloodHackTessellator.get_buffer_build(),
                     render_block.getX(), render_block.getY(), render_block.getZ(),
                     1, h, 1,
-                    r.getValInt(), g.getValInt(), b.getValInt(), 255,
+                    r.value, g.value, b.value, 255,
                     "all"
             );
             BloodHackTessellator.release();

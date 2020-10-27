@@ -2,7 +2,7 @@ package dev.lors.bloodhack.module.BloodModules.combat;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 import dev.lors.bloodhack.BloodHack;
-import dev.lors.bloodhack.managers.Setting;
+import dev.lors.bloodhack.managers.Value;
 import dev.lors.bloodhack.managers.friends.Friends;
 import dev.lors.bloodhack.module.Category;
 import dev.lors.bloodhack.module.Module;
@@ -54,17 +54,13 @@ public class BedAura extends Module {
         super("ECME BedAura", Category.COMBAT);
     }
 
-    Setting range;
-    Setting announceUsage;
-    Setting placedelay;
-    Setting placeesp;
+    Value<Integer> range = new Value("Range", 7, 0, 9);
+    Value<Integer> placedelay = new Value("Place Delay", 15, 8, 20);
+    Value<Boolean> announceUsage = new Value("Announce Usage", true);
+    Value<Boolean> placeesp  = new Value("Place ESP", true);
 
     @Override
     public void setup() {
-        rSetting(range = new Setting("Range", this, 7, 0, 9, true, "range"));
-        rSetting(placedelay = new Setting("Place Delay", this, 15, 8, 20, true, "placedelay"));
-        rSetting(announceUsage = new Setting("Announce Usage", this, true, "announceUsage"));
-        rSetting(placeesp = new Setting("Place ESP", this, true, "placeesp"));
     }
 
     private int playerHotbarSlot = -1;
@@ -123,7 +119,7 @@ public class BedAura extends Module {
         playerHotbarSlot = -1;
         lastHotbarSlot = -1;
 
-        if (announceUsage.getValBoolean()) {
+        if (announceUsage.value) {
             Messages.sendMessagePrefix(TextFormatting.BLUE + "[" + TextFormatting.GOLD + "BedAura" + TextFormatting.BLUE + "]" + ChatFormatting.RED.toString() + " Disabled" + ChatFormatting.RESET.toString() + "!");
         }
 
@@ -153,7 +149,7 @@ public class BedAura extends Module {
         if(closestTarget == null && mc.player.dimension != 0) {
             if(firstRun) {
                 firstRun = false;
-                if(announceUsage.getValBoolean()) {
+                if(announceUsage.value) {
                     Messages.sendMessagePrefix(TextFormatting.BLUE + "[" + TextFormatting.GOLD + "BedAura" + TextFormatting.BLUE + "]" + TextFormatting.WHITE + " enabled, " + TextFormatting.WHITE + "waiting for target.");
                 }
             }
@@ -162,7 +158,7 @@ public class BedAura extends Module {
         if (firstRun && closestTarget != null && mc.player.dimension != 0) {
             firstRun = false;
             lastTickTargetName = closestTarget.getName();
-            if (announceUsage.getValBoolean()) {
+            if (announceUsage.value) {
                 Messages.sendMessagePrefix(TextFormatting.BLUE + "[" + TextFormatting.GOLD + "BedAura" + TextFormatting.BLUE + "]" + TextFormatting.WHITE + " enabled" + TextFormatting.WHITE + ", target: " + ChatFormatting.BLUE.toString() + lastTickTargetName);
             }
         }
@@ -170,7 +166,7 @@ public class BedAura extends Module {
         if(closestTarget != null && lastTickTargetName != null) {
             if (!lastTickTargetName.equals(closestTarget.getName())) {
                 lastTickTargetName = closestTarget.getName();
-                if (announceUsage.getValBoolean()) {
+                if (announceUsage.value) {
                     Messages.sendMessagePrefix(TextFormatting.BLUE + "[" + TextFormatting.GOLD + "BedAura" + TextFormatting.BLUE + "]" + TextFormatting.WHITE + " New target: " + ChatFormatting.BLUE.toString() + lastTickTargetName);
                 }
             }
@@ -241,7 +237,7 @@ public class BedAura extends Module {
 
             mc.world.loadedTileEntityList.stream()
                     .filter(e -> e instanceof TileEntityBed)
-                    .filter(e -> mc.player.getDistance(e.getPos().getX(), e.getPos().getY(), e.getPos().getZ()) <= range.getValInt())
+                    .filter(e -> mc.player.getDistance(e.getPos().getX(), e.getPos().getY(), e.getPos().getZ()) <= range.value)
                     .sorted(Comparator.comparing(e -> mc.player.getDistance(e.getPos().getX(), e.getPos().getY(), e.getPos().getZ())))
                     .forEach(bed -> {
                         if(mc.player.dimension != 0) {
@@ -254,7 +250,7 @@ public class BedAura extends Module {
                         //MUCH better than adding a break delay slider since you want the bed damage to be as accurate as possible
                     });
 
-            if((mc.player.ticksExisted % placedelay.getValInt() == 0)  && closestTarget != null) {
+            if((mc.player.ticksExisted % placedelay.value == 0)  && closestTarget != null) {
                 //this is a really dope way to do this delay
                 //i tried making an int called tickDelay and incrementing it every tick
                 //but my onUpdate() literally runs 10 times as fast as it should be, meaning by 20 ticks the variable already had a value of 200
@@ -284,7 +280,7 @@ public class BedAura extends Module {
 
     //this is all pretty self explanatory
     private void doDaMagic() {
-        if(diffXZ <= range.getValInt()) {
+        if(diffXZ <= range.value) {
             for (int i = 0; i < 9; i++) {
                 if (bedSlot != -1) {
                     break;
@@ -388,23 +384,23 @@ public class BedAura extends Module {
     @SubscribeEvent
     public void render(RenderWorldLastEvent event) {
         if(placeTarget == null || mc.world == null || closestTarget == null) return;
-        if(placeesp.getValBoolean()) {try {
+        if(placeesp.value) {try {
             float posx = placeTarget.getX();
             float posy = placeTarget.getY();
             float posz = placeTarget.getZ();
             BloodHackTessellator.prepare("lines");
-            BloodHackTessellator.draw_cube_line(posx, posy, posz, ColourUtils.GenRainbow(), "all");
+            BloodHackTessellator.draw_cube_line(posx, posy, posz, ColourUtils.genRainbow(), "all");
             if(rotVar == 90) {
-                BloodHackTessellator.draw_cube_line(posx - 1, posy, posz, ColourUtils.GenRainbow(), "all");
+                BloodHackTessellator.draw_cube_line(posx - 1, posy, posz, ColourUtils.genRainbow(), "all");
             }
             if(rotVar == 0) {
-                BloodHackTessellator.draw_cube_line(posx, posy, posz + 1, ColourUtils.GenRainbow(), "all");
+                BloodHackTessellator.draw_cube_line(posx, posy, posz + 1, ColourUtils.genRainbow(), "all");
             }
             if(rotVar == -90) {
-                BloodHackTessellator.draw_cube_line(posx + 1, posy, posz, ColourUtils.GenRainbow(), "all");
+                BloodHackTessellator.draw_cube_line(posx + 1, posy, posz, ColourUtils.genRainbow(), "all");
             }
             if(rotVar == 180) {
-                BloodHackTessellator.draw_cube_line(posx, posy, posz - 1, ColourUtils.GenRainbow(), "all");
+                BloodHackTessellator.draw_cube_line(posx, posy, posz - 1, ColourUtils.genRainbow(), "all");
             }
         } catch(Exception ignored) {
             //again, my shitty way of dealing with crashes is surrounding them in try/catch brackets
