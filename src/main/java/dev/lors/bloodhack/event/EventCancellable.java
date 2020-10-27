@@ -1,6 +1,6 @@
 package dev.lors.bloodhack.event;
 
-import me.zero.alpine.event.type.Cancellable;
+import me.zero.alpine.type.Cancellable;
 import net.minecraft.client.Minecraft;
 
 
