@@ -7,8 +7,6 @@ import dev.lors.bloodhack.utils.ColourUtils;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import java.awt.*;
-
 public class Watermark extends Module {
     public Watermark() {
         super("Watermark", Category.HUD);

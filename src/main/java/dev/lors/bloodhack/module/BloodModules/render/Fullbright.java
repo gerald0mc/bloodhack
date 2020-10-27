@@ -2,10 +2,6 @@ package dev.lors.bloodhack.module.BloodModules.render;
 
 import dev.lors.bloodhack.module.Category;
 import dev.lors.bloodhack.module.Module;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
-
-import java.util.Objects;
 
 public class Fullbright extends Module {
 

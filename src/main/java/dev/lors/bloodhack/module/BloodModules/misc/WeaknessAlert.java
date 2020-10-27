@@ -7,11 +7,11 @@ import dev.lors.bloodhack.module.Module;
 import net.minecraft.init.MobEffects;
 
 public class WeaknessAlert extends Module {
+    private boolean hasAnnounced = false;
+
     public WeaknessAlert() {
         super("WeaknessAlert", Category.MISC);
     }
-
-    private boolean hasAnnounced = false;
 
     public void onUpdate() {
         if (mc.world != null && mc.player != null) {

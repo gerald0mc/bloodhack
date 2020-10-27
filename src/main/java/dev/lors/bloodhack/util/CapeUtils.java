@@ -9,7 +9,8 @@ import java.util.UUID;
 
 public class CapeUtils {
     List<UUID> uuids = new ArrayList<>();
-    public CapeUtils(){
+
+    public CapeUtils() {
         try {
             URL pastebin = new URL("");
             BufferedReader in = new BufferedReader(new InputStreamReader(pastebin.openStream()));
@@ -17,8 +18,11 @@ public class CapeUtils {
             while ((inputLine = in.readLine()) != null) {
                 uuids.add(UUID.fromString(inputLine));
             }
-        } catch(Exception e){}
+        } catch (Exception e) {
+        }
     }
-    public boolean hasCape(UUID id){ return uuids.contains(id);
+
+    public boolean hasCape(UUID id) {
+        return uuids.contains(id);
     }
 }

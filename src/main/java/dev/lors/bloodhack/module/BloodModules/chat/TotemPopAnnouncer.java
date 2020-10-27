@@ -3,7 +3,7 @@ package dev.lors.bloodhack.module.BloodModules.chat;
 import dev.lors.bloodhack.BloodHack;
 import dev.lors.bloodhack.event.events.PacketEvent;
 import dev.lors.bloodhack.event.events.TotemPopEvent;
-import dev.lors.bloodhack.managers.Setting;
+import dev.lors.bloodhack.managers.Value;
 import dev.lors.bloodhack.managers.friends.Friends;
 import dev.lors.bloodhack.module.Category;
 import dev.lors.bloodhack.module.Module;
@@ -18,35 +18,13 @@ import net.minecraftforge.common.MinecraftForge;
 import java.util.HashMap;
 
 public class TotemPopAnnouncer extends Module {
-    public TotemPopAnnouncer() {
-        super("TotemPopCounter", Category.MISC);
-    }
-
-    Setting greenText;
-
-    @Override
-    public void setup() {
-        rSetting(greenText = new Setting("Use Greentext", this, false, "greentext"));
-    }
-
-    @Override
-    public void onEnable() {
-        //BloodHack.EVENT_BUS.subscribe(this);
-        MinecraftForge.EVENT_BUS.register(this);
-    }
-
-    @Override
-    public void onDisable() {
-        //BloodHack.EVENT_BUS.unsubscribe(this);
-        MinecraftForge.EVENT_BUS.unregister(this);
-    }
-
-    private HashMap<String, Integer> playerList;
-    private boolean isDead;
     @EventHandler
     public Listener<TotemPopEvent> listListener;
     @EventHandler
     public Listener<PacketEvent.Receive> popListener;
+    Value<Boolean> greenText = new Value<Boolean>("Use Greentext", false);
+    private HashMap<String, Integer> playerList;
+    private boolean isDead;
 
     {
 
@@ -59,8 +37,8 @@ public class TotemPopAnnouncer extends Module {
             }
             if (this.playerList.get(event.getEntity().getName()) == null) {
                 this.playerList.put(event.getEntity().getName(), 1);
-                if(!(event.getEntity().getName() == mc.player.getName()) && !(Friends.isFriend(event.getEntity().getName()))) {
-                    if(greenText.getValBoolean()) {
+                if (!(event.getEntity().getName() == mc.player.getName()) && !(Friends.isFriend(event.getEntity().getName()))) {
+                    if (greenText.value) {
                         mc.player.sendChatMessage(">" + event.getEntity().getName() + " popped 1 totem");
                     } else {
                         mc.player.sendChatMessage(event.getEntity().getName() + " popped 1 totem");
@@ -70,8 +48,8 @@ public class TotemPopAnnouncer extends Module {
                 popCounter[0] = this.playerList.get(event.getEntity().getName());
                 ++popCounter[0];
                 this.playerList.put(event.getEntity().getName(), popCounter[0]);
-                if(!(event.getEntity().getName() == mc.player.getName()) && !(Friends.isFriend(event.getEntity().getName()))) {
-                    if(greenText.getValBoolean()) {
+                if (!(event.getEntity().getName() == mc.player.getName()) && !(Friends.isFriend(event.getEntity().getName()))) {
+                    if (greenText.value) {
                         mc.player.sendChatMessage(">" + event.getEntity().getName() + " popped " + popCounter[0] + " totems");
                     } else {
                         mc.player.sendChatMessage(event.getEntity().getName() + " popped " + popCounter[0] + " totems");
@@ -87,7 +65,7 @@ public class TotemPopAnnouncer extends Module {
                 if (event.getPacket() instanceof SPacketEntityStatus) {
                     packet[0] = (SPacketEntityStatus) event.getPacket();
                     if (packet[0].getOpCode() == 35) {
-                        entity[0] = packet[0].getEntity((World) mc.world);
+                        entity[0] = packet[0].getEntity(mc.world);
                         if (this.selfCheck(entity[0].getName())) {
                             BloodHack.EVENT_BUS.post(new TotemPopEvent(entity[0]));
                         }
@@ -95,6 +73,21 @@ public class TotemPopAnnouncer extends Module {
                 }
             }
         });
+    }
+    public TotemPopAnnouncer() {
+        super("TotemPopCounter", Category.MISC);
+    }
+
+    @Override
+    public void onEnable() {
+        //BloodHack.EVENT_BUS.subscribe(this);
+        MinecraftForge.EVENT_BUS.register(this);
+    }
+
+    @Override
+    public void onDisable() {
+        //BloodHack.EVENT_BUS.unsubscribe(this);
+        MinecraftForge.EVENT_BUS.unregister(this);
     }
 
     @Override
@@ -109,8 +102,8 @@ public class TotemPopAnnouncer extends Module {
         }
         for (final EntityPlayer player : mc.world.playerEntities) {
             if (0.0f >= player.getHealth() && this.selfCheck(player.getName()) && this.playerList.containsKey(player.getName())) {
-                if(!(player.getName() == mc.player.getName()) && !(Friends.isFriend(player.getName()))) {
-                    if(greenText.getValBoolean()) {
+                if (!(player.getName() == mc.player.getName()) && !(Friends.isFriend(player.getName()))) {
+                    if (greenText.value) {
                         mc.player.sendChatMessage(">" + player.getName() + " died after popping " + this.playerList.get(player.getName()) + " totems");
                     } else {
                         mc.player.sendChatMessage(player.getName() + " died after popping " + this.playerList.get(player.getName()) + " totems");

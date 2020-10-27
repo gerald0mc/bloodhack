@@ -1,9 +1,6 @@
 package dev.lors.bloodhack.module;
 
-import dev.lors.bloodhack.BloodHack;
 import dev.lors.bloodhack.managers.Value;
-import me.zero.alpine.EventBus;
-import me.zero.alpine.EventManager;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -14,16 +11,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Module {
-    protected Minecraft mc = Minecraft.getMinecraft();
-
-
-    private String name, displayName;
-    private Category category;
     public boolean toggled;
-    private Integer key;
+    public List<Value> values = new ArrayList<Value>();
+    protected Minecraft mc = Minecraft.getMinecraft();
     protected int tickDelay;
     boolean drawn;
-    public List<Value> values = new ArrayList<Value>();
+    private String name, displayName;
+    private Category category;
+    private Integer key;
 
     public Module(String name, Category category) {
         this.name = name;
@@ -114,8 +109,6 @@ public class Module {
 
     public void setup() {
     }
-
-
 
 
 }

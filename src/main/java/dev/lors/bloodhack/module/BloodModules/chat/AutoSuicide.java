@@ -9,7 +9,10 @@ public class AutoSuicide extends Module {
         super("AutoSuicide", Category.CHAT);
     }
 
-    public void onEnable(){mc.player.sendChatMessage("/kill"); this.toggle();}
+    public void onEnable() {
+        mc.player.sendChatMessage("/kill");
+        this.toggle();
+    }
     //1 line code :)
 }
 

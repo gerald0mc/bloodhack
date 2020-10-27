@@ -3,10 +3,7 @@ package dev.lors.bloodhack.managers;
 import club.minnced.discord.rpc.DiscordEventHandlers;
 import club.minnced.discord.rpc.DiscordRPC;
 import club.minnced.discord.rpc.DiscordRichPresence;
-import dev.lors.bloodhack.BloodHack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiMultiplayer;
-import net.minecraft.client.gui.GuiWorldSelection;
 
 public class DiscordManager {
     public static final Minecraft mc = Minecraft.getMinecraft();
@@ -29,15 +26,12 @@ public class DiscordManager {
         presence.largeImageText = "https://discord.gg/salhack Join The SalHack Development Discord!";
         new Thread(() ->
         {
-            while (!Thread.currentThread().isInterrupted())
-            {
+            while (!Thread.currentThread().isInterrupted()) {
                 lib.Discord_RunCallbacks();
                 lib.Discord_UpdatePresence(presence);
-                try
-                {
+                try {
                     Thread.sleep(2000);
-                } catch (InterruptedException ignored)
-                {
+                } catch (InterruptedException ignored) {
                 }
             }
         }, "RPC-Callback-Handler").start();

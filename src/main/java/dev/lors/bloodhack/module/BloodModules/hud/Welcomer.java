@@ -1,6 +1,5 @@
 package dev.lors.bloodhack.module.BloodModules.hud;
 
-import dev.lors.bloodhack.BloodHack;
 import dev.lors.bloodhack.managers.Value;
 import dev.lors.bloodhack.module.Category;
 import dev.lors.bloodhack.module.Module;
@@ -8,16 +7,14 @@ import dev.lors.bloodhack.utils.ColourUtils;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import java.awt.*;
 import java.util.Calendar;
 
 public class Welcomer extends Module {
+    Value<Float> x = new Value<Float>("X Position", 2.0f, 0.0f, 1000.0f);
+    Value<Float> y = new Value<Float>("Y Position", 350.0f, 0.0f, 1000.0f);
     public Welcomer() {
         super("Welcomer", Category.HUD);
     }
-
-    Value<Float> x = new Value<Float>("X Position", 2.0f, 0.0f, 1000.0f);
-    Value<Float> y = new Value<Float>("Y Position", 350.0f, 0.0f, 1000.0f);
 
     private String WelcomeMessages() {
         final int timeOfDay = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);

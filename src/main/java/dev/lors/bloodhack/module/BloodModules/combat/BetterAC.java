@@ -1,18 +1,10 @@
 package dev.lors.bloodhack.module.BloodModules.combat;
 
-import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
-import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
-
-import dev.lors.bloodhack.BloodHack;
 import dev.lors.bloodhack.event.events.EventEntityRemoved;
 import dev.lors.bloodhack.event.events.PacketEvent;
 import dev.lors.bloodhack.managers.Value;
 import dev.lors.bloodhack.module.Category;
 import dev.lors.bloodhack.module.Module;
-
 import dev.lors.bloodhack.util.Pair;
 import dev.lors.bloodhack.util.Timer;
 import dev.lors.bloodhack.utils.BlockUtils;
@@ -21,7 +13,6 @@ import dev.lors.bloodhack.utils.CrystalUtil;
 import dev.lors.bloodhack.utils.EntityUtil;
 import me.zero.alpine.listener.EventHandler;
 import me.zero.alpine.listener.Listener;
-import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.player.EntityPlayer;
@@ -38,11 +29,33 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.MinecraftForge;
 
-public class BetterAC extends Module {
-    public BetterAC() {
-        super("BetterAutoCrystal", Category.COMBAT);
-    }
+import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
+import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
+public class BetterAC extends Module {
+    private final ConcurrentHashMap<EntityEnderCrystal, Integer> attackedCrystals = new ConcurrentHashMap<>();
+    private final Timer timer = new Timer();
+    private final Timer removeVisualTimer = new Timer();
+    @EventHandler
+    private final Listener<PacketEvent.Receive> receive_listener = new Listener<>(event -> {
+        if (event.getPacket() instanceof SPacketSoundEffect) {
+            final SPacketSoundEffect packet = (SPacketSoundEffect) event.getPacket();
+
+            if (packet.getCategory() == SoundCategory.BLOCKS && packet.getSound() == SoundEvents.ENTITY_GENERIC_EXPLODE) {
+                for (Entity e : mc.world.loadedEntityList) {
+                    if (e instanceof EntityEnderCrystal) {
+                        if (e.getDistance(packet.getX(), packet.getY(), packet.getZ()) <= 6.0f) {
+                            e.setDead();
+                        }
+                    }
+                }
+            }
+        }
+
+    });
     Value<Boolean> placeCA = new Value("Place", true);
     Value<Boolean> breakCA = new Value("Break", true);
     Value<Boolean> autoSwitch = new Value("Auto-Switch", true);
@@ -51,7 +64,6 @@ public class BetterAC extends Module {
     Value<Boolean> antiStuck = new Value("Anti-Stuck", true);
     Value<Boolean> newServ = new Value("1.13+ Mode", false);
     Value<Boolean> faceplace = new Value("FacePlace Mode", false);
-
     Value<Integer> placeRange = new Value("Place Range", 6, 1, 7);
     Value<Integer> placeDelay = new Value("Place Delay", 0, 0, 7);
     Value<Integer> breakRange = new Value("Break Range", 8, 1, 7);
@@ -65,35 +77,33 @@ public class BetterAC extends Module {
     Value<Integer> r = new Value("Red", 255, 0, 255);
     Value<Integer> g = new Value("Green", 255, 0, 255);
     Value<Integer> b = new Value("Blue", 255, 0, 255);
-
-    private final ConcurrentHashMap<EntityEnderCrystal, Integer> attackedCrystals = new ConcurrentHashMap<>();
-
     private EntityPlayer autoEzTarget = null;
-
-
     private BlockPos renderBlockInit;
-
     private double renderDamageValue;
-
     private float yaw;
     private float pitch;
-
     private boolean alreadyAttacking = false;
     private boolean placeTimeoutFlag = false;
     private boolean isRotating;
     private boolean didAnything;
     private boolean outline;
     private boolean solid;
-
     private int chainStep = 0;
     private int currentChainIndex = 0;
     private int placeTimeout;
     private int breakTimeout;
     private int breakDelayCounter;
     private int placeDelayCounter;
+    @EventHandler
+    private final Listener<EventEntityRemoved> on_entity_removed = new Listener<>(event -> {
+        if (event.get_entity() instanceof EntityEnderCrystal) {
+            attackedCrystals.remove(event.get_entity());
+        }
+    });
 
-    private final Timer timer = new Timer();
-    private final Timer removeVisualTimer = new Timer();
+    public BetterAC() {
+        super("BetterAutoCrystal", Category.COMBAT);
+    }
 
     @Override
     public void onEnable() {
@@ -120,31 +130,6 @@ public class BetterAC extends Module {
     public void onUpdate() {
         do_ca();
     }
-
-    @EventHandler
-    private Listener<EventEntityRemoved> on_entity_removed = new Listener<>(event -> {
-        if (event.get_entity() instanceof EntityEnderCrystal) {
-            attackedCrystals.remove(event.get_entity());
-        }
-    });
-
-    @EventHandler
-    private final Listener<PacketEvent.Receive> receive_listener = new Listener<>(event -> {
-        if (event.getPacket() instanceof SPacketSoundEffect) {
-            final SPacketSoundEffect packet = (SPacketSoundEffect) event.getPacket();
-
-            if (packet.getCategory() == SoundCategory.BLOCKS && packet.getSound() == SoundEvents.ENTITY_GENERIC_EXPLODE) {
-                for (Entity e : mc.world.loadedEntityList) {
-                    if (e instanceof EntityEnderCrystal) {
-                        if (e.getDistance(packet.getX(), packet.getY(), packet.getZ()) <= 6.0f) {
-                            e.setDead();
-                        }
-                    }
-                }
-            }
-        }
-
-    });
 
     public void do_ca() {
         didAnything = false;
@@ -206,7 +191,8 @@ public class BetterAC extends Module {
 
                 if (crystal.isDead) continue;
 
-                if (attackedCrystals.containsKey(crystal) && attackedCrystals.get(crystal) > 5 && antiStuck.value) continue;
+                if (attackedCrystals.containsKey(crystal) && attackedCrystals.get(crystal) > 5 && antiStuck.value)
+                    continue;
 
                 for (Entity player : mc.world.playerEntities) {
 
@@ -233,7 +219,8 @@ public class BetterAC extends Module {
 
                     final double self_damage = CrystalUtil.calculateDamage(crystal, mc.player);
 
-                    if (self_damage > maximum_damage_self || (antiSui.value && (mc.player.getHealth() + mc.player.getAbsorptionAmount()) - self_damage <= 0.5)) continue;
+                    if (self_damage > maximum_damage_self || (antiSui.value && (mc.player.getHealth() + mc.player.getAbsorptionAmount()) - self_damage <= 0.5))
+                        continue;
 
                     if (target_damage > best_damage) {
                         autoEzTarget = target;
@@ -249,7 +236,7 @@ public class BetterAC extends Module {
                 }
 
             }
-        }catch(ConcurrentModificationException cme) {
+        } catch (ConcurrentModificationException cme) {
         }
         return best_crystal;
 
@@ -312,12 +299,13 @@ public class BetterAC extends Module {
 
                 final double self_damage = CrystalUtil.calculateDamage((double) block.getX() + 0.5, (double) block.getY() + 1, (double) block.getZ() + 0.5, mc.player);
 
-                if (self_damage > maximum_damage_self || (antiSui.value && (mc.player.getHealth() + mc.player.getAbsorptionAmount()) - self_damage <= 0.5)) continue;
+                if (self_damage > maximum_damage_self || (antiSui.value && (mc.player.getHealth() + mc.player.getAbsorptionAmount()) - self_damage <= 0.5))
+                    continue;
 
                 /** if (attempt_chain.get_value(true) && chain_step > 0) {
                  damage_blocks.add(new BadlionPair<>(best_damage, best_block));
                  autoez_target = target;
-                 } else**/ if (target_damage > best_damage) {
+                 } else**/if (target_damage > best_damage) {
                     best_damage = target_damage;
                     best_block = block;
                     autoEzTarget = target;
@@ -538,7 +526,6 @@ public class BetterAC extends Module {
             BloodHackTessellator.release();
         }
     }
-
 
 
 }

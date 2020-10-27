@@ -22,6 +22,7 @@ public class PacketEvent extends Event {
             super(packet);
         }
     }
+
     public static class Send extends PacketEvent {
         public Send(Packet packet) {
             super(packet);
@@ -33,6 +34,7 @@ public class PacketEvent extends Event {
             super(packet);
         }
     }
+
     public static class PostSend extends PacketEvent {
         public PostSend(Packet packet) {
             super(packet);

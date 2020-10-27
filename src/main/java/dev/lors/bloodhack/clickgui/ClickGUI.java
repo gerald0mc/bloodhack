@@ -3,8 +3,6 @@ package dev.lors.bloodhack.clickgui;
 import dev.lors.bloodhack.BloodHack;
 import dev.lors.bloodhack.clickgui.comps.Frame;
 import dev.lors.bloodhack.module.Category;
-import dev.lors.bloodhack.module.Module;
-import dev.lors.bloodhack.module.ModuleManager;
 import net.minecraft.client.gui.GuiScreen;
 
 import java.io.IOException;
@@ -15,19 +13,19 @@ public class ClickGUI extends GuiScreen {
     ArrayList<Frame> frames = new ArrayList<>();
     dev.lors.bloodhack.module.BloodModules.hud.ClickGUI clickGUI = (dev.lors.bloodhack.module.BloodModules.hud.ClickGUI) BloodHack.moduleManager.getModuleByName("ClickGUI");
 
-    public ClickGUI(){
+    public ClickGUI() {
         int count = 0;
 
-        for(Category category: Category.values()){
-            frames.add(new Frame(category, 28+count, 0));
-            count+=110;
+        for (Category category : Category.values()) {
+            frames.add(new Frame(category, 28 + count, 0));
+            count += 110;
         }
     }
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        for(Frame frame:frames){
-            frame.render(mouseX,mouseY);
+        for (Frame frame : frames) {
+            frame.render(mouseX, mouseY);
             frame.mouseMove(mouseX, mouseY);
         }
         super.drawScreen(mouseX, mouseY, partialTicks);
@@ -35,7 +33,7 @@ public class ClickGUI extends GuiScreen {
 
     @Override
     protected void mouseReleased(int mouseX, int mouseY, int state) {
-        for(Frame frame:frames){
+        for (Frame frame : frames) {
             frame.mouseRelease(mouseX, mouseY, state);
         }
         super.mouseReleased(mouseX, mouseY, state);
@@ -43,7 +41,7 @@ public class ClickGUI extends GuiScreen {
 
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        for(Frame frame:frames){
+        for (Frame frame : frames) {
             frame.mouseClick(mouseX, mouseY, mouseButton);
         }
         super.mouseClicked(mouseX, mouseY, mouseButton);

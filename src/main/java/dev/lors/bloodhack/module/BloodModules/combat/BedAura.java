@@ -1,7 +1,6 @@
 package dev.lors.bloodhack.module.BloodModules.combat;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import dev.lors.bloodhack.BloodHack;
 import dev.lors.bloodhack.managers.Value;
 import dev.lors.bloodhack.managers.friends.Friends;
 import dev.lors.bloodhack.module.Category;
@@ -9,9 +8,6 @@ import dev.lors.bloodhack.module.Module;
 import dev.lors.bloodhack.util.Messages;
 import dev.lors.bloodhack.utils.BloodHackTessellator;
 import dev.lors.bloodhack.utils.ColourUtils;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockAir;
-import net.minecraft.block.BlockBed;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -50,19 +46,10 @@ import java.util.List;
 //so.. sorry if this is hard to follow
 
 public class BedAura extends Module {
-    public BedAura() {
-        super("ECME BedAura", Category.COMBAT);
-    }
-
     Value<Integer> range = new Value("Range", 7, 0, 9);
     Value<Integer> placedelay = new Value("Place Delay", 15, 8, 20);
     Value<Boolean> announceUsage = new Value("Announce Usage", true);
-    Value<Boolean> placeesp  = new Value("Place ESP", true);
-
-    @Override
-    public void setup() {
-    }
-
+    Value<Boolean> placeesp = new Value("Place ESP", true);
     private int playerHotbarSlot = -1;
     private int lastHotbarSlot = -1;
     private EntityPlayer closestTarget;
@@ -73,9 +60,18 @@ public class BedAura extends Module {
     private int blocksPlaced;
     private double diffXZ;
     private boolean firstRun;
-
     private boolean nowTop = false;
+    public BedAura() {
+        super("ECME BedAura", Category.COMBAT);
+    }
 
+    public static boolean isLiving(Entity e) {
+        return e instanceof EntityLivingBase;
+    }
+
+    @Override
+    public void setup() {
+    }
 
     @Override
     public void onEnable() {
@@ -134,22 +130,23 @@ public class BedAura extends Module {
         if (mc.player == null) {
             return;
         }
-        if(mc.player.dimension == 0) {
+        if (mc.player.dimension == 0) {
             Messages.sendMessagePrefix("You are in the overworld!");
             this.toggle();
         }
         try {
             findClosestTarget();
-        } catch(NullPointerException npe) {}
+        } catch (NullPointerException npe) {
+        }
         //yeah if someone knows a more appropriate way to deal with npe crashes
         //please message me on discord
         //im gonna be averaging like 3 try/catches per module at this rate
         //as might as well literally just surround the entire fucking module in a try catch
 
-        if(closestTarget == null && mc.player.dimension != 0) {
-            if(firstRun) {
+        if (closestTarget == null && mc.player.dimension != 0) {
+            if (firstRun) {
                 firstRun = false;
-                if(announceUsage.value) {
+                if (announceUsage.value) {
                     Messages.sendMessagePrefix(TextFormatting.BLUE + "[" + TextFormatting.GOLD + "BedAura" + TextFormatting.BLUE + "]" + TextFormatting.WHITE + " enabled, " + TextFormatting.WHITE + "waiting for target.");
                 }
             }
@@ -163,7 +160,7 @@ public class BedAura extends Module {
             }
         }
 
-        if(closestTarget != null && lastTickTargetName != null) {
+        if (closestTarget != null && lastTickTargetName != null) {
             if (!lastTickTargetName.equals(closestTarget.getName())) {
                 lastTickTargetName = closestTarget.getName();
                 if (announceUsage.value) {
@@ -178,7 +175,7 @@ public class BedAura extends Module {
 
         try {
             diffXZ = mc.player.getPositionVector().distanceTo(closestTarget.getPositionVector());
-        } catch(NullPointerException npe) {
+        } catch (NullPointerException npe) {
 
         }
 
@@ -189,47 +186,47 @@ public class BedAura extends Module {
 
             //i figured damage calc is pretty useless since the only way its really gonna do significant damage
             //is if its right next to the target (or ideally - inside it)
-            if(closestTarget != null) {
+            if (closestTarget != null) {
                 //placeTarget = new BlockPos(closestTarget.getPositionVector().add(1,1,0));
                 nowTop = false;
                 rotVar = 90;
 
                 BlockPos block1 = placeTarget;
-                if(!canPlaceBed(block1)) {
+                if (!canPlaceBed(block1)) {
                     //placeTarget = new BlockPos(closestTarget.getPositionVector().add(-1, 1, 0));
                     rotVar = -90;
                     nowTop = false;
                 }
                 BlockPos block2 = placeTarget;
-                if(!canPlaceBed(block2)) {
+                if (!canPlaceBed(block2)) {
                     //placeTarget = new BlockPos(closestTarget.getPositionVector().add(0, 1, 1));
                     rotVar = 180;
                     nowTop = false;
                 }
                 BlockPos block3 = placeTarget;
-                if(!canPlaceBed(block3)) {
+                if (!canPlaceBed(block3)) {
                     //placeTarget = new BlockPos(closestTarget.getPositionVector().add(0, 1, -1));
                     rotVar = 0;
                     nowTop = false;
                 }
                 BlockPos block4 = placeTarget;
-                if(!canPlaceBed(block4)) {
+                if (!canPlaceBed(block4)) {
                     //placeTarget = new BlockPos(closestTarget.getPositionVector().add(0, 2, -1));
                     rotVar = 0;
                     nowTop = true;
                 }
                 BlockPos blockt1 = placeTarget;
-                if(nowTop && !canPlaceBed(blockt1)) {
+                if (nowTop && !canPlaceBed(blockt1)) {
                     //placeTarget = new BlockPos(closestTarget.getPositionVector().add(-1, 2, 0));
                     rotVar = -90;
                 }
                 BlockPos blockt2 = placeTarget;
-                if(nowTop && !canPlaceBed(blockt2)) {
+                if (nowTop && !canPlaceBed(blockt2)) {
                     //placeTarget = new BlockPos(closestTarget.getPositionVector().add(0, 2, 1));
                     rotVar = 180;
                 }
                 BlockPos blockt3 = placeTarget;
-                if(nowTop && !canPlaceBed(blockt3)) {
+                if (nowTop && !canPlaceBed(blockt3)) {
                     //placeTarget = new BlockPos(closestTarget.getPositionVector().add(1, 2, 0));
                     rotVar = 90;
                 }
@@ -240,7 +237,7 @@ public class BedAura extends Module {
                     .filter(e -> mc.player.getDistance(e.getPos().getX(), e.getPos().getY(), e.getPos().getZ()) <= range.value)
                     .sorted(Comparator.comparing(e -> mc.player.getDistance(e.getPos().getX(), e.getPos().getY(), e.getPos().getZ())))
                     .forEach(bed -> {
-                        if(mc.player.dimension != 0) {
+                        if (mc.player.dimension != 0) {
                             mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(bed.getPos(), EnumFacing.UP, EnumHand.OFF_HAND, 0, 0, 0));
                         }
                         //why offhand?
@@ -250,7 +247,7 @@ public class BedAura extends Module {
                         //MUCH better than adding a break delay slider since you want the bed damage to be as accurate as possible
                     });
 
-            if((mc.player.ticksExisted % placedelay.value == 0)  && closestTarget != null) {
+            if ((mc.player.ticksExisted % placedelay.value == 0) && closestTarget != null) {
                 //this is a really dope way to do this delay
                 //i tried making an int called tickDelay and incrementing it every tick
                 //but my onUpdate() literally runs 10 times as fast as it should be, meaning by 20 ticks the variable already had a value of 200
@@ -266,9 +263,7 @@ public class BedAura extends Module {
             }
 
 
-
-
-        } catch(NullPointerException npe) {
+        } catch (NullPointerException npe) {
             npe.printStackTrace();
 
             /*
@@ -280,7 +275,7 @@ public class BedAura extends Module {
 
     //this is all pretty self explanatory
     private void doDaMagic() {
-        if(diffXZ <= range.value) {
+        if (diffXZ <= range.value) {
             for (int i = 0; i < 9; i++) {
                 if (bedSlot != -1) {
                     break;
@@ -288,18 +283,18 @@ public class BedAura extends Module {
                 ItemStack stack = mc.player.inventory.getStackInSlot(i);
                 if (stack.getItem() instanceof ItemBed) {
                     bedSlot = i;
-                    if(i != -1) {
+                    if (i != -1) {
                         mc.player.inventory.currentItem = bedSlot;
                     }
                     break;
                 }
             }
             bedSlot = -1;
-            if(blocksPlaced == 0 && mc.player.inventory.getStackInSlot(mc.player.inventory.currentItem).getItem() instanceof ItemBed) {
-                mc.player.connection.sendPacket(new CPacketEntityAction((Entity)mc.player, CPacketEntityAction.Action.START_SNEAKING));
+            if (blocksPlaced == 0 && mc.player.inventory.getStackInSlot(mc.player.inventory.currentItem).getItem() instanceof ItemBed) {
+                mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.START_SNEAKING));
                 mc.player.connection.sendPacket(new CPacketPlayer.Rotation(rotVar, 0, mc.player.onGround));
                 placeBlock(new BlockPos(this.placeTarget), EnumFacing.DOWN);
-                mc.player.connection.sendPacket(new CPacketEntityAction((Entity)mc.player, CPacketEntityAction.Action.STOP_SNEAKING));
+                mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.STOP_SNEAKING));
                 blocksPlaced = 1;
                 nowTop = false;
             }
@@ -314,7 +309,7 @@ public class BedAura extends Module {
     private void findBeds() {
         if (mc.currentScreen == null || !(mc.currentScreen instanceof GuiContainer)) {
             if (mc.player.inventory.getStackInSlot(0).getItem() != Items.BED) {
-                for(int i = 9; i < 36; ++i) {
+                for (int i = 9; i < 36; ++i) {
                     if (mc.player.inventory.getStackInSlot(i).getItem() == Items.BED) {
                         mc.playerController.windowClick(mc.player.inventoryContainer.windowId, i, 0, ClickType.SWAP, mc.player);
                         //i chose slot 0 by default just because it works nice
@@ -329,7 +324,7 @@ public class BedAura extends Module {
 
     private boolean canPlaceBed(BlockPos pos) {
         return (mc.world.getBlockState(pos).getBlock() == Blocks.AIR || mc.world.getBlockState(pos).getBlock() == Blocks.BED) &&
-                mc.world.getEntitiesWithinAABB((Class) Entity.class, new AxisAlignedBB(pos)).isEmpty();
+                mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos)).isEmpty();
 
     }
 
@@ -369,10 +364,6 @@ public class BedAura extends Module {
         mc.playerController.processRightClickBlock(mc.player, mc.world, neighbour, opposite, hitVec, EnumHand.MAIN_HAND);
     }
 
-    public static boolean isLiving(Entity e) {
-        return e instanceof EntityLivingBase;
-    }
-
     //render type shit
     //renders where the bed was calculated to place, not neccessarily where it DID place.
     //i used to render just the bed using a bedesp type shit, but i wanted this for debug purposes
@@ -383,31 +374,32 @@ public class BedAura extends Module {
 
     @SubscribeEvent
     public void render(RenderWorldLastEvent event) {
-        if(placeTarget == null || mc.world == null || closestTarget == null) return;
-        if(placeesp.value) {try {
-            float posx = placeTarget.getX();
-            float posy = placeTarget.getY();
-            float posz = placeTarget.getZ();
-            BloodHackTessellator.prepare("lines");
-            BloodHackTessellator.draw_cube_line(posx, posy, posz, ColourUtils.genRainbow(), "all");
-            if(rotVar == 90) {
-                BloodHackTessellator.draw_cube_line(posx - 1, posy, posz, ColourUtils.genRainbow(), "all");
-            }
-            if(rotVar == 0) {
-                BloodHackTessellator.draw_cube_line(posx, posy, posz + 1, ColourUtils.genRainbow(), "all");
-            }
-            if(rotVar == -90) {
-                BloodHackTessellator.draw_cube_line(posx + 1, posy, posz, ColourUtils.genRainbow(), "all");
-            }
-            if(rotVar == 180) {
-                BloodHackTessellator.draw_cube_line(posx, posy, posz - 1, ColourUtils.genRainbow(), "all");
-            }
-        } catch(Exception ignored) {
-            //again, my shitty way of dealing with crashes is surrounding them in try/catch brackets
-            //anyone pasting from this please dont do this
+        if (placeTarget == null || mc.world == null || closestTarget == null) return;
+        if (placeesp.value) {
+            try {
+                float posx = placeTarget.getX();
+                float posy = placeTarget.getY();
+                float posz = placeTarget.getZ();
+                BloodHackTessellator.prepare("lines");
+                BloodHackTessellator.draw_cube_line(posx, posy, posz, ColourUtils.genRainbow(), "all");
+                if (rotVar == 90) {
+                    BloodHackTessellator.draw_cube_line(posx - 1, posy, posz, ColourUtils.genRainbow(), "all");
+                }
+                if (rotVar == 0) {
+                    BloodHackTessellator.draw_cube_line(posx, posy, posz + 1, ColourUtils.genRainbow(), "all");
+                }
+                if (rotVar == -90) {
+                    BloodHackTessellator.draw_cube_line(posx + 1, posy, posz, ColourUtils.genRainbow(), "all");
+                }
+                if (rotVar == 180) {
+                    BloodHackTessellator.draw_cube_line(posx, posy, posz - 1, ColourUtils.genRainbow(), "all");
+                }
+            } catch (Exception ignored) {
+                //again, my shitty way of dealing with crashes is surrounding them in try/catch brackets
+                //anyone pasting from this please dont do this
 
-            //it still runs the same but not generally a good practice
-        }
+                //it still runs the same but not generally a good practice
+            }
             BloodHackTessellator.release();
         }
     }

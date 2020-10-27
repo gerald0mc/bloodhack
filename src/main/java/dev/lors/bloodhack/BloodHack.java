@@ -2,9 +2,12 @@ package dev.lors.bloodhack;
 
 import dev.lors.bloodhack.clickgui.ClickGUI;
 import dev.lors.bloodhack.command.CommandManager;
+import dev.lors.bloodhack.managers.ConfigManager;
+import dev.lors.bloodhack.module.Module;
+import dev.lors.bloodhack.module.ModuleManager;
 import dev.lors.bloodhack.util.font.CFontRenderer;
-import me.zero.alpine.EventManager;
 import me.zero.alpine.EventBus;
+import me.zero.alpine.EventManager;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -12,15 +15,12 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
-import dev.lors.bloodhack.module.Module;
-import dev.lors.bloodhack.module.ModuleManager;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
-import dev.lors.bloodhack.managers.*;
 
 /**
- * @since 1/8/2020
  * @author LittleDraily
+ * @since 1/8/2020
  **/
 
 @Mod(
@@ -33,17 +33,26 @@ public class BloodHack {
     public static final String name = "Blood Hack";
     public static final String version = "b1";
     public static final String appid = "764915024422240296";
+    public static final EventBus EVENT_BUS = new EventManager();
     public static String prefix = "*";
     public static ConfigManager configManager;
     public static ModuleManager moduleManager;
     public static ClickGUI gui;
-    public static final EventBus EVENT_BUS = new EventManager();
-    protected Minecraft mc2;
     public static CFontRenderer fontRenderer;
+    @Mod.Instance
+    private static BloodHack INSTANCE;
+    protected Minecraft mc2;
 
+    public BloodHack() {
+        INSTANCE = this;
+    }
+
+    public static BloodHack getInstance() {
+        return INSTANCE;
+    }
 
     @Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent event){
+    public void preInit(FMLPreInitializationEvent event) {
         Display.setTitle(name + " " + version);
     }
 
@@ -59,22 +68,12 @@ public class BloodHack {
 
     @SubscribeEvent
     public void onKeyPress(InputEvent.KeyInputEvent event) {
-        for (Module m: moduleManager.getModules()) {
+        for (Module m : moduleManager.getModules()) {
             if (Keyboard.isKeyDown(m.getKey())) {
                 m.toggle();
             }
 
         }
-    }
-    @Mod.Instance
-    private static BloodHack INSTANCE;
-
-    public BloodHack() {
-        INSTANCE = this;
-    }
-
-    public static BloodHack getInstance(){
-        return INSTANCE;
     }
 
 }

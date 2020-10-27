@@ -10,10 +10,12 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 
 public class AutoArmor extends Module {
-    public AutoArmor(){super("AutoArmor", Category.COMBAT);}
+    public AutoArmor() {
+        super("AutoArmor", Category.COMBAT);
+    }
 
     @Override
-    public void onUpdate(){
+    public void onUpdate() {
         if (mc.player.ticksExisted % 2 == 0) return;
         // check screen
         if (mc.currentScreen instanceof GuiContainer
@@ -25,20 +27,18 @@ public class AutoArmor extends Module {
         int[] bestArmorValues = new int[4];
 
         // initialize with currently equipped armor
-        for (int armorType = 0; armorType < 4; armorType++)
-        {
+        for (int armorType = 0; armorType < 4; armorType++) {
             ItemStack oldArmor = mc.player.inventory.armorItemInSlot(armorType);
 
             if (oldArmor != null && oldArmor.getItem() instanceof ItemArmor)
                 bestArmorValues[armorType] =
-                        ((ItemArmor)oldArmor.getItem()).damageReduceAmount;
+                        ((ItemArmor) oldArmor.getItem()).damageReduceAmount;
 
             bestArmorSlots[armorType] = -1;
         }
 
         // search inventory for better armor
-        for (int slot = 0; slot < 36; slot++)
-        {
+        for (int slot = 0; slot < 36; slot++) {
             ItemStack stack = mc.player.inventory.getStackInSlot(slot);
 
             if (stack.getCount() > 1)
@@ -47,23 +47,22 @@ public class AutoArmor extends Module {
             if (stack == null || !(stack.getItem() instanceof ItemArmor))
                 continue;
 
-            ItemArmor armor = (ItemArmor)stack.getItem();
+            ItemArmor armor = (ItemArmor) stack.getItem();
             int armorType = armor.armorType.ordinal() - 2;
 
-            if (armorType == 2 && mc.player.inventory.armorItemInSlot(armorType).getItem().equals(Items.ELYTRA)) continue;
+            if (armorType == 2 && mc.player.inventory.armorItemInSlot(armorType).getItem().equals(Items.ELYTRA))
+                continue;
 
             int armorValue = armor.damageReduceAmount;
 
-            if (armorValue > bestArmorValues[armorType])
-            {
+            if (armorValue > bestArmorValues[armorType]) {
                 bestArmorSlots[armorType] = slot;
                 bestArmorValues[armorType] = armorValue;
             }
         }
 
         // equip better armor
-        for (int armorType = 0; armorType < 4; armorType++)
-        {
+        for (int armorType = 0; armorType < 4; armorType++) {
             // check if better armor was found
             int slot = bestArmorSlots[armorType];
             if (slot == -1)
@@ -73,8 +72,7 @@ public class AutoArmor extends Module {
             // needs 1 free slot where it can put the old armor
             ItemStack oldArmor = mc.player.inventory.armorItemInSlot(armorType);
             if (oldArmor == null || oldArmor != ItemStack.EMPTY
-                    || mc.player.inventory.getFirstEmptyStack() != -1)
-            {
+                    || mc.player.inventory.getFirstEmptyStack() != -1) {
                 // hotbar fix
                 if (slot < 9)
                     slot += 36;

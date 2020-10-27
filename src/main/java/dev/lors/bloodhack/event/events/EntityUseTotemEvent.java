@@ -4,7 +4,7 @@ import dev.lors.bloodhack.event.Event;
 import net.minecraft.entity.Entity;
 
 public class EntityUseTotemEvent extends Event {
-    private Entity entity;
+    private final Entity entity;
 
     public EntityUseTotemEvent(Entity entity) {
         super();

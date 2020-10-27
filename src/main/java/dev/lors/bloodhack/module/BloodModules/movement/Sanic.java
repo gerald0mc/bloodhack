@@ -1,6 +1,5 @@
 package dev.lors.bloodhack.module.BloodModules.movement;
 
-import dev.lors.bloodhack.BloodHack;
 import dev.lors.bloodhack.managers.Value;
 import dev.lors.bloodhack.module.Category;
 import dev.lors.bloodhack.module.Module;
@@ -8,17 +7,17 @@ import net.minecraft.util.math.MathHelper;
 
 
 public class Sanic extends Module {
+    int waitCounter;
+    int forward = 1;
+    Value<Boolean> jump = new Value<Boolean>("Jump", false);
+
     public Sanic() {
         super("Sanic", Category.MOVEMENT);
     }
 
-    int waitCounter;
-    int forward = 1;
+    public void onUpdate() {
 
-    Value<Boolean> jump = new Value<Boolean>("Jump", false);
-    public void onUpdate(){
-
-        if(mc.player != null) {
+        if (mc.player != null) {
             boolean boost = Math.abs(mc.player.rotationYawHead - mc.player.rotationYaw) < 90;
 
             if (mc.player.moveForward != 0) {

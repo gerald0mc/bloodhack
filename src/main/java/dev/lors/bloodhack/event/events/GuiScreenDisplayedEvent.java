@@ -5,12 +5,13 @@ import net.minecraft.client.gui.GuiScreen;
 
 public class GuiScreenDisplayedEvent extends Event {
     private final GuiScreen guiScreen;
-    public GuiScreenDisplayedEvent(GuiScreen screen){
+
+    public GuiScreenDisplayedEvent(GuiScreen screen) {
         super();
         guiScreen = screen;
     }
 
-    public GuiScreen getScreen(){
+    public GuiScreen getScreen() {
         return guiScreen;
     }
 }

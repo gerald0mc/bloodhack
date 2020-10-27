@@ -1,21 +1,15 @@
 package dev.lors.bloodhack.utils;
 
-import static org.lwjgl.opengl.GL11.GL_LINES;
-import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.GL_QUADS;
-import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.glBlendFunc;
-
-import java.util.Arrays;
-
-import dev.lors.bloodhack.BloodHack;
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.math.BlockPos;
+import org.lwjgl.opengl.GL11;
+
+import java.util.Arrays;
+
+import static org.lwjgl.opengl.GL11.*;
 
 //credit 086
 
@@ -110,6 +104,7 @@ public class BloodHackTessellator extends Tessellator {
         final int b = argb & 0xFF;
         draw_cube_line(INSTANCE.getBuffer(), x, y, z, 1, .5645f, 1, r, g, b, a, sides);
     }
+
     public static void draw_cube_line_full(float x, float y, float z, int argb, String sides) {
         final int a = (argb >>> 24) & 0xFF;
         final int r = (argb >>> 16) & 0xFF;
@@ -127,42 +122,42 @@ public class BloodHackTessellator extends Tessellator {
     }
 
     public static void draw_cube(final BufferBuilder buffer, float x, float y, float z, float w, float h, float d, int r, int g, int b, int a, String sides) {
-        if (((boolean) Arrays.asList(sides.split("-")).contains("down")) || sides.equalsIgnoreCase("all")) {
+        if (Arrays.asList(sides.split("-")).contains("down") || sides.equalsIgnoreCase("all")) {
             buffer.pos(x + w, y, z).color(r, g, b, a).endVertex();
             buffer.pos(x + w, y, z + d).color(r, g, b, a).endVertex();
             buffer.pos(x, y, z + d).color(r, g, b, a).endVertex();
             buffer.pos(x, y, z).color(r, g, b, a).endVertex();
         }
 
-        if (((boolean) Arrays.asList(sides.split("-")).contains("up")) || sides.equalsIgnoreCase("all")) {
+        if (Arrays.asList(sides.split("-")).contains("up") || sides.equalsIgnoreCase("all")) {
             buffer.pos(x + w, y + h, z).color(r, g, b, a).endVertex();
             buffer.pos(x, y + h, z).color(r, g, b, a).endVertex();
             buffer.pos(x, y + h, z + d).color(r, g, b, a).endVertex();
             buffer.pos(x + w, y + h, z + d).color(r, g, b, a).endVertex();
         }
 
-        if (((boolean) Arrays.asList(sides.split("-")).contains("north")) || sides.equalsIgnoreCase("all")) {
+        if (Arrays.asList(sides.split("-")).contains("north") || sides.equalsIgnoreCase("all")) {
             buffer.pos(x + w, y, z).color(r, g, b, a).endVertex();
             buffer.pos(x, y, z).color(r, g, b, a).endVertex();
             buffer.pos(x, y + h, z).color(r, g, b, a).endVertex();
             buffer.pos(x + w, y + h, z).color(r, g, b, a).endVertex();
         }
 
-        if (((boolean) Arrays.asList(sides.split("-")).contains("south")) || sides.equalsIgnoreCase("all")) {
+        if (Arrays.asList(sides.split("-")).contains("south") || sides.equalsIgnoreCase("all")) {
             buffer.pos(x, y, z + d).color(r, g, b, a).endVertex();
             buffer.pos(x + w, y, z + d).color(r, g, b, a).endVertex();
             buffer.pos(x + w, y + h, z + d).color(r, g, b, a).endVertex();
             buffer.pos(x, y + h, z + d).color(r, g, b, a).endVertex();
         }
 
-        if (((boolean) Arrays.asList(sides.split("-")).contains("south")) || sides.equalsIgnoreCase("all")) {
+        if (Arrays.asList(sides.split("-")).contains("south") || sides.equalsIgnoreCase("all")) {
             buffer.pos(x, y, z).color(r, g, b, a).endVertex();
             buffer.pos(x, y, z + d).color(r, g, b, a).endVertex();
             buffer.pos(x, y + h, z + d).color(r, g, b, a).endVertex();
             buffer.pos(x, y + h, z).color(r, g, b, a).endVertex();
         }
 
-        if (((boolean) Arrays.asList(sides.split("-")).contains("south")) || sides.equalsIgnoreCase("all")) {
+        if (Arrays.asList(sides.split("-")).contains("south") || sides.equalsIgnoreCase("all")) {
             buffer.pos(x + w, y, z + d).color(r, g, b, a).endVertex();
             buffer.pos(x + w, y, z).color(r, g, b, a).endVertex();
             buffer.pos(x + w, y + h, z).color(r, g, b, a).endVertex();
@@ -171,62 +166,62 @@ public class BloodHackTessellator extends Tessellator {
     }
 
     public static void draw_cube_line(final BufferBuilder buffer, float x, float y, float z, float w, float h, float d, int r, int g, int b, int a, String sides) {
-        if (((boolean) Arrays.asList(sides.split("-")).contains("downwest")) || sides.equalsIgnoreCase("all")) {
+        if (Arrays.asList(sides.split("-")).contains("downwest") || sides.equalsIgnoreCase("all")) {
             buffer.pos(x, y, z).color(r, g, b, a).endVertex();
             buffer.pos(x, y, z + d).color(r, g, b, a).endVertex();
         }
 
-        if (((boolean) Arrays.asList(sides.split("-")).contains("upwest")) || sides.equalsIgnoreCase("all")) {
+        if (Arrays.asList(sides.split("-")).contains("upwest") || sides.equalsIgnoreCase("all")) {
             buffer.pos(x, y + h, z).color(r, g, b, a).endVertex();
             buffer.pos(x, y + h, z + d).color(r, g, b, a).endVertex();
         }
 
-        if (((boolean) Arrays.asList(sides.split("-")).contains("downeast")) || sides.equalsIgnoreCase("all")) {
+        if (Arrays.asList(sides.split("-")).contains("downeast") || sides.equalsIgnoreCase("all")) {
             buffer.pos(x + w, y, z).color(r, g, b, a).endVertex();
             buffer.pos(x + w, y, z + d).color(r, g, b, a).endVertex();
         }
 
-        if (((boolean) Arrays.asList(sides.split("-")).contains("upeast")) || sides.equalsIgnoreCase("all")) {
+        if (Arrays.asList(sides.split("-")).contains("upeast") || sides.equalsIgnoreCase("all")) {
             buffer.pos(x + w, y + h, z).color(r, g, b, a).endVertex();
             buffer.pos(x + w, y + h, z + d).color(r, g, b, a).endVertex();
         }
 
-        if (((boolean) Arrays.asList(sides.split("-")).contains("downnorth")) || sides.equalsIgnoreCase("all")) {
+        if (Arrays.asList(sides.split("-")).contains("downnorth") || sides.equalsIgnoreCase("all")) {
             buffer.pos(x, y, z).color(r, g, b, a).endVertex();
             buffer.pos(x + w, y, z).color(r, g, b, a).endVertex();
         }
 
-        if (((boolean) Arrays.asList(sides.split("-")).contains("upnorth")) || sides.equalsIgnoreCase("all")) {
+        if (Arrays.asList(sides.split("-")).contains("upnorth") || sides.equalsIgnoreCase("all")) {
             buffer.pos(x, y + h, z).color(r, g, b, a).endVertex();
             buffer.pos(x + w, y + h, z).color(r, g, b, a).endVertex();
         }
 
-        if (((boolean) Arrays.asList(sides.split("-")).contains("downsouth")) || sides.equalsIgnoreCase("all")) {
+        if (Arrays.asList(sides.split("-")).contains("downsouth") || sides.equalsIgnoreCase("all")) {
             buffer.pos(x, y, z + d).color(r, g, b, a).endVertex();
             buffer.pos(x + w, y, z + d).color(r, g, b, a).endVertex();
         }
 
-        if (((boolean) Arrays.asList(sides.split("-")).contains("upsouth")) || sides.equalsIgnoreCase("all")) {
+        if (Arrays.asList(sides.split("-")).contains("upsouth") || sides.equalsIgnoreCase("all")) {
             buffer.pos(x, y + h, z + d).color(r, g, b, a).endVertex();
             buffer.pos(x + w, y + h, z + d).color(r, g, b, a).endVertex();
         }
 
-        if (((boolean) Arrays.asList(sides.split("-")).contains("nortwest")) || sides.equalsIgnoreCase("all")) {
+        if (Arrays.asList(sides.split("-")).contains("nortwest") || sides.equalsIgnoreCase("all")) {
             buffer.pos(x, y, z).color(r, g, b, a).endVertex();
             buffer.pos(x, y + h, z).color(r, g, b, a).endVertex();
         }
 
-        if (((boolean) Arrays.asList(sides.split("-")).contains("norteast")) || sides.equalsIgnoreCase("all")) {
+        if (Arrays.asList(sides.split("-")).contains("norteast") || sides.equalsIgnoreCase("all")) {
             buffer.pos(x + w, y, z).color(r, g, b, a).endVertex();
             buffer.pos(x + w, y + h, z).color(r, g, b, a).endVertex();
         }
 
-        if (((boolean) Arrays.asList(sides.split("-")).contains("southweast")) || sides.equalsIgnoreCase("all")) {
+        if (Arrays.asList(sides.split("-")).contains("southweast") || sides.equalsIgnoreCase("all")) {
             buffer.pos(x, y, z + d).color(r, g, b, a).endVertex();
             buffer.pos(x, y + h, z + d).color(r, g, b, a).endVertex();
         }
 
-        if (((boolean) Arrays.asList(sides.split("-")).contains("southeast")) || sides.equalsIgnoreCase("all")) {
+        if (Arrays.asList(sides.split("-")).contains("southeast") || sides.equalsIgnoreCase("all")) {
             buffer.pos(x + w, y, z + d).color(r, g, b, a).endVertex();
             buffer.pos(x + w, y + h, z + d).color(r, g, b, a).endVertex();
         }

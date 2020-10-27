@@ -1,21 +1,30 @@
 package dev.lors.bloodhack.module;
 
-import com.google.common.util.concurrent.FakeTimeLimiter;
 import dev.lors.bloodhack.managers.Value;
-import dev.lors.bloodhack.module.BloodModules.chat.*;
+import dev.lors.bloodhack.module.BloodModules.chat.AutoSuicide;
+import dev.lors.bloodhack.module.BloodModules.chat.ChatSuffix;
+import dev.lors.bloodhack.module.BloodModules.chat.PrefixChat;
+import dev.lors.bloodhack.module.BloodModules.chat.TotemPopAnnouncer;
 import dev.lors.bloodhack.module.BloodModules.combat.*;
-import dev.lors.bloodhack.module.BloodModules.hud.*;
-import dev.lors.bloodhack.module.BloodModules.misc.*;
-import dev.lors.bloodhack.module.BloodModules.movement.*;
+import dev.lors.bloodhack.module.BloodModules.hud.Arraylist;
+import dev.lors.bloodhack.module.BloodModules.hud.ClickGUI;
+import dev.lors.bloodhack.module.BloodModules.hud.Watermark;
+import dev.lors.bloodhack.module.BloodModules.hud.Welcomer;
+import dev.lors.bloodhack.module.BloodModules.misc.DiscordRPC;
+import dev.lors.bloodhack.module.BloodModules.misc.EntityAlert;
+import dev.lors.bloodhack.module.BloodModules.misc.WeaknessAlert;
+import dev.lors.bloodhack.module.BloodModules.movement.HoleTP;
+import dev.lors.bloodhack.module.BloodModules.movement.Sanic;
+import dev.lors.bloodhack.module.BloodModules.movement.Sprint;
 import dev.lors.bloodhack.module.BloodModules.player.FakePlayer;
-import dev.lors.bloodhack.module.BloodModules.render.*;
+import dev.lors.bloodhack.module.BloodModules.render.Fullbright;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ModuleManager {
-    private ArrayList<Module> modules = new ArrayList<Module>();
+    private final ArrayList<Module> modules = new ArrayList<Module>();
 
     public ModuleManager() throws IllegalAccessException {
         // modules.add(new Class())
@@ -66,7 +75,7 @@ public class ModuleManager {
 
         ///Testing area, move up if module works
 
-        for(Module module:modules){
+        for (Module module : modules) {
             for (Field field : module.getClass().getDeclaredFields()) {
                 if (Value.class.isAssignableFrom(field.getType())) {
                     if (!field.isAccessible()) {
@@ -89,10 +98,10 @@ public class ModuleManager {
         return modules.stream().filter(module -> module.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
     }
 
-    public List<Module> getModulesByCategory(Category category){
+    public List<Module> getModulesByCategory(Category category) {
         List<Module> list = new ArrayList<>();
-        for(Module module:modules)
-            if(module.getCategory().equals(category))
+        for (Module module : modules)
+            if (module.getCategory().equals(category))
                 list.add(module);
         return list;
     }

@@ -28,6 +28,7 @@ public class AutoTotem extends Module {
             mc.playerController.updateController();
         }
     }
+
     private int getItemSlot() {
         for (int i = 0; i < 36; i++) {
             final Item item = mc.player.inventory.getStackInSlot(i).getItem();
