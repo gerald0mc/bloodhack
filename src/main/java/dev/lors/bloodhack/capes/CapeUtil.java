@@ -1,6 +1,13 @@
 package dev.lors.bloodhack.capes;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.DynamicTexture;
+import net.minecraft.util.ResourceLocation;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
@@ -36,6 +43,16 @@ public class CapeUtil {
             }
         }
         return false;
+    }
+
+    public static ResourceLocation getCape(){
+        try {
+            DynamicTexture texture = new DynamicTexture(ImageIO.read(new URL("https://i.imgur.com/W1T3gFG.png")));
+            return Minecraft.getMinecraft().getTextureManager().getDynamicTextureLocation("bloodhack/capes", texture);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

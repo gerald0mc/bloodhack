@@ -23,3 +23,35 @@ run
 
 # Files from Forge MDK
 forge*changelog.txt
+saves/New World/region/r.-1.0.mca
+saves/New World/region/r.-1.-1.mca
+logs/latest.log
+logs/debug.log
+.mixin.out/audit/mixin_implementation_report.csv
+.mixin.out/audit/mixin_implementation_report.txt
+BloodHack/Settings/CHAT/AutoSuicide.json
+BloodHack/Settings/CHAT/ChatSuffix.json
+BloodHack/Settings/CHAT/PrefixChat.json
+BloodHack/Settings/COMBAT/AutoArmor.json
+BloodHack/Settings/COMBAT/AutoCrystal.json
+BloodHack/Settings/COMBAT/AutoTotem.json
+BloodHack/Settings/COMBAT/BetterAutoCrystal.json
+BloodHack/Settings/COMBAT/BowSpam.json
+BloodHack/Settings/COMBAT/ECME BedAura.json
+BloodHack/Settings/HUD/Arraylist.json
+BloodHack/Settings/HUD/ClickGUI.json
+BloodHack/Settings/HUD/Watermark.json
+BloodHack/Settings/HUD/Welcomer.json
+BloodHack/Settings/MISC/DiscordRPC.json
+BloodHack/Settings/MISC/EntityAlert.json
+BloodHack/Settings/MISC/TotemPopCounter.json
+BloodHack/Settings/MISC/WeaknessAlert.json
+BloodHack/Settings/MOVEMENT/HoleTP.json
+BloodHack/Settings/MOVEMENT/Sanic.json
+BloodHack/Settings/MOVEMENT/Sprint.json
+BloodHack/Settings/PLAYER/FakePlayer.json
+BloodHack/Settings/RENDER/Fullbright.json
+build.gradle
+config/forge.cfg
+config/forgeChunkLoading.cfg
+config/splash.properties

@@ -2,6 +2,7 @@ package dev.lors.bloodhack;
 
 import dev.lors.bloodhack.clickgui.ClickGUI;
 import dev.lors.bloodhack.command.CommandManager;
+import dev.lors.bloodhack.event.Adapter;
 import dev.lors.bloodhack.managers.ConfigManager;
 import dev.lors.bloodhack.module.Module;
 import dev.lors.bloodhack.module.ModuleManager;
@@ -64,6 +65,7 @@ public class BloodHack {
         CommandManager.init();
         MinecraftForge.EVENT_BUS.register(new CommandManager());
         MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(new Adapter());
     }
 
     @SubscribeEvent

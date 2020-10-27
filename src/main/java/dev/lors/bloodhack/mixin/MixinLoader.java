@@ -14,7 +14,7 @@ public class MixinLoader implements IFMLLoadingPlugin {
     public MixinLoader()
     {
         MixinBootstrap.init();
-        Mixins.addConfiguration("mixins.bloodhack.json");
+        Mixins.addConfiguration("mixin.bloodhack.json");
         MixinEnvironment.getDefaultEnvironment().setObfuscationContext("searge");
     }
 

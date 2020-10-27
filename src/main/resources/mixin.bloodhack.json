@@ -4,6 +4,8 @@
   "package": "dev.lors.bloodhack.mixin.client",
   "refmap": "mixins.bloodhack.refmap.json",
   "client": [
-    "MixinMinecraft"
+    "MixinMinecraft",
+    "MixinAbstractClientPlayer",
+    "MixinEntityPlayer"
   ]
 }

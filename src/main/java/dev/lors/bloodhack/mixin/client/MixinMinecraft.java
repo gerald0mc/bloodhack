@@ -2,6 +2,7 @@ package dev.lors.bloodhack.mixin.client;
 
 import club.minnced.discord.rpc.DiscordRPC;
 import dev.lors.bloodhack.BloodHack;
+import dev.lors.bloodhack.module.ModuleManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.crash.CrashReport;
 import org.spongepowered.asm.mixin.Mixin;

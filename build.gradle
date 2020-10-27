@@ -35,7 +35,7 @@ compileJava {
 minecraft {
     mappings = "stable_39"
     version = "1.12.2-14.23.5.2847";
-    runDir = 'run'
+    runDir = "run"
 }
 
 repositories {
