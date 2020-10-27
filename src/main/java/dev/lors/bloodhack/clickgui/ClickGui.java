@@ -1,101 +1,67 @@
 package dev.lors.bloodhack.clickgui;
 
+import dev.lors.bloodhack.BloodHack;
+import dev.lors.bloodhack.clickgui.comps.Frame;
+import dev.lors.bloodhack.module.Category;
+import dev.lors.bloodhack.module.Module;
+import dev.lors.bloodhack.module.ModuleManager;
+import net.minecraft.client.gui.GuiScreen;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
-import dev.lors.bloodhack.clickgui.component.Component;
-import dev.lors.bloodhack.clickgui.component.Frame;
-import dev.lors.bloodhack.module.Category;
-import net.minecraft.client.gui.GuiScreen;
+public class ClickGUI extends GuiScreen {
 
-public class ClickGui extends GuiScreen {
+    ArrayList<Frame> frames = new ArrayList<>();
+    dev.lors.bloodhack.module.BloodModules.hud.ClickGUI clickGUI = (dev.lors.bloodhack.module.BloodModules.hud.ClickGUI) BloodHack.moduleManager.getModuleByName("ClickGUI");
 
-	public static ArrayList<Frame> frames;
-	public static int color = -771422971;
-	
-	public ClickGui() {
-		this.frames = new ArrayList<Frame>();
-		int frameX = 5;
-		for (Category category : Category.values()) {
-			Frame frame = new Frame(category);
-			frame.setX(frameX);
-			frames.add(frame);
-			frameX += frame.getWidth() + 1;
-		}
-	}
-	
-	@Override
-	public void initGui() {
-	}
-	
-	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-		this.drawDefaultBackground();
-		for (Frame frame : frames) {
-			frame.renderFrame(this.fontRenderer);
-			frame.updatePosition(mouseX, mouseY);
-			for (Component comp : frame.getComponents()) {
-				comp.updateComponent(mouseX, mouseY);
-			}
-		}
-	}
-	
-	@Override
-    protected void mouseClicked(final int mouseX, final int mouseY, final int mouseButton) throws IOException {
-		for (Frame frame : frames) {
-			if (frame.isWithinHeader(mouseX, mouseY) && mouseButton == 0) {
-				frame.setDrag(true);
-				frame.dragX = mouseX - frame.getX();
-				frame.dragY = mouseY - frame.getY();
-			}
-			if (frame.isWithinHeader(mouseX, mouseY) && mouseButton == 1) {
-				frame.setOpen(!frame.isOpen());
-			}
-			if (frame.isOpen()) {
-				if (!frame.getComponents().isEmpty()) {
-					for (Component component : frame.getComponents()) {
-						component.mouseClicked(mouseX, mouseY, mouseButton);
-					}
-				}
-			}
-		}
-	}
-	
-	@Override
-	protected void keyTyped(char typedChar, int keyCode) {
-		for (Frame frame : frames) {
-			if (frame.isOpen() && keyCode != 1) {
-				if (!frame.getComponents().isEmpty()) {
-					for (Component component : frame.getComponents()) {
-						component.keyTyped(typedChar, keyCode);
-					}
-				}
-			}
-		}
-		if (keyCode == 1) {
-            this.mc.displayGuiScreen(null);
+    public ClickGUI(){
+        int count = 0;
+
+        for(Category category: Category.values()){
+            frames.add(new Frame(category, 28+count, 0));
+            count+=110;
         }
-	}
+    }
 
-	
-	@Override
+    @Override
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        for(Frame frame:frames){
+            frame.render(mouseX,mouseY);
+            frame.mouseMove(mouseX, mouseY);
+        }
+        super.drawScreen(mouseX, mouseY, partialTicks);
+    }
+
+    @Override
     protected void mouseReleased(int mouseX, int mouseY, int state) {
-		for (Frame frame : frames) {
-			frame.setDrag(false);
-		}
-		for (Frame frame : frames) {
-			if (frame.isOpen()) {
-				if (!frame.getComponents().isEmpty()) {
-					for (Component component : frame.getComponents()) {
-						component.mouseReleased(mouseX, mouseY, state);
-					}
-				}
-			}
-		}
-	}
-	
-	@Override
-	public boolean doesGuiPauseGame() {
-		return false;
-	}
+        for(Frame frame:frames){
+            frame.mouseRelease(mouseX, mouseY, state);
+        }
+        super.mouseReleased(mouseX, mouseY, state);
+    }
+
+    @Override
+    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+        for(Frame frame:frames){
+            frame.mouseClick(mouseX, mouseY, mouseButton);
+        }
+        super.mouseClicked(mouseX, mouseY, mouseButton);
+    }
+
+    @Override
+    protected void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {
+        for (Frame frame : frames) {
+            frame.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
+        }
+        super.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
+    }
+
+    @Override
+    protected void keyTyped(char typedChar, int keyCode) throws IOException {
+        for (Frame frame : frames) {
+            frame.keyTyped(typedChar, keyCode);
+        }
+        super.keyTyped(typedChar, keyCode);
+    }
 }
