@@ -1,9 +1,10 @@
 package dev.lors.bloodhack;
 
+import dev.lors.bloodhack.clickgui.ClickGUI;
 import dev.lors.bloodhack.command.CommandManager;
 import dev.lors.bloodhack.util.font.CFontRenderer;
-import me.zero.alpine.bus.EventBus;
-import me.zero.alpine.bus.EventManager;
+import me.zero.alpine.EventManager;
+import me.zero.alpine.EventBus;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -35,25 +36,22 @@ public class BloodHack {
     public static String prefix = "*";
     public static ConfigManager configManager;
     public static ModuleManager moduleManager;
-    public static SettingsManager settingsManager;
+    public static ClickGUI gui;
     public static final EventBus EVENT_BUS = new EventManager();
     protected Minecraft mc2;
     public static CFontRenderer fontRenderer;
 
 
-
-    //pre init (phase 3)
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event){
         Display.setTitle(name + " " + version);
     }
 
-    //init (phase 5)
     @Mod.EventHandler
-    public void Init(FMLInitializationEvent event) {
-        settingsManager = new SettingsManager();
+    public void Init(FMLInitializationEvent event) throws IllegalAccessException {
         moduleManager = new ModuleManager();
         configManager = new ConfigManager();
+        gui = new ClickGUI();
         CommandManager.init();
         MinecraftForge.EVENT_BUS.register(new CommandManager());
         MinecraftForge.EVENT_BUS.register(this);

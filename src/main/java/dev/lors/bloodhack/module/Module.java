@@ -1,16 +1,17 @@
 package dev.lors.bloodhack.module;
 
 import dev.lors.bloodhack.BloodHack;
-import dev.lors.bloodhack.managers.Setting;
-import me.zero.alpine.bus.EventBus;
-import me.zero.alpine.bus.EventManager;
+import dev.lors.bloodhack.managers.Value;
+import me.zero.alpine.EventBus;
+import me.zero.alpine.EventManager;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.lwjgl.input.Keyboard;
 
-import static dev.lors.bloodhack.BloodHack.settingsManager;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Module {
     protected Minecraft mc = Minecraft.getMinecraft();
@@ -18,10 +19,11 @@ public class Module {
 
     private String name, displayName;
     private Category category;
-    private boolean toggled;
+    public boolean toggled;
     private Integer key;
     protected int tickDelay;
     boolean drawn;
+    public List<Value> values = new ArrayList<Value>();
 
     public Module(String name, Category category) {
         this.name = name;
@@ -55,10 +57,6 @@ public class Module {
     }
 
     public void selfSettings() {
-    }
-
-    public void rSetting(Setting setting) {
-        settingsManager.rSetting(setting);
     }
 
     public void onToggle() {
