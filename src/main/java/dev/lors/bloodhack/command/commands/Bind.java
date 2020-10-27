@@ -9,7 +9,7 @@ import org.lwjgl.input.Keyboard;
 
 public class Bind extends Command {
     public Bind() {
-        super("bind", new String[]{"b", "bind"});
+        super("bind", "Binds modules to keys.");
     }
     @Override
     public void onCommand(String[] args) {

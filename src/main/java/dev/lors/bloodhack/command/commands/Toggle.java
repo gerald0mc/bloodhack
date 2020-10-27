@@ -8,7 +8,7 @@ import dev.lors.bloodhack.module.Module;
 
 public class Toggle extends Command {
     public Toggle() {
-        super("Toggle", new String[]{"t", "toggle"});
+        super("Toggle", "Toggles a module.");
     }
 
     @Override
