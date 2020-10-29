@@ -1,5 +1,6 @@
 package dev.lors.bloodhack;
 
+import dev.lors.bloodhack.capes.CapeUtil;
 import dev.lors.bloodhack.clickgui.ClickGUI;
 import dev.lors.bloodhack.command.CommandManager;
 import dev.lors.bloodhack.event.Adapter;
@@ -66,6 +67,7 @@ public class BloodHack {
         MinecraftForge.EVENT_BUS.register(new CommandManager());
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(new Adapter());
+        CapeUtil.startAnimationLoop();
     }
 
     @SubscribeEvent

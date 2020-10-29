@@ -1,19 +1,18 @@
 package dev.lors.bloodhack.event;
 
+import com.google.common.hash.BloomFilter;
 import dev.lors.bloodhack.BloodHack;
-import dev.lors.bloodhack.event.events.LivingUpdateEvent;
-import dev.lors.bloodhack.event.events.PlayerJumpEvent;
 import dev.lors.bloodhack.event.events.RenderEvent;
+import dev.lors.bloodhack.event.events.RenderWorldEvent;
+import dev.lors.bloodhack.utils.BloodHackTessellator;
+import dev.lors.bloodhack.utils.RenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.WorldEvent;
@@ -32,25 +31,10 @@ public class Adapter {
     {
         if (event.isCanceled())
             return;
-
-        GlStateManager.disableTexture2D();
-        GlStateManager.enableBlend();
-        GlStateManager.disableAlpha();
-        GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
-        GlStateManager.shadeModel(GL11.GL_SMOOTH);
-        GlStateManager.disableDepth();
-
-        GlStateManager.glLineWidth(1f);
-        BloodHack.EVENT_BUS.post(new RenderEvent());
-        GlStateManager.glLineWidth(1f);
-
-        GlStateManager.shadeModel(GL11.GL_FLAT);
-        GlStateManager.disableBlend();
-        GlStateManager.enableAlpha();
-        GlStateManager.enableTexture2D();
-        GlStateManager.enableDepth();
-        GlStateManager.enableCull();
+        RenderUtil.drawBoundingBox(mc.player.getEntityBoundingBox(), 1, 0xFF, 0xFF, 0xFF, 0xFF);
+        BloodHack.EVENT_BUS.post(new RenderWorldEvent());
     }
+
 
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent event)
