@@ -1,5 +1,6 @@
 package dev.lors.bloodhack.module;
 
+import dev.lors.bloodhack.BloodHack;
 import dev.lors.bloodhack.managers.Value;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
@@ -35,10 +36,12 @@ public class Module {
 
     public void onEnable() {
         MinecraftForge.EVENT_BUS.register(this);
+        BloodHack.EVENT_BUS.subscribe(this);
     }
 
     public void onDisable() {
         MinecraftForge.EVENT_BUS.unregister(this);
+        BloodHack.EVENT_BUS.unsubscribe(this);
     }
 
     @SubscribeEvent

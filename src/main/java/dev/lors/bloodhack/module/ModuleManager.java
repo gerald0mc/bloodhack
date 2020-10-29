@@ -1,5 +1,6 @@
 package dev.lors.bloodhack.module;
 
+import dev.lors.bloodhack.BloodHack;
 import dev.lors.bloodhack.managers.Value;
 import dev.lors.bloodhack.module.BloodModules.chat.AutoSuicide;
 import dev.lors.bloodhack.module.BloodModules.chat.ChatSuffix;
@@ -17,7 +18,10 @@ import dev.lors.bloodhack.module.BloodModules.movement.HoleTP;
 import dev.lors.bloodhack.module.BloodModules.movement.Sanic;
 import dev.lors.bloodhack.module.BloodModules.movement.Sprint;
 import dev.lors.bloodhack.module.BloodModules.player.FakePlayer;
+import dev.lors.bloodhack.module.BloodModules.render.ChunkOverlay;
+import dev.lors.bloodhack.module.BloodModules.render.CustomCape;
 import dev.lors.bloodhack.module.BloodModules.render.Fullbright;
+import dev.lors.bloodhack.module.BloodModules.render.HoleESP;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -47,7 +51,9 @@ public class ModuleManager {
         ///Render
 
         modules.add(new Fullbright());
-        //modules.add(new HoleESP());
+        modules.add(new ChunkOverlay());
+        modules.add(new CustomCape());
+        modules.add(new HoleESP());
 
         ///Chat
 
