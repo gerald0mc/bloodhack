@@ -35,7 +35,9 @@ compileJava {
 minecraft {
     mappings = "stable_39"
     version = "1.12.2-14.23.5.2847";
-    runDir = "run"
+    runDir = "/run"
+    setRunDir("run")
+
 }
 
 repositories {
@@ -86,7 +88,7 @@ shadowJar {
 
 mixin {
     defaultObfuscationEnv searge
-    add sourceSets.main, 'mixins.bloodhack.refmap.json'
+    add sourceSets.main, 'mixin.bloodhack.refmap.json'
 }
 
 reobf {
@@ -98,7 +100,7 @@ reobf {
 jar {
     manifest {
         attributes(
-                'MixinConfigs': 'mixins.bloodhack.json',
+                'MixinConfigs': 'mixin.bloodhack.json',
                 'TweakOrder': 0,
                 'FMLCorePluginContainsFMLMod': 'true',
                 'FMLCorePlugin': 'dev.lors.bloodhack.mixin.MixinLoader',
