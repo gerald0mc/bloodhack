@@ -58,10 +58,7 @@ public class ConfigManager {
                 fileWriter.flush();
                 fileWriter.close();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            this.save();
-        }
+        } catch (Exception e) {}
     }
 
     public void load() {
@@ -101,9 +98,7 @@ public class ConfigManager {
                         value.value = converter.doBackward(element);
                     }
                 }
-            } catch (Exception e) {
-                continue;
-            }
+            } catch (Exception e) {}
         }
     }
 }
