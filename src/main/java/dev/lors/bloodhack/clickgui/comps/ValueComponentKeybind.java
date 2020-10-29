@@ -27,7 +27,7 @@ public class ValueComponentKeybind extends Component {
         Gui.drawRect(x, y + offsetY, x + width, y + height, clickGUI.rainbow.value ? ColourUtils.genRainbow() : color);
         if (mouseX > x && mouseX < x + width && mouseY > y + offsetY && mouseY < y + height) {
             int[] col = ColourUtils.toRGBAArray(ColourUtils.genRainbow());
-            int finalCol = ColourUtils.toRGBA(col[0], col[1], col[2], 0x70);
+            int finalCol = ColourUtils.toRGBA(col[0], col[1], col[2], Math.max(0, col[3]-10));
             Gui.drawRect(x, y + offsetY, x + width, y + height, clickGUI.rainbow.value ? finalCol : color);
         }
         //if(value.value instanceof Boolean)

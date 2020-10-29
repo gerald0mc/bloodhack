@@ -4,6 +4,7 @@ import dev.lors.bloodhack.BloodHack;
 import dev.lors.bloodhack.managers.Value;
 import dev.lors.bloodhack.module.Module;
 import dev.lors.bloodhack.utils.ColourUtils;
+import dev.lors.bloodhack.module.Module;
 import dev.lors.bloodhack.utils.RenderUtil;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
@@ -56,9 +57,11 @@ public class ModuleComponent extends Component {
                 if (item instanceof ValueComponent && ((ValueComponent) item).value.isVisible()) {
                     ValueComponent value = (ValueComponent) item;
                     if (value.value.value instanceof String)
-                        item.width = Math.max(fr.getStringWidth(value.value.getMeta() + 10), width);
+                        item.width = Math.max(width, fr.getStringWidth(value.listening ? value.typeCache + "_" : value.value.name + ": " + value.value.getMeta()));
                     else
                         item.width = Math.max(fr.getStringWidth(value.value.value instanceof Boolean ? value.value.name : value.value.name + ": " + value.value.getMeta() + 10), width);
+                    count += offsetY;
+                    item.render(mouseX, mouseY);
                 } else if (item instanceof ValueComponentKeybind) {
                     ValueComponentKeybind value = (ValueComponentKeybind) item;
                     if (value.module != null)
@@ -66,9 +69,9 @@ public class ModuleComponent extends Component {
                                 value.listening ? "Listening..." : "Bind: " +
                                         Keyboard.getKeyName(module.getKey())),
                                 width);
+                    count += offsetY;
+                    item.render(mouseX, mouseY);
                 }
-                count += offsetY;
-                item.render(mouseX, mouseY);
             }
             offset = count - offsetY;
         } else

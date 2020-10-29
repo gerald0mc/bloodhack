@@ -7,8 +7,14 @@ import dev.lors.bloodhack.utils.RenderUtil;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 
 public class ValueComponent extends Component {
@@ -49,11 +55,11 @@ public class ValueComponent extends Component {
                 fr.drawStringWithShadow("Description: " + value.desc, 0, sr.getScaledHeight() - fr.FONT_HEIGHT, -1);
             }
             int[] col = ColourUtils.toRGBAArray(clickGUI.rainbow.value ? ColourUtils.genRainbow() : color);
-            int finalCol = ColourUtils.toRGBA(col[0], col[1], col[2], col[3]-10);
+            int finalCol = ColourUtils.toRGBA(col[0], col[1], col[2], Math.max(0, col[3]-50));
             RenderUtil.drawRect(x, y + offsetY, x + width, y + height, finalCol);
         }
         if (value.value instanceof String)
-            fr.drawStringWithShadow(listening ? typeCache + "_" : value.getMeta(), x + 5, y + 16, -1);
+            fr.drawStringWithShadow(listening ? typeCache + "_" : value.name + ": " + value.getMeta(), x + 5, y + 16, -1);
         else
             fr.drawStringWithShadow(value.value instanceof Boolean ? value.name : value.name + ": " + value.getMeta(), x + 5, y + 16, -1);
         if (expanded)
@@ -183,6 +189,8 @@ public class ValueComponent extends Component {
                 value.setValue(typeCache);
                 return;
             }
+            if(keyCode == Keyboard.KEY_LSHIFT ||keyCode == Keyboard.KEY_RSHIFT ||keyCode == Keyboard.KEY_RCONTROL||keyCode == Keyboard.KEY_LCONTROL || keyCode == Keyboard.CHAR_NONE)
+                return;
             typeCache += typedChar;
         }
     }
