@@ -12,9 +12,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(AbstractClientPlayer.class)
 public class MixinAbstractClientPlayer{
 
-    @Inject(method = "getLocationCape", at = @At(value = "HEAD"))
+    boolean hasDoneit = false;
+
+    @Inject(method = "getLocationCape", at = @At(value = "RETURN"), cancellable = true)
     public void getLocationCape(CallbackInfoReturnable<ResourceLocation> cir){
-        cir.setReturnValue(CapeUtil.getCape());
+       cir.setReturnValue(CapeUtil.getCape());
     }
 
 }
