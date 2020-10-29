@@ -1,13 +1,16 @@
 package dev.lors.bloodhack.module.BloodModules.render;
 
-import dev.lors.bloodhack.event.events.RenderEvent;
+import dev.lors.bloodhack.event.events.RenderWorldEvent;
 import dev.lors.bloodhack.managers.Value;
 import dev.lors.bloodhack.module.Category;
 import dev.lors.bloodhack.module.Module;
-import dev.lors.bloodhack.utils.BloodHackTessellator;
 import dev.lors.bloodhack.utils.CrystalUtil;
+import dev.lors.bloodhack.utils.RenderUtil;
+import me.zero.alpine.listener.EventHandler;
+import me.zero.alpine.listener.Listener;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.List;
@@ -26,22 +29,16 @@ public class HoleESP extends Module {
     Value<Integer> g = new Value<Integer>("Green", 255, 0, 255);
     Value<Integer> b = new Value<Integer>("Blue", 255, 0, 255);
     Value<Integer> a = new Value<Integer>("Alpha", 255, 0, 255);
-    private ConcurrentHashMap<BlockPos, Boolean> safeHoles;
+    private ConcurrentHashMap<BlockPos, Boolean> safeHoles = new ConcurrentHashMap<>();
 
     public HoleESP() {
-        super("HoleESP-[NOT WORKING]", Category.RENDER);
+        super("HoleESP", Category.RENDER);
     }
 
     @Override
     public void onUpdate() {
         if (mc.player == null && mc.world == null) return;
         try {
-            if (safeHoles == null) {
-                safeHoles = new ConcurrentHashMap<>();
-            } else {
-                safeHoles.clear();
-            }
-
             int range = (int) Math.ceil(rangeS.value);
 
             List<BlockPos> blockPosList = CrystalUtil.getSphere(getPlayerPos(), range, range, false, true, 0);
@@ -86,7 +83,8 @@ public class HoleESP extends Module {
     }
 
     //@Override
-    public void render(final RenderEvent event) {
+    @EventHandler
+    Listener<RenderWorldEvent> eventListener = new Listener<>(e -> {
         if (mc.player == null || safeHoles == null) {
             return;
         }
@@ -94,16 +92,13 @@ public class HoleESP extends Module {
             if (safeHoles.isEmpty()) {
                 return;
             }
-
-            BloodHackTessellator.prepare("lines");
-
-            safeHoles.forEach((blockPos, isBedrock) -> {
-                BloodHackTessellator.draw_cube_line(blockPos, r.value, g.value, b.value, a.value, "all");
-            });
+            for(BlockPos pos:safeHoles.keySet()) {
+                RenderUtil.drawBoundingBox(new AxisAlignedBB(pos), 2, r.value, g.value, b.value, a.value);
+            }
         } catch (Exception ignored) {
 
         }
-    }
+    });
 
     public BlockPos getPlayerPos() {
         return mc.player.getPosition();
