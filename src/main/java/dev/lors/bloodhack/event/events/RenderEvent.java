@@ -1,16 +1,9 @@
 package dev.lors.bloodhack.event.events;
 
 import dev.lors.bloodhack.event.Event;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.math.Vec3d;
+import dev.lors.bloodhack.module.Category;
+import dev.lors.bloodhack.module.Module;
 
-//Credit 086 - KAMI
 public class RenderEvent extends Event {
-
-    public RenderEvent() {
-        super();
-
-    }
 
 }
